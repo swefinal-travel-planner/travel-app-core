@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from data import locations
-from prompt import pre_prompt, post_prompt, prompt1, prompt2, prompt3, prompt4, prompt5, prompt6
+from constant.data import locations
+from constant.prompt import pre_prompt, post_prompt, prompt1, prompt2, prompt3, prompt4, prompt5, prompt6
 import google.generativeai as genai
 import json
 from models.UserPreferences import UserPreferences
