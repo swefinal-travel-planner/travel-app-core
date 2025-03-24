@@ -1,7 +1,8 @@
 from app.models.LLMModel import GPTModel
-
+from injector import inject
 
 class GPTService:
+    @inject
     def __init__(self, gpt_model: GPTModel):
         self.gpt_model = gpt_model
 
