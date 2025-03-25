@@ -1,8 +1,9 @@
 from flask import request, jsonify
 from app.services.llmService import GPTService
-
+from injector import inject
 
 class GPTController:
+    @inject
     def __init__(self, gpt_service: GPTService):
         self.gpt_service = gpt_service
 

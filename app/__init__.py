@@ -2,7 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_injector import FlaskInjector
 from di.di_container import configure
-from app.routes.llmRouter import api
+from app.routes.router import api
 
 def create_app():
     app = Flask(__name__)
