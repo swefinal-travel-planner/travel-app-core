@@ -6,6 +6,7 @@ from app.services.llmService import GPTService
 from app.controllers.llmController import GPTController
 from app.models.LLMModel import GPTModel
 from app.services.place_service import PlaceService
+from app.services.embedding_service import EmbeddingService
 from config.config import Config
 
 class LLMModule(Module):
@@ -25,8 +26,13 @@ class LLMModule(Module):
     #Service
     @singleton
     @provider
-    def provide_place_service(self, place_repository: PlaceRepository) -> PlaceService:
-        return PlaceService(place_repository)
+    def provide_place_service(self, place_repository: PlaceRepository, embedding_service: EmbeddingService) -> PlaceService:
+        return PlaceService(place_repository, embedding_service)
+    
+    @singleton
+    @provider
+    def provide_embedding_service(self) -> EmbeddingService:
+        return EmbeddingService(Config.EMBEDDING_MODEL_NAME)
     
     #Controller
     @singleton

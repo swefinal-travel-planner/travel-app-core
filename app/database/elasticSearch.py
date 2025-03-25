@@ -16,7 +16,6 @@ class ElasticsearchClient:
             raise Exception("Could not connect to Elasticsearch")
         
     def ping(self):
-        print(self.es.info())
         return self.es.ping()
     
     def check_index(self, index_name):
@@ -27,3 +26,9 @@ class ElasticsearchClient:
             raise Exception(f"Index '{index_name}' already exists")
         else:
             self.es.indices.create(index=index_name, body=mapping)
+
+    def insert_document(self, index_name, document):
+        if not self.check_index(index_name):
+            raise Exception(f"Index '{index_name}' does not exist")
+        
+        self.es.index(index=index_name, body=document)

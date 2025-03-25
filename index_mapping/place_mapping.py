@@ -1,9 +1,6 @@
 place_mapping = {
     "mappings": {
         "properties": {
-            "id": {
-                "type": "integer",
-            },
             "name": {
                 "type": "text",
             },
@@ -14,10 +11,10 @@ place_mapping = {
                 "type": "float"
             },
             "type": {
-                "type": "string",
+                "type": "text",
             },
             "properties": {
-                "type": "string",
+                "type": "text",
             },
             "price": {
                 "type": "float",

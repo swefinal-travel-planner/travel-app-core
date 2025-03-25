@@ -10,3 +10,4 @@ class Config:
     ELASTIC_PASSWORD = os.getenv('ELASTIC_PASSWORD')
     ELASTIC_HOST = os.getenv('ES_HOST')
     ELASTIC_PORT = os.getenv('ES_PORT')
+    EMBEDDING_MODEL_NAME = os.getenv('EMBEDDING_MODEL_NAME')

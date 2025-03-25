@@ -7,4 +7,5 @@ class PlaceController:
         self.place_service = place_service
 
     def get_places(self):
-        return "hello"
+        data = self.place_service.embed_text('Hello World')
+        return str(data)
