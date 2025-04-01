@@ -5,12 +5,12 @@ class EmbeddingService:
     
     @inject
     def __init__(self, model=None):
-        self.model = SentenceTransformer(model)
+        self.__model = SentenceTransformer(model)
 
-        if not self.model:
+        if not self.__model:
             print("Could not load the model.")
         else:
-            print("Model loaded successfully.")
+            print("Model embedding loaded successfully.")
 
     def embed_text(self, text):
-        return self.model.encode(text)
+        return self.__model.encode(text)

@@ -1,6 +1,9 @@
 place_mapping = {
     "mappings": {
         "properties": {
+            "id": {
+                "type": "long",
+            },
             "name": {
                 "type": "text",
             },

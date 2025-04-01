@@ -1,0 +1,1711 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Cu Chi Tunnels",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "village": "Nhuan Duc Commune",
+          "district": "Củ Chi District",
+          "street": "Tỉnh lộ 15",
+          "lon": 106.5292334,
+          "lat": 11.0628579,
+          "formatted": "Củ Chi Tunnels, Tỉnh lộ 15, Ho Chi Minh City, Vietnam",
+          "address_line1": "Củ Chi Tunnels",
+          "address_line2": "Tỉnh lộ 15, Ho Chi Minh City, Vietnam",
+          "categories": [
+            "tourism",
+            "tourism.attraction"
+          ],
+          "details": [
+            "details",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Cu Chi Tunnels",
+              "osm_id": 1388480068,
+              "name:en": "Củ Chi Tunnels",
+              "name:es": "Túneles de Cu Chí",
+              "name:he": "תעלות Cu Chi",
+              "name:pl": "Tunele z czasów wojny Amerykańsko Wietnamskiej",
+              "name:ru": "Ку Чи туннели",
+              "name:vi": "Địa đạo Củ Chi",
+              "tourism": "attraction",
+              "alt_name": "The tunnels of Củ Chi",
+              "osm_type": "n",
+              "wikidata": "Q192721",
+              "wikipedia": "en:Củ Chi tunnels",
+              "addr:street": "Tỉnh lộ 15"
+            }
+          },
+          "name_other": {
+            "alt_name": "The tunnels of Củ Chi"
+          },
+          "name_international": {
+            "en": "Củ Chi Tunnels",
+            "es": "Túneles de Cu Chí",
+            "he": "תעלות Cu Chi",
+            "pl": "Tunele z czasów wojny Amerykańsko Wietnamskiej",
+            "ru": "Ку Чи туннели",
+            "vi": "Địa đạo Củ Chi"
+          },
+          "wiki_and_media": {
+            "wikidata": "Q192721",
+            "wikipedia": "en:Củ Chi tunnels"
+          },
+          "place_id": "51db3cc4f5dea15a4059a3521de92e202640f00103f9014486c2520000000092030e4375204368692054756e6e656c73"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.5292334,
+            11.062857899503177
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Tượng Buddha",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "71409",
+          "suburb": "Gò Vấp District",
+          "quarter": "Ward 3",
+          "street": "Hẻm 9 Đường Nguyễn Tuân",
+          "lon": 106.6822673593731,
+          "lat": 10.8164259,
+          "formatted": "Tượng Buddha, Hẻm 9 Đường Nguyễn Tuân, Gò Vấp District, Ho Chi Minh City, 71409, Vietnam",
+          "address_line1": "Tượng Buddha",
+          "address_line2": "Hẻm 9 Đường Nguyễn Tuân, Gò Vấp District, Ho Chi Minh City, 71409, Vietnam",
+          "categories": [
+            "tourism",
+            "tourism.attraction",
+            "tourism.attraction.artwork"
+          ],
+          "details": [
+            "details.artwork"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "area": "yes",
+              "name": "Tượng Buddha",
+              "osm_id": 846926729,
+              "tourism": "artwork",
+              "osm_type": "w",
+              "artwork_type": "statue"
+            }
+          },
+          "artwork": {
+            "artwork_type": "statue"
+          },
+          "place_id": "51afe8b644aaab5a40593fcc539302a22540f00102f90189137b320000000092030f54c6b0e1bba36e6720427564646861"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.68226735937309,
+            10.816425899485806
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Disco Travel - Du lịch Quốc Tế Khám Phá",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "70048",
+          "suburb": "Tân Bình District",
+          "quarter": "Ward 2",
+          "street": "Bạch Đằng",
+          "housenumber": "88",
+          "lon": 106.6734822,
+          "lat": 10.8151663,
+          "formatted": "DISCO TRAVEL, 88, Bạch Đằng, Tân Bình District, Ho Chi Minh City, 70048, Vietnam",
+          "address_line1": "DISCO TRAVEL",
+          "address_line2": "88, Bạch Đằng, Tân Bình District, Ho Chi Minh City, 70048, Vietnam",
+          "categories": [
+            "commercial",
+            "service",
+            "service.travel_agency",
+            "tourism",
+            "tourism.attraction"
+          ],
+          "details": [
+            "details",
+            "details.contact",
+            "details.payment"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Disco Travel - Du lịch Quốc Tế Khám Phá",
+              "shop": "travel_agency",
+              "email": "cd@discotravel.vn",
+              "phone": "02871078910",
+              "osm_id": 5137981655,
+              "name:en": "DISCO TRAVEL",
+              "tourism": "attraction",
+              "website": "https://discotravel.vn/",
+              "osm_type": "n",
+              "addr:city": "Ho Chi Minh City",
+              "addr:street": "Bạch Đằng",
+              "payment:cash": "yes",
+              "payment:visa": "yes",
+              "addr:district": "Tan Binh",
+              "addr:postcode": 736463,
+              "opening_hours": "Mo-Fr 08:30-17:00",
+              "addr:housenumber": 88,
+              "addr:subdistrict": 2,
+              "payment:mastercard": "yes",
+              "payment:debit_cards": "yes",
+              "payment:credit_cards": "yes"
+            }
+          },
+          "website": "https://discotravel.vn/",
+          "opening_hours": "Mo-Fr 08:30-17:00",
+          "name_international": {
+            "en": "DISCO TRAVEL"
+          },
+          "contact": {
+            "phone": "02871078910",
+            "email": "cd@discotravel.vn"
+          },
+          "payment_options": {
+            "cash": true,
+            "visa": true,
+            "mastercard": true,
+            "debit_cards": true,
+            "credit_cards": true
+          },
+          "commercial": {
+            "type": "travel_agency"
+          },
+          "place_id": "510adc15551aab5a40595d2f2a7a5da12540f00103f901d7603f320100000092032f446973636f2054726176656c202d204475206ce1bb8b6368205175e1bb91632054e1babf204b68c3a16d205068c3a1"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.6734822,
+            10.81516629948572
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Tượng voi đồng",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "71006",
+          "suburb": "District 1",
+          "quarter": "Ben Nghe Ward",
+          "street": "Nguyễn Bỉnh Khiêm",
+          "lon": 106.70589032292453,
+          "lat": 10.7874383,
+          "formatted": "Bronze elephant statue, Nguyễn Bỉnh Khiêm, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "address_line1": "Bronze elephant statue",
+          "address_line2": "Nguyễn Bỉnh Khiêm, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "categories": [
+            "tourism",
+            "tourism.attraction",
+            "tourism.attraction.artwork"
+          ],
+          "details": [
+            "details",
+            "details.artwork"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Tượng voi đồng",
+              "osm_id": 186347714,
+              "name:en": "Bronze elephant statue",
+              "tourism": "artwork",
+              "osm_type": "w",
+              "artwork_type": "statue"
+            }
+          },
+          "name_international": {
+            "en": "Bronze elephant statue"
+          },
+          "artwork": {
+            "artwork_type": "statue"
+          },
+          "place_id": "5184e19a4e2dad5a405950cddf1c2b932540f00102f901c2701b0b0000000092031454c6b0e1bba36e6720766f6920c491e1bb936e67"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.70589032292452,
+            10.787438299483853
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Bưu điện Trung tâm Sài Gòn",
+          "old_name": "Saigon Post Office",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "71006",
+          "suburb": "District 1",
+          "quarter": "Ben Nghe Ward",
+          "street": "Paris Commune Square",
+          "housenumber": "2",
+          "lon": 106.6999920762309,
+          "lat": 10.77995565,
+          "formatted": "Saigon Central Post Office, 2, Paris Commune Square, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "address_line1": "Saigon Central Post Office",
+          "address_line2": "2, Paris Commune Square, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "categories": [
+            "building",
+            "building.commercial",
+            "building.facility",
+            "building.historic",
+            "building.tourism",
+            "heritage",
+            "service",
+            "service.post",
+            "service.post.office",
+            "tourism",
+            "tourism.attraction",
+            "tourism.sights"
+          ],
+          "details": [
+            "details",
+            "details.building",
+            "details.heritage",
+            "details.historic",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "atm": "yes",
+              "name": "Bưu điện Trung tâm Sài Gòn",
+              "height": 13.5,
+              "osm_id": 39514793,
+              "amenity": "post_office",
+              "name:ar": "مكتب البريد المركزي سايجون",
+              "name:be": "Цэнтральнае паштовае аддзяленне Сайгон",
+              "name:de": "Saigon Zentrales Postamt",
+              "name:en": "Saigon Central Post Office",
+              "name:es": "Oficina de Correos Central de Saigón",
+              "name:fr": "Poste centrale de Saïgon",
+              "name:id": "Kantor Pos Pusat Saigon",
+              "name:ja": "サイゴン中央郵便局",
+              "name:ko": "중앙우체국",
+              "name:ms": "Pejabat Pos Pusat Saigon",
+              "name:nl": "Centrale Postkantoor",
+              "name:ru": "Центральное почтовое отделение Сайгона",
+              "name:uk": "Центральне поштове відділення Сайгона",
+              "name:vi": "Bưu điện Trung tâm Sài Gòn",
+              "name:zh": "西贡中心邮政局",
+              "tourism": "attraction",
+              "building": "yes",
+              "heritage": "yes",
+              "historic": "heritage",
+              "int_name": "Saigon Central Post Office",
+              "old_name": "Saigon Post Office",
+              "operator": "Vietnam Post",
+              "osm_type": "w",
+              "wikidata": "Q2227270",
+              "addr:city": "Ho Chi Minh City",
+              "wikipedia": "en:Saigon Central Post Office",
+              "start_date": 1891,
+              "addr:street": "125 Công xã Paris, Bến Nghé, Quận 1, Hồ Chí Minh",
+              "name:vi-Hani": "郵電中心柴棍",
+              "name:zh-Hant": "西貢中心郵政局",
+              "addr:district": "Quận 1",
+              "official_name": "Bưu điện Trung tâm Thành phố Hồ Chí Minh",
+              "opening_hours": "Mo-Su 07:00-22:00",
+              "building:colour": "#e1cb8c",
+              "addr:housenumber": 2,
+              "official_name:en": "Ho Chi Minh City Central Post Office",
+              "operator:wikidata": "Q112150791",
+              "wikimedia_commons": "Category:Saigon Central Post Office"
+            }
+          },
+          "opening_hours": "Mo-Su 07:00-22:00",
+          "operator": "Vietnam Post",
+          "operator_details": {
+            "wikidata": "Q112150791"
+          },
+          "name_other": {
+            "old_name": "Saigon Post Office",
+            "official_name": "Bưu điện Trung tâm Thành phố Hồ Chí Minh"
+          },
+          "name_international": {
+            "ar": "مكتب البريد المركزي سايجون",
+            "be": "Цэнтральнае паштовае аддзяленне Сайгон",
+            "de": "Saigon Zentrales Postamt",
+            "en": "Saigon Central Post Office",
+            "es": "Oficina de Correos Central de Saigón",
+            "fr": "Poste centrale de Saïgon",
+            "id": "Kantor Pos Pusat Saigon",
+            "ja": "サイゴン中央郵便局",
+            "ko": "중앙우체국",
+            "ms": "Pejabat Pos Pusat Saigon",
+            "nl": "Centrale Postkantoor",
+            "ru": "Центральное почтовое отделение Сайгона",
+            "uk": "Центральне поштове відділення Сайгона",
+            "vi": "Bưu điện Trung tâm Sài Gòn",
+            "zh": "西贡中心邮政局"
+          },
+          "wiki_and_media": {
+            "wikidata": "Q2227270",
+            "wikipedia": "en:Saigon Central Post Office",
+            "wikimedia_commons": "Category:Saigon Central Post Office"
+          },
+          "historic": {
+            "type": "heritage",
+            "start_date": 1891
+          },
+          "building": {
+            "color": "#e1cb8c",
+            "start_date": 1891,
+            "height": 13.5
+          },
+          "place_id": "51bcb790abccac5a40590bb9cd58568f2540f00102f901a9f25a020000000092032142c6b07520c49169e1bb876e205472756e672074c3a26d2053c3a0692047c3b26e"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.6999920762309,
+            10.779955649483346
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Nhà thờ Đức Bà Sài Gòn",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "71006",
+          "suburb": "District 1",
+          "quarter": "Ben Nghe Ward",
+          "street": "Nguyen Van Binh Street",
+          "housenumber": "1",
+          "lon": 106.69901186265822,
+          "lat": 10.77974385,
+          "formatted": "Saigon Notre Dame Cathedral, 1, Nguyen Van Binh Street, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "address_line1": "Saigon Notre Dame Cathedral",
+          "address_line2": "1, Nguyen Van Binh Street, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "categories": [
+            "building",
+            "building.historic",
+            "building.place_of_worship",
+            "building.tourism",
+            "heritage",
+            "religion",
+            "religion.place_of_worship",
+            "religion.place_of_worship.christianity",
+            "tourism",
+            "tourism.attraction",
+            "tourism.sights",
+            "tourism.sights.place_of_worship",
+            "tourism.sights.place_of_worship.church"
+          ],
+          "details": [
+            "details",
+            "details.heritage",
+            "details.place_of_worship",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Nhà thờ Đức Bà Sài Gòn",
+              "osm_id": 801950766,
+              "amenity": "place_of_worship",
+              "name:ar": "كاتدرائية نوتردام",
+              "name:de": "Kathedrale Notre Dame von Saigon",
+              "name:en": "Saigon Notre Dame Cathedral",
+              "name:es": "Basílica de Notre-Dame de Saigón",
+              "name:fr": "Cathédrale de l'Immaculée-Conception",
+              "name:id": "Basilika Notre-Dame Saigon",
+              "name:ja": "サイゴン大聖堂",
+              "name:km": "ព្រះវិហារស្ត្រី",
+              "name:ko": "노틀담성당",
+              "name:ms": "Katedral Notre Dame",
+              "name:ru": "Собор Сайгонской Богоматери",
+              "name:tl": "Katedral ng Notre Dame",
+              "name:uk": "Собор сайгонським Богоматері",
+              "name:vi": "Nhà thờ Đức Bà Sài Gòn",
+              "name:zh": "圣母教堂",
+              "tourism": "attraction",
+              "basilica": "minor",
+              "building": "church",
+              "heritage": "yes",
+              "historic": "heritage",
+              "name:cjm": "bh m~K =b_g+R",
+              "osm_type": "w",
+              "religion": "christian",
+              "wikidata": "Q428129",
+              "addr:city": "Ho Chi Minh City",
+              "wikipedia": "vi:Nhà thờ chính tòa Đức Bà Sài Gòn",
+              "addr:street": "Công Xã Paris",
+              "denomination": "roman_catholic",
+              "name:zh-Hant": "聖母教堂",
+              "addr:district": "Quận 1",
+              "name:cjm-Latn": "Baha Muk Baigaor",
+              "official_name": "Vương cung thánh đường Chính tòa Đức Mẹ Vô nhiễm Nguyên tội",
+              "addr:housenumber": 1,
+              "addr:subdistrict": "Bến Nghé",
+              "official_name:en": "Cathedral Basilica of Our Lady of The Immaculate Conception",
+              "official_name:ru": "Базилика Непорочного Зачатия Пресвятой Девы Марии",
+              "official_name:zh": "圣母无原罪圣殿主教座堂",
+              "wikimedia_commons": "Category:Notre-Dame Cathedral Basilica of Saigon",
+              "official_name:vi-Hani": "王宮聖堂正座德媄無染原罪"
+            }
+          },
+          "name_other": {
+            "official_name": "Vương cung thánh đường Chính tòa Đức Mẹ Vô nhiễm Nguyên tội"
+          },
+          "name_international": {
+            "ar": "كاتدرائية نوتردام",
+            "de": "Kathedrale Notre Dame von Saigon",
+            "en": "Saigon Notre Dame Cathedral",
+            "es": "Basílica de Notre-Dame de Saigón",
+            "fr": "Cathédrale de l'Immaculée-Conception",
+            "id": "Basilika Notre-Dame Saigon",
+            "ja": "サイゴン大聖堂",
+            "km": "ព្រះវិហារស្ត្រី",
+            "ko": "노틀담성당",
+            "ms": "Katedral Notre Dame",
+            "ru": "Собор Сайгонской Богоматери",
+            "tl": "Katedral ng Notre Dame",
+            "uk": "Собор сайгонським Богоматері",
+            "vi": "Nhà thờ Đức Bà Sài Gòn",
+            "zh": "圣母教堂"
+          },
+          "wiki_and_media": {
+            "wikidata": "Q428129",
+            "wikipedia": "vi:Nhà thờ chính tòa Đức Bà Sài Gòn",
+            "wikimedia_commons": "Category:Notre-Dame Cathedral Basilica of Saigon"
+          },
+          "historic": {
+            "type": "heritage"
+          },
+          "building": {
+            "type": "church"
+          },
+          "place_of_worship": {
+            "religion": "christian",
+            "denomination": "roman_catholic"
+          },
+          "place_id": "518568409cbcac5a40597c93f9953a8f2540f00102f9012ecccc2f0000000092031f4e68c3a0207468e1bb9d20c490e1bba9632042c3a02053c3a0692047c3b26e"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.69901186265822,
+            10.779743849483332
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Dinh Độc Lập",
+          "old_name": "Independence Hall",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "71006",
+          "suburb": "District 1",
+          "quarter": "Ben Thanh Ward",
+          "street": "Nam Kỳ Khởi Nghĩa",
+          "housenumber": "135",
+          "lon": 106.69548803180103,
+          "lat": 10.7770348,
+          "formatted": "Independence Palace, 135, Nam Kỳ Khởi Nghĩa, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "address_line1": "Independence Palace",
+          "address_line2": "135, Nam Kỳ Khởi Nghĩa, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "categories": [
+            "building",
+            "building.tourism",
+            "tourism",
+            "tourism.attraction"
+          ],
+          "details": [
+            "details",
+            "details.contact",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Dinh Độc Lập",
+              "osm_id": 39598493,
+              "name:ar": "قصر الاستقلال",
+              "name:de": "Wiedervereinigungspalast",
+              "name:el": "το παλάτι της ανεξαρτησίας",
+              "name:en": "Independence Palace",
+              "name:es": "Palacio de la Reunificacion",
+              "name:fr": "Palais de la Réunification",
+              "name:id": "Istana Merdeka",
+              "name:ja": "統一会堂",
+              "name:ko": "통일궁",
+              "name:ms": "Istana Merdeka",
+              "name:ru": "Дворец воссоединения",
+              "name:vi": "Dinh Độc Lập",
+              "name:zh": "獨立宮/統一府",
+              "tourism": "attraction",
+              "alt_name": "Hội trường Thống Nhất",
+              "building": "palace",
+              "operator": "Hội trường Thống Nhất",
+              "osm_type": "w",
+              "wikidata": "Q933384",
+              "addr:city": "Ho Chi Minh City",
+              "wikipedia": "vi:Dinh Độc Lập",
+              "addr:street": "Nam Kỳ Khởi Nghĩa",
+              "alt_name:en": "Reunification Palace",
+              "alt_name:id": "Istana Reunifikasi",
+              "alt_name:ru": "Дворец независимости",
+              "alt_name:vi": "Hội trường Thống Nhất",
+              "old_name:en": "Independence Hall",
+              "old_name:fr": "Palais de l'Indépendance",
+              "old_name:ja": "独立宮殿",
+              "addr:country": "VN",
+              "name:vi-Hani": "營獨立",
+              "opening_date": "1966-10-31",
+              "contact:phone": "+84-80-85037",
+              "official_name": "Hội trường Thống Nhất",
+              "opening_hours": "Mo-Su 08:00-11:00,13:00-16:30",
+              "contact:website": "https://dinhdoclap.gov.vn",
+              "addr:housenumber": 135,
+              "alt_name:vi-Hani": "會場統一",
+              "official_name:en": "Reunification Hall",
+              "official_name:zh": "統一宮",
+              "wikimedia_commons": "Category:Independence Palace"
+            }
+          },
+          "website": "https://dinhdoclap.gov.vn",
+          "opening_hours": "Mo-Su 08:00-11:00,13:00-16:30",
+          "operator": "Hội trường Thống Nhất",
+          "name_other": {
+            "alt_name": "Hội trường Thống Nhất",
+            "official_name": "Hội trường Thống Nhất"
+          },
+          "name_international": {
+            "ar": "قصر الاستقلال",
+            "de": "Wiedervereinigungspalast",
+            "el": "το παλάτι της ανεξαρτησίας",
+            "en": "Independence Palace",
+            "es": "Palacio de la Reunificacion",
+            "fr": "Palais de la Réunification",
+            "id": "Istana Merdeka",
+            "ja": "統一会堂",
+            "ko": "통일궁",
+            "ms": "Istana Merdeka",
+            "ru": "Дворец воссоединения",
+            "vi": "Dinh Độc Lập",
+            "zh": "獨立宮/統一府"
+          },
+          "contact": {
+            "phone": "+84-80-85037"
+          },
+          "wiki_and_media": {
+            "wikidata": "Q933384",
+            "wikipedia": "vi:Dinh Độc Lập",
+            "wikimedia_commons": "Category:Independence Palace"
+          },
+          "building": {
+            "type": "palace"
+          },
+          "place_id": "5112d63be082ac5a4059a4445781d78d2540f00102f9019d395c020000000092031144696e6820c490e1bb9963204ce1baad70"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.69548803180103,
+            10.777034799483154
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Nhà hát Thành phố",
+          "old_name": "Opéra de Saïgon",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "71006",
+          "suburb": "District 1",
+          "quarter": "Ben Nghe Ward",
+          "street": "Lam Son Square",
+          "housenumber": "7",
+          "lon": 106.70324823258863,
+          "lat": 10.7767426,
+          "formatted": "Opera House, 7, Lam Son Square, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "address_line1": "Opera House",
+          "address_line2": "7, Lam Son Square, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "categories": [
+            "building",
+            "building.entertainment",
+            "building.tourism",
+            "entertainment",
+            "entertainment.culture",
+            "entertainment.culture.theatre",
+            "tourism",
+            "tourism.attraction"
+          ],
+          "details": [
+            "details",
+            "details.building",
+            "details.facilities",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Nhà hát Thành phố",
+              "height": "26 m",
+              "osm_id": 801710792,
+              "amenity": "theatre",
+              "name:en": "Opera House",
+              "name:es": "Opera Saigon",
+              "name:fr": "Opéra municipal de Saigon",
+              "name:id": "Gedung Teater Kota",
+              "name:ru": "Городской Театр",
+              "name:vi": "Nhà hát Thành phố",
+              "name:zh": "胡志明市大劇院",
+              "tourism": "attraction",
+              "alt_name": "Nhà hát Lớn",
+              "building": "yes",
+              "old_name": "Opéra de Saïgon",
+              "osm_type": "w",
+              "wikidata": "Q1949129",
+              "wikipedia": "vi:Nhà hát Thành phố Hồ Chí Minh",
+              "addr:street": "Công trường Lam Sơn",
+              "alt_name:en": "Opera House",
+              "alt_name:fr": "Opéra de Saïgon",
+              "alt_name:id": "Gedung Opera House",
+              "alt_name:vi": "Nhà hát Lớn",
+              "old_name:fr": "Opéra de Saïgon",
+              "name:vi-Hani": "伽咭城庯",
+              "addr:postcode": 71006,
+              "name:cjm-Latn": "Sang Adaoh Madin",
+              "official_name": "Nhà hát Thành Phố Hồ Chí Minh",
+              "addr:housenumber": 7,
+              "air_conditioning": "yes",
+              "official_name:en": "Ho Chi Minh City Municipal Theatre",
+              "official_name:zh": "胡志明市大劇院",
+              "old_name:1897-1956": "Opéra de Saigon"
+            }
+          },
+          "name_other": {
+            "alt_name": "Nhà hát Lớn",
+            "old_name": "Opéra de Saïgon",
+            "official_name": "Nhà hát Thành Phố Hồ Chí Minh"
+          },
+          "name_international": {
+            "en": "Opera House",
+            "es": "Opera Saigon",
+            "fr": "Opéra municipal de Saigon",
+            "id": "Gedung Teater Kota",
+            "ru": "Городской Театр",
+            "vi": "Nhà hát Thành phố",
+            "zh": "胡志明市大劇院"
+          },
+          "facilities": {
+            "air_conditioning": true
+          },
+          "wiki_and_media": {
+            "wikidata": "Q1949129",
+            "wikipedia": "vi:Nhà hát Thành phố Hồ Chí Minh"
+          },
+          "building": {
+            "height": "26 m"
+          },
+          "place_id": "5107fcdf0402ad5a40595461bc34b18d2540f00102f901c822c92f000000009203164e68c3a02068c3a174205468c3a06e68207068e1bb91"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.70324823258862,
+            10.776742599483136
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Trụ sở Ủy ban Nhân dân TP. Hồ Chí Minh",
+          "old_name": "Saigon City Hall",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "71006",
+          "suburb": "District 1",
+          "quarter": "Ben Nghe Ward",
+          "street": "Le Thanh Ton Street",
+          "housenumber": "86",
+          "lon": 106.70091770254902,
+          "lat": 10.7765867,
+          "formatted": "Ho Chi Minh City Hall, 86, Le Thanh Ton Street, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "address_line1": "Ho Chi Minh City Hall",
+          "address_line2": "86, Le Thanh Ton Street, District 1, Ho Chi Minh City, 71006, Vietnam",
+          "categories": [
+            "building",
+            "building.public_and_civil",
+            "building.tourism",
+            "tourism",
+            "tourism.attraction",
+            "tourism.sights.city_hall"
+          ],
+          "details": [
+            "details",
+            "details.building",
+            "details.contact",
+            "details.facilities",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Trụ sở Ủy ban Nhân dân TP. Hồ Chí Minh",
+              "phone": "+84 28 3829 6052",
+              "osm_id": 341504305,
+              "amenity": "townhall",
+              "name:de": "Sitz des Volkskomitees",
+              "name:en": "Ho Chi Minh City Hall",
+              "name:es": "Ayuntamiento de Ciudad Ho Chi Minh",
+              "name:fr": "Hôtel de ville de Hô-Chi-Minh-Ville",
+              "name:id": "Balai Komite Rakyat Kota Ho Chi Minh",
+              "name:it": "Palazzo del Comitato del Popolo",
+              "name:ja": "ホーチミン人民委員会庁舎",
+              "name:ko": "호찌민 시청",
+              "name:ru": "Здание Народного комитета Хошимина",
+              "name:vi": "Trụ sở Ủy ban Nhân dân Thành phố Hồ Chí Minh",
+              "name:zh": "胡志明市政宮",
+              "smoking": "outside",
+              "tourism": "attraction",
+              "website": "https://vpub.hochiminhcity.gov.vn/",
+              "building": "civic",
+              "end_date": 1909,
+              "old_name": "Tòa đô chánh Saigon",
+              "osm_type": "w",
+              "wikidata": "Q2227195",
+              "addr:city": "Thành phố Hồ Chí Minh",
+              "architect": "Femand Gardès",
+              "wikipedia": "vi:Trụ sở Ủy ban Nhân dân Thành phố Hồ Chí Minh",
+              "start_date": 1898,
+              "addr:street": "Lê Thánh Tôn",
+              "old_name:en": "Saigon City Hall",
+              "old_name:fr": "Hôtel de Ville de Saïgon",
+              "old_name:zh": "都政宫",
+              "addr:country": "VN",
+              "name:vi-Hani": "住所委辦人民城庯胡志明",
+              "addr:district": "Quận 1",
+              "addr:postcode": 71006,
+              "name:cjm-Latn": "Kommit Buel-bhap Madin Ho Chi Minh",
+              "opening_hours": "Mo-Fr 07:30-17:00",
+              "townhall:type": "city",
+              "building:levels": 3,
+              "polling_station": "no",
+              "addr:housenumber": 86,
+              "official_name:ko": "호찌민시 인민위원회 청사",
+              "wikimedia_commons": "Category:People's Committee Building of Ho Chi Minh City"
+            }
+          },
+          "website": "https://vpub.hochiminhcity.gov.vn/",
+          "opening_hours": "Mo-Fr 07:30-17:00",
+          "name_other": {
+            "old_name": "Tòa đô chánh Saigon"
+          },
+          "name_international": {
+            "de": "Sitz des Volkskomitees",
+            "en": "Ho Chi Minh City Hall",
+            "es": "Ayuntamiento de Ciudad Ho Chi Minh",
+            "fr": "Hôtel de ville de Hô-Chi-Minh-Ville",
+            "id": "Balai Komite Rakyat Kota Ho Chi Minh",
+            "it": "Palazzo del Comitato del Popolo",
+            "ja": "ホーチミン人民委員会庁舎",
+            "ko": "호찌민 시청",
+            "ru": "Здание Народного комитета Хошимина",
+            "vi": "Trụ sở Ủy ban Nhân dân Thành phố Hồ Chí Minh",
+            "zh": "胡志明市政宮"
+          },
+          "contact": {
+            "phone": "+84 28 3829 6052"
+          },
+          "facilities": {
+            "smoking": true
+          },
+          "wiki_and_media": {
+            "wikidata": "Q2227195",
+            "wikipedia": "vi:Trụ sở Ủy ban Nhân dân Thành phố Hồ Chí Minh",
+            "wikimedia_commons": "Category:People's Committee Building of Ho Chi Minh City"
+          },
+          "building": {
+            "levels": 3,
+            "type": "civic",
+            "start_date": 1898
+          },
+          "place_id": "51aa68ecd5dbac5a4059c29399c59c8d2540f00102f90131f15a14000000009203315472e1bba52073e1bb9f20e1bba6792062616e204e68c3a26e2064c3a26e2054502e2048e1bb93204368c3ad204d696e68"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.70091770254899,
+            10.776586699483122
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Tượng Đức Thánh Trần Hưng Đạo",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "00084",
+          "suburb": "District 1",
+          "quarter": "Ben Nghe Ward",
+          "street": "Đường Tôn Ðức Thắng",
+          "lon": 106.706468,
+          "lat": 10.7752864,
+          "formatted": "Tran Hung Dao Statue, Đường Tôn Ðức Thắng, District 1, Ho Chi Minh City, 00084, Vietnam",
+          "address_line1": "Tran Hung Dao Statue",
+          "address_line2": "Đường Tôn Ðức Thắng, District 1, Ho Chi Minh City, 00084, Vietnam",
+          "categories": [
+            "access",
+            "access.yes",
+            "tourism",
+            "tourism.attraction",
+            "tourism.attraction.artwork"
+          ],
+          "details": [
+            "details",
+            "details.artwork"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Tượng Đức Thánh Trần Hưng Đạo",
+              "access": "yes",
+              "height": 6,
+              "osm_id": 860702421,
+              "name:de": "Tran Hung Dao Statue",
+              "name:en": "Tran Hung Dao Statue",
+              "name:id": "Patung Tran Hung Dao",
+              "name:ja": "チャンフンダオ像",
+              "tourism": "artwork",
+              "location": "roof",
+              "material": "copper",
+              "osm_type": "n",
+              "min_height": 10,
+              "artwork_type": "statue"
+            }
+          },
+          "name_international": {
+            "de": "Tran Hung Dao Statue",
+            "en": "Tran Hung Dao Statue",
+            "id": "Patung Tran Hung Dao",
+            "ja": "チャンフンダオ像"
+          },
+          "artwork": {
+            "artwork_type": "statue"
+          },
+          "restrictions": {
+            "access": "permissive"
+          },
+          "place_id": "51eaea8ec536ad5a405962a0c556f28c2540f00103f901d5464d330000000092032a54c6b0e1bba36e6720c490e1bba963205468c3a16e68205472e1baa76e2048c6b06e6720c490e1baa16f"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.706468,
+            10.77528639948304
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "chung cư 42 Nguyễn Huệ",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "00084",
+          "suburb": "District 1",
+          "quarter": "Ben Nghe Ward",
+          "street": "Nguyen Hue Boulevard",
+          "lon": 106.70421155480742,
+          "lat": 10.7741332,
+          "formatted": "Cafe house, Nguyen Hue Boulevard, District 1, Ho Chi Minh City, 00084, Vietnam",
+          "address_line1": "Cafe house",
+          "address_line2": "Nguyen Hue Boulevard, District 1, Ho Chi Minh City, 00084, Vietnam",
+          "categories": [
+            "building",
+            "building.tourism",
+            "tourism",
+            "tourism.attraction"
+          ],
+          "details": [
+            "details",
+            "details.building"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "chung cư 42 Nguyễn Huệ",
+              "height": 35,
+              "osm_id": 187895174,
+              "name:en": "Cafe house",
+              "tourism": "attraction",
+              "building": "yes",
+              "osm_type": "w",
+              "building:levels": 9
+            }
+          },
+          "name_international": {
+            "en": "Cafe house"
+          },
+          "building": {
+            "levels": 9,
+            "height": 35
+          },
+          "place_id": "513d5757cd11ad5a4059e60dcd2f5b8c2540f00102f901860d330b0000000092031b6368756e672063c6b0203432204e677579e1bb856e204875e1bb87"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.7042115548074,
+            10.774133199482957
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Chợ Bến Thành",
+          "old_name": "Marché Central de Saïgon;Chợ Sài Gòn",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "71009",
+          "suburb": "District 1",
+          "quarter": "Ben Thanh Ward",
+          "street": "Quach Thi Trang Square",
+          "lon": 106.69803652841517,
+          "lat": 10.7725301,
+          "formatted": "Ben Thanh Market, Quach Thi Trang Square, District 1, Ho Chi Minh City, 71009, Vietnam",
+          "address_line1": "Ben Thanh Market",
+          "address_line2": "Quach Thi Trang Square, District 1, Ho Chi Minh City, 71009, Vietnam",
+          "categories": [
+            "building",
+            "building.commercial",
+            "building.tourism",
+            "commercial.marketplace",
+            "tourism",
+            "tourism.attraction"
+          ],
+          "details": [
+            "details",
+            "details.contact",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Chợ Bến Thành",
+              "phone": "0973756776",
+              "osm_id": 39514795,
+              "amenity": "marketplace",
+              "name:ar": "بن ثانه السوق",
+              "name:cs": "Ben Thanh trhu",
+              "name:da": "Ben Thanh markedet",
+              "name:de": "Ben Thanh Markt",
+              "name:en": "Ben Thanh Market",
+              "name:eo": "Ben Thanh Merkato",
+              "name:es": "Mercado de Ben Thanh",
+              "name:fi": "Ben Thanh markkinoille",
+              "name:fr": "Marché de Ben Thanh",
+              "name:hi": "बेन थान बाजार",
+              "name:hu": "Ben Thanh piac",
+              "name:id": "Pasar Ben Thanh",
+              "name:it": "Mercato di Ben Thanh",
+              "name:ja": "ベンタイン市場",
+              "name:ko": "벤타인 시장",
+              "name:mn": "Бен Thanh зах зээл",
+              "name:ms": "Pasar Ben Thanh",
+              "name:nl": "Ben Thanh markt",
+              "name:no": "Ben Thanh-markedet",
+              "name:pl": "Targ Ben Thanh",
+              "name:pt": "Mercado Ben Thanh",
+              "name:ro": "Piață Ben Thanh",
+              "name:ru": "Рынок Бен Тхань",
+              "name:sv": "Ben Thanh-Marknaden",
+              "name:th": "ตลาดเบนถั่น",
+              "name:tr": "Ben Thanh Pazarı",
+              "name:uk": "Ринок Бен Тхань",
+              "name:vi": "Chợ Bến Thành",
+              "name:zh": "滨城市场",
+              "tourism": "attraction",
+              "website": "https://benthanhmarket.vn/",
+              "alt_name": "Chợ Sài Gòn",
+              "building": "yes",
+              "name:yue": "濱城市場",
+              "old_name": "Marché Central de Saïgon;Chợ Sài Gòn",
+              "osm_type": "w",
+              "wikidata": "Q3232879",
+              "wikipedia": "en:Bến Thành Market",
+              "addr:street": "Công trường Quách Thị Trang",
+              "name:vi-Hani": "𢄂𡔖城",
+              "addr:postcode": 71009,
+              "name:cja-Latn": "Pasa Ben Thanh",
+              "name:cjm-Latn": "Darak Ben Thanh",
+              "opening_hours": "Mo-Su 06:00-18:00",
+              "wikimedia_commons": "Category:Ben Thanh Market"
+            }
+          },
+          "website": "https://benthanhmarket.vn/",
+          "opening_hours": "Mo-Su 06:00-18:00",
+          "name_other": {
+            "alt_name": "Chợ Sài Gòn",
+            "old_name": "Marché Central de Saïgon;Chợ Sài Gòn"
+          },
+          "name_international": {
+            "ar": "بن ثانه السوق",
+            "cs": "Ben Thanh trhu",
+            "da": "Ben Thanh markedet",
+            "de": "Ben Thanh Markt",
+            "en": "Ben Thanh Market",
+            "eo": "Ben Thanh Merkato",
+            "es": "Mercado de Ben Thanh",
+            "fi": "Ben Thanh markkinoille",
+            "fr": "Marché de Ben Thanh",
+            "hi": "बेन थान बाजार",
+            "hu": "Ben Thanh piac",
+            "id": "Pasar Ben Thanh",
+            "it": "Mercato di Ben Thanh",
+            "ja": "ベンタイン市場",
+            "ko": "벤타인 시장",
+            "mn": "Бен Thanh зах зээл",
+            "ms": "Pasar Ben Thanh",
+            "nl": "Ben Thanh markt",
+            "no": "Ben Thanh-markedet",
+            "pl": "Targ Ben Thanh",
+            "pt": "Mercado Ben Thanh",
+            "ro": "Piață Ben Thanh",
+            "ru": "Рынок Бен Тхань",
+            "sv": "Ben Thanh-Marknaden",
+            "th": "ตลาดเบนถั่น",
+            "tr": "Ben Thanh Pazarı",
+            "uk": "Ринок Бен Тхань",
+            "vi": "Chợ Bến Thành",
+            "zh": "滨城市场"
+          },
+          "contact": {
+            "phone": "0973756776"
+          },
+          "wiki_and_media": {
+            "wikidata": "Q3232879",
+            "wikipedia": "en:Bến Thành Market",
+            "wikimedia_commons": "Category:Ben Thanh Market"
+          },
+          "place_id": "51383d67a1acac5a4059afe8b010898b2540f00102f901abf25a02000000009203124368e1bba32042e1babf6e205468c3a06e68"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.69803652841517,
+            10.772530099482848
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Tượng Phù Đổng Thiên Vương",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "70200",
+          "suburb": "District 1",
+          "quarter": "Ben Thanh Ward",
+          "street": "Vòng xoay Phù Đổng Thiên Vương",
+          "lon": 106.693241,
+          "lat": 10.7713487,
+          "formatted": "Statue of Phu Dong Thien Vuong, Vòng xoay Phù Đổng Thiên Vương, District 1, Ho Chi Minh City, 70200, Vietnam",
+          "address_line1": "Statue of Phu Dong Thien Vuong",
+          "address_line2": "Vòng xoay Phù Đổng Thiên Vương, District 1, Ho Chi Minh City, 70200, Vietnam",
+          "categories": [
+            "tourism",
+            "tourism.attraction",
+            "tourism.attraction.artwork"
+          ],
+          "details": [
+            "details",
+            "details.artwork"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Tượng Phù Đổng Thiên Vương",
+              "osm_id": 2935020318,
+              "name:en": "Statue of Phu Dong Thien Vuong",
+              "tourism": "artwork",
+              "osm_type": "n",
+              "artwork_type": "statue"
+            }
+          },
+          "name_international": {
+            "en": "Statue of Phu Dong Thien Vuong"
+          },
+          "artwork": {
+            "artwork_type": "statue"
+          },
+          "place_id": "51c4cf7f0f5eac5a4059652e7c37ee8a2540f00103f9011edbf0ae0000000092032454c6b0e1bba36e67205068c3b920c490e1bb956e6720546869c3aa6e2056c6b0c6a16e67"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.693241,
+            10.771348699482767
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Cầu Mống",
+          "old_name": "Pont des Messageries maritimes",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Thủ Đức",
+          "postcode": "72806",
+          "suburb": "District 1",
+          "quarter": "Nguyen Thai Binh Ward",
+          "street": "Saigon River Tunnel",
+          "lon": 106.70370123476026,
+          "lat": 10.7680428,
+          "formatted": "Mong Bridge, Saigon River Tunnel, District 1, Thủ Đức, 72806, Vietnam",
+          "address_line1": "Mong Bridge",
+          "address_line2": "Saigon River Tunnel, District 1, Thủ Đức, 72806, Vietnam",
+          "categories": [
+            "man_made",
+            "man_made.bridge",
+            "tourism",
+            "tourism.attraction",
+            "tourism.sights",
+            "tourism.sights.bridge"
+          ],
+          "details": [
+            "details",
+            "details.historic",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "area": "yes",
+              "name": "Cầu Mống",
+              "osm_id": 286297477,
+              "name:en": "Mong Bridge",
+              "name:id": "Jembatan Mong",
+              "name:ms": "Jembatan Mong",
+              "name:ru": "мост Монг",
+              "name:zh": "芒桥",
+              "tourism": "attraction",
+              "historic": "yes",
+              "man_made": "bridge",
+              "old_name": "Pont des Messageries maritimes",
+              "osm_type": "w",
+              "wikidata": "Q16481264",
+              "wikipedia": "en:Mong Bridge",
+              "old_name:id": "Jembatan Pengiriman Maritim",
+              "old_name:ru": "Мост путаницы морских",
+              "old_name:zh": "海上运输桥",
+              "name:zh-Hant": "芒橋",
+              "bridge:structure": "beam",
+              "wikimedia_commons": "Category:Mong Bridge"
+            }
+          },
+          "name_other": {
+            "old_name": "Pont des Messageries maritimes"
+          },
+          "name_international": {
+            "en": "Mong Bridge",
+            "id": "Jembatan Mong",
+            "ms": "Jembatan Mong",
+            "ru": "мост Монг",
+            "zh": "芒桥"
+          },
+          "wiki_and_media": {
+            "wikidata": "Q16481264",
+            "wikipedia": "en:Mong Bridge",
+            "wikimedia_commons": "Category:Mong Bridge"
+          },
+          "historic": {
+            "object_type": "bridge"
+          },
+          "place_id": "51ce5ce77009ad5a40596669e3e73c892540f00102f901858d10110000000092030c43e1baa775204de1bb916e67"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.70370123476025,
+            10.768042799482554
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Tượng An Dương Vương",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "72415",
+          "suburb": "District 5",
+          "quarter": "Ward 9",
+          "street": "Ngã Sáu Nguyễn Tri Phương",
+          "lon": 106.6688687,
+          "lat": 10.7598371,
+          "formatted": "Statue of An Duong Vuong, Ngã Sáu Nguyễn Tri Phương, District 5, Ho Chi Minh City, 72415, Vietnam",
+          "address_line1": "Statue of An Duong Vuong",
+          "address_line2": "Ngã Sáu Nguyễn Tri Phương, District 5, Ho Chi Minh City, 72415, Vietnam",
+          "categories": [
+            "tourism",
+            "tourism.attraction",
+            "tourism.attraction.artwork",
+            "tourism.sights"
+          ],
+          "details": [
+            "details",
+            "details.artwork",
+            "details.historic"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Tượng An Dương Vương",
+              "osm_id": 1769477948,
+              "name:en": "Statue of An Duong Vuong",
+              "tourism": "artwork",
+              "historic": "yes",
+              "osm_type": "n",
+              "artwork_type": "statue"
+            }
+          },
+          "name_international": {
+            "en": "Statue of An Duong Vuong"
+          },
+          "historic": {
+            "artwork_type": "statue"
+          },
+          "artwork": {
+            "artwork_type": "statue"
+          },
+          "place_id": "515bf4a9beceaa5a40591e20495e09852540f00103f9013c1778690000000092031b54c6b0e1bba36e6720416e2044c6b0c6a16e672056c6b0c6a16e67"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.6688687,
+            10.75983709948201
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Nhà Thờ Ngã Sáu",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "72415",
+          "suburb": "District 5",
+          "quarter": "Ward 9",
+          "street": "Ngô Gia Tự",
+          "lon": 106.66739232264311,
+          "lat": 10.7570069,
+          "formatted": "Church of St Joan of Arc, Ngô Gia Tự, District 5, Ho Chi Minh City, 72415, Vietnam",
+          "address_line1": "Church of St Joan of Arc",
+          "address_line2": "Ngô Gia Tự, District 5, Ho Chi Minh City, 72415, Vietnam",
+          "categories": [
+            "building",
+            "building.place_of_worship",
+            "building.tourism",
+            "religion",
+            "religion.place_of_worship",
+            "religion.place_of_worship.christianity",
+            "tourism",
+            "tourism.attraction",
+            "tourism.sights.place_of_worship",
+            "tourism.sights.place_of_worship.church"
+          ],
+          "details": [
+            "details",
+            "details.place_of_worship"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Nhà Thờ Ngã Sáu",
+              "osm_id": 39619627,
+              "amenity": "place_of_worship",
+              "name:en": "Church of St Joan of Arc",
+              "name:fr": "L’église de la Sainte Jeanne d’Arc",
+              "name:id": "Gereja Katolik Santa Jeanne d’Arc",
+              "name:zh": "圣女贞德教堂",
+              "tourism": "attraction",
+              "building": "church",
+              "osm_type": "w",
+              "religion": "christian",
+              "denomination": "roman_catholic"
+            }
+          },
+          "name_international": {
+            "en": "Church of St Joan of Arc",
+            "fr": "L’église de la Sainte Jeanne d’Arc",
+            "id": "Gereja Katolik Santa Jeanne d’Arc",
+            "zh": "圣女贞德教堂"
+          },
+          "building": {
+            "type": "church"
+          },
+          "place_of_worship": {
+            "religion": "christian",
+            "denomination": "roman_catholic"
+          },
+          "place_id": "51a1d6498eb6aa5a4059d43d886896832540f00102f9012b8c5c02000000009203144e68c3a0205468e1bb9d204e67c3a32053c3a175"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.6673923226431,
+            10.757006899481816
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Chợ Bình Tây",
+          "old_name": "Marché Central de Cholon",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "73000",
+          "suburb": "District 6",
+          "quarter": "Ward 2",
+          "street": "Thap Muoi Street",
+          "housenumber": "57A",
+          "lon": 106.65072796223046,
+          "lat": 10.7492965,
+          "formatted": "Binh Tay Market, 57A, Thap Muoi Street, District 6, Ho Chi Minh City, 73000, Vietnam",
+          "address_line1": "Binh Tay Market",
+          "address_line2": "57A, Thap Muoi Street, District 6, Ho Chi Minh City, 73000, Vietnam",
+          "categories": [
+            "building",
+            "building.commercial",
+            "building.tourism",
+            "commercial.marketplace",
+            "tourism",
+            "tourism.attraction"
+          ],
+          "details": [
+            "details"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Chợ Bình Tây",
+              "osm_id": -2552505,
+              "amenity": "marketplace",
+              "name:en": "Binh Tay Market",
+              "name:es": "Mercado Binh Tay",
+              "name:fr": "Marché de Binh Tay",
+              "name:id": "Pasar Binh Tay",
+              "name:vi": "Chợ Bình Tây",
+              "name:zh": "新街市",
+              "tourism": "attraction",
+              "website": "https://www.chobinhtay.gov.vn/",
+              "building": "yes",
+              "old_name": "Marché Central de Cholon",
+              "osm_type": "r",
+              "addr:street": "Đường Tháp Mười",
+              "addr:district": "Quận 6",
+              "addr:province": "Hồ Chí Minh",
+              "addr:housenumber": "57A",
+              "addr:subdistrict": "Phường 2"
+            }
+          },
+          "website": "https://www.chobinhtay.gov.vn/",
+          "name_other": {
+            "old_name": "Marché Central de Cholon"
+          },
+          "name_international": {
+            "en": "Binh Tay Market",
+            "es": "Mercado Binh Tay",
+            "fr": "Marché de Binh Tay",
+            "id": "Pasar Binh Tay",
+            "vi": "Chợ Bình Tây",
+            "zh": "新街市"
+          },
+          "place_id": "51d817e586a5a95a4059168f70caa37f2540f00101f901b9f22600000000009203104368e1bba32042c3ac6e682054c3a279"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.65072796223046,
+            10.7492964994813
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Cầu Đi Bộ Số 7",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "73000",
+          "suburb": "District 6",
+          "quarter": "Ward 1",
+          "street": "Cầu Đi Bộ Số 7",
+          "lon": 106.6543332,
+          "lat": 10.7458291,
+          "formatted": "Foot Bridge, Cầu Đi Bộ Số 7, District 6, Ho Chi Minh City, 73000, Vietnam",
+          "address_line1": "Foot Bridge",
+          "address_line2": "Cầu Đi Bộ Số 7, District 6, Ho Chi Minh City, 73000, Vietnam",
+          "categories": [
+            "tourism",
+            "tourism.attraction"
+          ],
+          "details": [
+            "details"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Cầu Đi Bộ Số 7",
+              "osm_id": 5433188023,
+              "name:en": "Foot Bridge",
+              "tourism": "attraction",
+              "osm_type": "n",
+              "opening_hours": "24/7"
+            }
+          },
+          "opening_hours": "24/7",
+          "name_international": {
+            "en": "Foot Bridge"
+          },
+          "place_id": "51f7ab5b98e0a95a4059495acd4fdd7d2540f00103f901b7ded7430100000092031543e1baa77520c490692042e1bb992053e1bb912037"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.65433319999998,
+            10.745829099481073
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Tượng đài Tôn Đức Thắng",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "postcode": "72910",
+          "suburb": "District 7",
+          "quarter": "Tan Phong Ward",
+          "street": "Nguyễn Hữu Thọ",
+          "housenumber": "19",
+          "lon": 106.699523,
+          "lat": 10.7319675,
+          "formatted": "Statue of Ton Duc Thang, 19, Nguyễn Hữu Thọ, District 7, Ho Chi Minh City, 72910, Vietnam",
+          "address_line1": "Statue of Ton Duc Thang",
+          "address_line2": "19, Nguyễn Hữu Thọ, District 7, Ho Chi Minh City, 72910, Vietnam",
+          "categories": [
+            "tourism",
+            "tourism.attraction",
+            "tourism.attraction.artwork"
+          ],
+          "details": [
+            "details",
+            "details.artwork",
+            "details.wiki_and_media"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Tượng đài Tôn Đức Thắng",
+              "osm_id": 9696470992,
+              "name:en": "Statue of Ton Duc Thang",
+              "tourism": "artwork",
+              "material": "bronze",
+              "osm_type": "n",
+              "wikipedia": "en:Ton Duc Thang",
+              "artwork_type": "bust"
+            }
+          },
+          "name_international": {
+            "en": "Statue of Ton Duc Thang"
+          },
+          "wiki_and_media": {
+            "wikipedia": "en:Ton Duc Thang"
+          },
+          "artwork": {
+            "artwork_type": "bust"
+          },
+          "place_id": "5130f31dfcc4ac5a40591d01b071c4762540f00103f901d067f4410200000092032254c6b0e1bba36e6720c491c3a0692054c3b46e20c490e1bba963205468e1baaf6e67"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.699523,
+            10.731967499480158
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "name": "Lăng Ông Thuỷ Tướng",
+          "country": "Vietnam",
+          "country_code": "vn",
+          "city": "Ho Chi Minh City",
+          "town": "Thị trấn Cần Thạnh",
+          "district": "Cần Giờ District",
+          "street": "Đường Duyên Hải",
+          "lon": 106.97136363054858,
+          "lat": 10.417262749999999,
+          "formatted": "Lăng Ông Thuỷ Tướng, Đường Duyên Hải, Ho Chi Minh City, Vietnam",
+          "address_line1": "Lăng Ông Thuỷ Tướng",
+          "address_line2": "Đường Duyên Hải, Ho Chi Minh City, Vietnam",
+          "categories": [
+            "building",
+            "building.place_of_worship",
+            "building.tourism",
+            "religion",
+            "religion.place_of_worship",
+            "tourism",
+            "tourism.attraction",
+            "tourism.sights.place_of_worship"
+          ],
+          "details": [
+            "details",
+            "details.place_of_worship"
+          ],
+          "datasource": {
+            "sourcename": "openstreetmap",
+            "attribution": "© OpenStreetMap contributors",
+            "license": "Open Database License",
+            "url": "https://www.openstreetmap.org/copyright",
+            "raw": {
+              "name": "Lăng Ông Thuỷ Tướng",
+              "osm_id": 754264564,
+              "amenity": "place_of_worship",
+              "name:zh": "海神庙",
+              "tourism": "attraction",
+              "alt_name": "Miếu Hải Thần Thạnh Phước Lạch",
+              "building": "temple",
+              "osm_type": "w",
+              "religion": "vietnamese_folk",
+              "alt_name:zh": "陵翁水將"
+            }
+          },
+          "name_other": {
+            "alt_name": "Miếu Hải Thần Thạnh Phước Lạch"
+          },
+          "name_international": {
+            "zh": "海神庙"
+          },
+          "building": {
+            "type": "temple"
+          },
+          "place_of_worship": {
+            "religion": "vietnamese_folk"
+          },
+          "place_id": "51b86e5cd22abe5a40593c8b8d76a3d52440f00102f901f429f52c0000000092031a4cc4836e6720c3946e6720546875e1bbb72054c6b0e1bb9b6e67"
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.97136363054858,
+            10.417262749460512
+          ]
+        }
+      }
+    ]
+  }
