@@ -2,9 +2,12 @@ place_mapping = {
     "mappings": {
         "properties": {
             "id": {
-                "type": "long",
+                "type": "text",
             },
-            "name": {
+            "en_name": {
+                "type": "text",
+            },
+            "vi_name": {
                 "type": "text",
             },
             "long": {
@@ -13,10 +16,16 @@ place_mapping = {
             "lat": {
                 "type": "float"
             },
-            "type": {
+            "en_type": {
                 "type": "text",
             },
-            "properties": {
+            "vi_type": {
+                "type": "text",
+            },
+            "en_properties": {
+                "type": "text",
+            },
+            "vi_properties": {
                 "type": "text",
             },
             "price": {
