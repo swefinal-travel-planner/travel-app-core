@@ -61,7 +61,7 @@ class PlaceService:
         
     def convert_raw_location_to_place_by_llm(self, locations) -> Place_list:
         prompt = prompts.convert_location_to_place_prompt
-        data = "Đây là danh sách địa điểm: " + '.'.join(str(location.to_dict()) for location in locations) + '\n'
+        data = "Đây là danh sách địa điểm: " + ''.join(str(location.to_dict()) for location in locations) + '\n'
         label = "Đây là danh sách label " + LABEL
         return self.__openai_service.ask_question(prompt + data + label, Place_list)
 

@@ -1,7 +1,7 @@
 from flask import json, jsonify, request
 from app.services.place_service import PlaceService
 from injector import inject
-from app.exceptions.custom_exceptions import AppException, ValidationError, NotFoundError
+from app.exceptions.custom_exceptions import AppException, ValidationError
 
 class PlaceController:
     @inject
@@ -25,19 +25,24 @@ class PlaceController:
     
     def insert_places(self):
         try:
-            if "file" not in request.files:
-                raise ValidationError("No file part")
+            if "files" not in request.files:
+                raise ValidationError("No files part")
             
-            file = request.files["file"]
-            if file.filename == "":
-                raise ValidationError("No selected file")
+            files = request.files.getlist("files")
+            if not files:
+                raise ValidationError("No selected files")
             
-            if file and file.filename.endswith(".json"):
-                data = json.load(file)
-                self.__place_service.insert_places(data)
-                return jsonify({"status": 200, "message": "Inserted places successfully."}), 200
-            else:
-                raise ValidationError("Invalid file format. Only JSON files are allowed.")
+            for file in files:
+                if file.filename == "":
+                    raise ValidationError("One of the files has no filename")
+                
+                if file and file.filename.endswith(".json"):
+                    data = json.load(file)
+                    self.__place_service.insert_places(data)
+                else:
+                    raise ValidationError(f"Invalid file format for file {file.filename}. Only JSON files are allowed.")
+            
+            return jsonify({"status": 200, "message": "Inserted places successfully."}), 200
         except AppException as e:
             return jsonify({"status": e.status_code, "message": e.message}), e.status_code
         except Exception as e:
