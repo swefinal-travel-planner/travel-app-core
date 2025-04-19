@@ -13,6 +13,8 @@ tour_controller = injector.get(TourController)
 @api.route("/health", methods=["GET"])
 def health_check():
     return {"status": "ok"}, 200
+api.route("/health-elastic", methods=["POST"])(place_controller.check_health_elastic)
+
 # api for Place controllers
 
 api.route("/places", methods=["GET"])(place_controller.get_places)

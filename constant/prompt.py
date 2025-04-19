@@ -2,13 +2,15 @@ convert_location_to_place_prompt = ("Bạn là một chuyên gia phân tích đ�
 "Nhiệm vụ của bạn là chuyển thông tin sang dạng output đã được cung cấp"
 "Không được tự tạo dữ liệu sai thực tế! "
 "Bạn sẽ được cung cấp một danh sách các địa điểm du lịch. chuyển nó về dạng response_format đã cung cấp. "
-"Với mỗi địa điểm, id sẽ được truy vấn từ place_id, long lat sẽ được truy vấn từ long lat của dữ liệu, "
-"properties phải tóm tắt từ properies của địa điểm và thêm 1 số thông tin chính xác, mô tả rõ về địa điểm đó "
-"price lấy từ giá vé của địa điểm đó, nếu giá là 50 nghìn đồng thì ghi là 50000, miễn phí thì để là 0, nếu data không chứa giá tiền thì có thể tìm thông tin ngoài nhưng phải chính xác, KHÔNG được tự đưa thông tin sai lệch. "
-"type hãy kết hợp từ type, categories và chọn thêm các nhãn dán mà bạn đánh giá là phù hợp với địa điểm đó trong dữ liệu cung cấp thêm dưới đây. mỗi nhãn dán cách nhau bằng dấu , "
-"nếu địa điểm đó là một địa điểm ăn uống thì thêm nhãn dán là 'địa điểm ăn uống', thêm nhãn dán để biết điểm đó là ăn sáng hay ăn trưa - ăn tối ví dụ như 'breakfast',ăn trưa và ăn tối để chung là'lunch-dinner'. "
-"nếu địa điểm đó là KHÔNG PHẢI một địa điểm ăn uống thì thêm nhãn dán là 'địa điểm du lịch' vào cuối cùng. "
-"các thành phần có tiền tố vi, en CẦN dịch sang ngôn ngữ đúng yêu cầu.")
+"Những biến có tiền tố vi, en cần dịch sang ngôn ngữ đúng yêu cầu. "
+"Với mỗi địa điểm, id BẮT BUỘC phải dùng biến id, "
+"name phải lấy từ trường name hoặc các biến có thể là tên của địa điểm, không sử dụng sourcename làm tên địa điểm, phải thay đổi ngôn ngữ khi gặp các tiền tố vi, en, nếu địa điểm không có tên, vui lòng tìm kiếm thông tin trên mạng và tìm thông tin chính xác. "
+"long lat phải truy vấn từ long lat của dữ liệu, "
+"properties phải tóm tắt từ properies của địa điểm và thêm 1 số thông tin chính xác, mô tả rõ về địa điểm đó, phải thay đổi ngôn ngữ khi gặp các tiền tố vi, en, "
+"type hãy kết hợp từ type, categories và dùng tất cả các nhãn dán mà bạn đánh giá là phù hợp với địa điểm đó trong dữ liệu nhãn dán được cung cấp. mỗi nhãn dán cách nhau bằng dấu , khi gặp tiền tố vi, en thì phải chuyển đổi ngôn ngữ cho hợp lệ. "
+"Ngoài các nhãn dán trên, nếu địa điểm là một địa điểm ăn uống thì thêm nhãn dán là 'địa điểm ăn uống' vào vi_type và 'food location' vào en_type, "
+"ngoài ra phải đánh giá địa điểm ăn uống đó phù hợp cho buổi nào và gắn thêm nhãn dán phù hợp: 'bữa sáng' cho vi_type và 'breakfast' cho en_type, ăn trưa và ăn tối để chung là 'bữa trưa - tối' cho vi_type và 'lunch-dinner' cho en_type, "
+"Nếu đó là các quán ăn vặt thì thêm nhãn dán là 'ăn vặt' vào vi_type và 'snack' vào en_type, ")
 
 convert_user_references_to_tour_references_prompt = ("Bạn là một chuyên gia về du lịch. "
 "Nhiệm vụ của bạn là phân tích các yêu cầu của người dùng thành những nhãn dán cụ thể. "

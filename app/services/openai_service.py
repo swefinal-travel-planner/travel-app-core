@@ -1,6 +1,8 @@
 from openai import OpenAI
 from injector import inject
 
+from app.exceptions.custom_exceptions import AppException
+
 class OpenAIService:
     @inject
     def __init__(self, api_key: str, model: str):
@@ -20,10 +22,11 @@ class OpenAIService:
 
             if response.choices[0].message.refusal:
                 print("Refusal: ", response.choices[0].message.refusal)
-                return None
+                raise AppException(f"Refusal: {response.choices[0].message.refusal}")
             else:
+                print("Response: ", response)
                 return response.choices[0].message.parsed
         except Exception as e:
             # Log the error or handle it appropriately
             print(f"Error interacting with OpenAI API: {e}")
-            return None
+            raise AppException(f"Error interacting with OpenAI API: {e.response.json()['error'].get('message', 'Unknown error')}")

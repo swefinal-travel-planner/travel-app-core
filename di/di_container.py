@@ -15,7 +15,7 @@ class MainModule(Module):
     @singleton
     @provider
     def provide_elasticsearch_client(self) -> ElasticsearchClient:
-        return ElasticsearchClient(Config.ELASTIC_HOST, int(Config.ELASTIC_PORT), Config.ES_API_KEY)
+        return ElasticsearchClient(Config.ELASTIC_HOST, int(Config.ELASTIC_PORT), Config.ELASTIC_USERNAME, Config.ELASTIC_PASSWORD)
     
     # Bind the services and controllers to their respective modules
     #Repository

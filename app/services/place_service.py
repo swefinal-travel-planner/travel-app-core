@@ -11,7 +11,8 @@ from app.models.place import Place_list, Place
 import threading
 from itertools import islice
 import time
-from threading import Semaphore
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.exceptions.custom_exceptions import AppException,ValidationError, NotFoundError
 
 class PlaceService:
@@ -26,10 +27,6 @@ class PlaceService:
         self.__distance_matrix_service = distance_matrix_service
         self.__openai_service = openai_service
 
-    # Semaphore to limit concurrent API calls
-    api_semaphore = Semaphore(5)  # Allow up to 5 threads to call the API concurrently
-    api_delay = 60 / 300  # Delay to ensure 300 requests per minute (0.2 seconds per request)
-
     def embed_text(self, text):
         return self.__embedding_service.embed_text(text)
     
@@ -39,7 +36,9 @@ class PlaceService:
         return self.__distance_matrix_service.calculate_distance_matrix(origins, destinations)
     
     def insert_places(self, data):
-        list_data = self.parse_mockdata(data)
+        print(1)
+        list_data = self.parse_mockdata_and_remove_esixts(data)
+        print(2)
         if isinstance(list_data, Exception):
             raise ValidationError(f"Error parsing data: {list_data}")
         status = self.process_locations_with_threads(list_data)
@@ -47,71 +46,70 @@ class PlaceService:
             raise AppException(f"Error occurred during insertion: {status}")
         return status
 
-    def parse_mockdata(self, data):
-        features = data.get("features", [])
-        return [
-            Location(
-                id=feature["properties"]["datasource"]["raw"]["osm_id"],
-                type=feature["type"],
-                properties=feature["properties"],
-                geometry=feature["geometry"]
-            )
-            for feature in features
-        ]
+    def parse_mockdata_and_remove_esixts(self, data):
+        parsed_locations = []
+        for feature in data:
+            place_id = feature["properties"]["place_id"]
+            # Check if the location already exists in the database
+            if self.__place_repository.get_place_by_id(place_id) is not None:
+                print(f"Location with ID {place_id} already exists. Skipping...")
+            else:
+                parsed_locations.append(
+                    Location(
+                        id=place_id,
+                        type=feature["type"],
+                        properties=feature["properties"],
+                        geometry=feature["geometry"]
+                    )
+                )
+                print(f"Location with ID {place_id} does not exist. Adding...")
+        return parsed_locations
         
     def convert_raw_location_to_place_by_llm(self, locations) -> Place_list:
         prompt = prompts.convert_location_to_place_prompt
-        data = "Đây là danh sách địa điểm: " + ''.join(str(location.to_dict()) for location in locations) + '\n'
+        data = "Đây là danh sách địa điểm: " + ''.join(str(location.to_str()) for location in locations) + '\n'
         label = "Đây là danh sách label " + LABEL
         return self.__openai_service.ask_question(prompt + data + label, Place_list)
 
     def process_locations_with_threads(self, locations):
-        def worker(chunk, result):
-            inserted_places = []  # Track successfully inserted places for rollback
+        def worker(chunk, stop_processing):
             try:
-                with self.api_semaphore:  # Acquire semaphore to limit concurrent calls
-                    time.sleep(self.api_delay)  # Delay to comply with rate limit
-                    listPlace = self.convert_raw_location_to_place_by_llm(chunk)
-                    for place in listPlace.places:
-                        vectorData = self.embed_text(str(place.to_dict()))
-                        insertStatus = self.__place_repository.insert_place(place, vectorData)
-                        if insertStatus:
-                            inserted_places.append(place.id)  # Track successful insert
+                listPlace = self.convert_raw_location_to_place_by_llm(chunk)
+                if not isinstance(listPlace, Place_list) or not hasattr(listPlace, 'places'):
+                    stop_processing.set()
+
+                for place in listPlace.places:
+                    if stop_processing.is_set():
+                        return None
+                    vectorData = self.embed_text(str(place.to_dict()))
+                    self.__place_repository.insert_place(place, vectorData)
             except Exception as e:
-                # Rollback in case of failure
-                for inserted_id in inserted_places:
-                    self.__place_repository.delete_place(inserted_id)
-                result["error"] = e  # Store the exception in the shared result
-            finally:
-                result["done"] = True  # Mark the thread as done
+                stop_processing.set()
+                raise AppException(f"{e}")
 
-        threads = []
-        chunk_size = 5
+        chunk_size = 10
         it = iter(locations)
-        results = []
+        stop_processing = threading.Event()
+        delay_between_requests = 10  # seconds (to respect TPM)
 
-        while True:
-            chunk = list(islice(it, chunk_size))
-            if not chunk:
-                break
-            result = {"done": False, "error": None}
-            results.append(result)
-            thread = threading.Thread(target=worker, args=(chunk, result))
-            threads.append(thread)
-            thread.start()
+        with ThreadPoolExecutor(max_workers=1) as executor:  # max 1 to ensure spacing
+            futures = []
+            while True:
+                chunk = list(islice(it, chunk_size))
+                if not chunk or stop_processing.is_set():
+                    break
+                futures.append(executor.submit(worker, chunk, stop_processing))
+                time.sleep(delay_between_requests)  # spacing request to avoid rate limit
 
-        for thread in threads:
-            thread.join()
-
-        # Check for errors in any thread
-        for result in results:
-            if result["error"]:
-                raise AppException(f"Error processing locations: {result['error']}")
+            for future in as_completed(futures):
+                if future.exception():
+                    raise AppException(f"Error during processing: {future.exception()}")
 
     def get_place_by_id(self):
         existing_doc = self.__place_repository.get_place_by_id(801950766)
-        if not existing_doc:
-            raise NotFoundError(f"No document found with ID '801950766'")
+        print(existing_doc)
+        # if not existing_doc:
+        #     raise NotFoundError(f"No document found with ID '801950766'")
         return existing_doc
         
     def delete_place(self):
@@ -119,3 +117,6 @@ class PlaceService:
         if not status:
             raise NotFoundError(f"Place with ID '846924729' not found")
         return True
+    
+    def health_check_elastic(self):
+        return self.__place_repository.health_check_elastic()

@@ -57,11 +57,18 @@ class PlaceController:
             response = self.__place_service.get_place_by_id()
             return jsonify({"status": 200, "data": str(response)})
         except AppException as e:
-            return jsonify({"status": e.status_code, "message": e.message, "details": e.details}), e.status_code
+            return jsonify({"status": e.status_code, "message": e.message}), e.status_code
 
     def delete_place(self):
         try:
             self.__place_service.delete_place()
             return jsonify({"status": 200, "message": "Deleted place successfully."}), 200
         except AppException as e:
-            return jsonify({"status": e.status_code, "message": e.message, "details": e.details}), e.status_code
+            return jsonify({"status": e.status_code, "message": e.message}), e.status_code
+        
+    def check_health_elastic(self):
+        try:
+            response = self.__place_service.health_check_elastic()
+            return jsonify({"status": 200, "message": response}), 200
+        except Exception as e:
+            return jsonify({"status": 500, "message": f"Elastic search is not healthy: {str(e)}"}), 500

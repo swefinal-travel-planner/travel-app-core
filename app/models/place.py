@@ -10,7 +10,6 @@ class Place(BaseModel):
     vi_type: str
     en_properties: list[str]
     vi_properties: list[str]
-    price: float
 
     def to_dict(self):
         return {
@@ -23,7 +22,6 @@ class Place(BaseModel):
             "vi_type": self.vi_type,
             "en_properties": self.en_properties,
             "vi_properties": self.vi_properties,
-            "price": self.price
         }
 
         

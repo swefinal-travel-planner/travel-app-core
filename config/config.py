@@ -10,6 +10,7 @@ class Config:
     MODEL_NAME = os.getenv("MODEL_NAME")
     ELASTIC_HOST = os.getenv('ES_HOST')
     ELASTIC_PORT = os.getenv('ES_PORT')
-    ES_API_KEY = os.getenv('ES_API_KEY')
+    ELASTIC_USERNAME = os.getenv('ELASTIC_USERNAME')
+    ELASTIC_PASSWORD = os.getenv('ELASTIC_PASSWORD')
     EMBEDDING_MODEL_NAME = os.getenv('EMBEDDING_MODEL_NAME')
     MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY')

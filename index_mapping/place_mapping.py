@@ -28,9 +28,6 @@ place_mapping = {
             "vi_properties": {
                 "type": "text",
             },
-            "price": {
-                "type": "float",
-            },
             "place_vector": {
                 "type": "dense_vector",
                 "dims": 1024,

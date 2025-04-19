@@ -36,7 +36,6 @@ class PlaceRepository:
             "vi_type": place.vi_type,
             "en_properties": place.en_properties,
             "vi_properties": place.vi_properties,
-            "price": place.price,
             "place_vector": vector_embedding
         }
         if not self.check_index(self.__index_name):
@@ -80,3 +79,8 @@ class PlaceRepository:
         response = self.__es.search(index=self.__index_name, body=query)
         hits = response["hits"]["hits"]
         return hits[0]["_source"] if hits else None
+    
+    def health_check_elastic(self):
+        if not self.__es.ping():
+            raise AppException("Elasticsearch is not healthy")
+        return self.__es.info()
