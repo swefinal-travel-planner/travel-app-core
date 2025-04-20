@@ -1,6 +1,7 @@
 from openai import OpenAI
 from injector import inject
-from app.models.place import Place
+
+from app.exceptions.custom_exceptions import AppException
 
 class OpenAIService:
     @inject
@@ -14,17 +15,18 @@ class OpenAIService:
         try:
             response = self.__client.beta.chat.completions.parse(
                 model=self.__model,
-                messages=[{"role": "developer", "content": "Bạn là một trợ lý về du lịch, chuyên gợi ý và và đánh giá về các địa điểm du lịch"},
+                messages=[{"role": "developer", "content": "Bạn là một trợ lý về du lịch, luôn trả lời trung thực và chính xác nhất có thể."},
                     {"role": "user", "content": prompt}],
                 response_format=response_format,
             )
 
             if response.choices[0].message.refusal:
                 print("Refusal: ", response.choices[0].message.refusal)
-                return None
+                raise AppException(f"Refusal: {response.choices[0].message.refusal}")
             else:
+                print("Response: ", response)
                 return response.choices[0].message.parsed
         except Exception as e:
             # Log the error or handle it appropriately
             print(f"Error interacting with OpenAI API: {e}")
-            return None
+            raise AppException(f"Error interacting with OpenAI API: {e.response.json()['error'].get('message', 'Unknown error')}")
