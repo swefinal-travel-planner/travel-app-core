@@ -3,18 +3,18 @@ pipeline {
 
     environment {
         // Server
-        HOST = credentials('HOST')
-        PORT = credentials('PORT')
-        OPENAI_API_KEY = credentials('OPENAI_API_KEY')
-        MODEL_NAME = credentials('MODEL_NAME')
-        EMBEDDING_MODEL_NAME = credentials('EMBEDDING_MODEL_NAME')
-        MAPBOX_API_KEY = credentials('MAPBOX_API_KEY')
+        HOST = credentials('CORE_HOST')
+        PORT = credentials('CORE_PORT')
+        OPENAI_API_KEY = credentials('CORE_OPENAI_API_KEY')
+        MODEL_NAME = credentials('CORE_MODEL_NAME')
+        EMBEDDING_MODEL_NAME = credentials('CORE_EMBEDDING_MODEL_NAME')
+        MAPBOX_API_KEY = credentials('CORE_MAPBOX_API_KEY')
 
         // Elasticsearch
-        ELASTIC_USERNAME = credentials('ELASTIC_USERNAME')
-        ELASTIC_PASSWORD = credentials('ELASTIC_PASSWORD')
-        ES_HOST = credentials('ES_HOST')
-        ES_PORT = credentials('ES_PORT')
+        ELASTIC_USERNAME = credentials('CORE_ELASTIC_USERNAME')
+        ELASTIC_PASSWORD = credentials('CORE_ELASTIC_PASSWORD')
+        ES_HOST = credentials('CORE_ES_HOST')
+        ES_PORT = credentials('CORE_ES_PORT')
     }
 
     stages {
