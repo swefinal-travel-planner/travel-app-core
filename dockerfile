@@ -15,7 +15,5 @@ RUN pip install --no-cache-dir --default-timeout=100 --retries=10 -r requirement
 # Copy the rest of the application code into the container
 COPY . .
 
-EXPOSE 8080
-
 # Specify the command to run the application
 CMD ["python", "run.py"]
