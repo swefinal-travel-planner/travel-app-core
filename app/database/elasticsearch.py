@@ -16,6 +16,7 @@ class ElasticsearchClient:
                                     verify_certs=True,
                                     ssl_context=ctx)
         except Exception as e:
+            print(f"Error connecting to Elasticsearch: {e}")
             raise Exception(f"Could not connect to Elasticsearch: {e}")
         
     def ping(self):
