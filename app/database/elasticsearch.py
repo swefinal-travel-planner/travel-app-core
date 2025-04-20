@@ -7,13 +7,13 @@ class ElasticsearchClient:
         ctx.load_verify_locations('./setup/ca.crt')
         ctx.verify_flags &= ~ssl.VERIFY_X509_STRICT
 
-        self.__es = Elasticsearch([{'host': host, 'port': port, 'scheme': 'https'}],
-                                   http_auth=(username, password),
-                                   verify_certs=True,
-                                   ssl_context=ctx)
-        
-        if not self.ping():
-            raise Exception("Could not connect to Elasticsearch")
+        try:
+            self.__es = Elasticsearch([{'host': host, 'port': port, 'scheme': 'https'}],
+                                    http_auth=(username, password),
+                                    verify_certs=True,
+                                    ssl_context=ctx)
+        except Exception as e:
+            raise Exception(f"Could not connect to Elasticsearch: {e}")
         
     def ping(self):
         return self.__es.ping()
