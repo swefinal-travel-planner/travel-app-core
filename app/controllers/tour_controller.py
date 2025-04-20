@@ -15,17 +15,15 @@ class TourController:
             if not data:
                 raise ValidationError("No data provided")
             
-            if not all(key in data for key in ["address", "days", "budget", "slots", "location_attributes", "food_attributes", "special_requirements", "medical_conditions"]):
+            
+            if not all(key in data for key in ["trip_id", "address", "days", "location_attributes", "food_attributes", "special_requirements", "medical_conditions"]):
                 raise ValidationError("Missing required fields")
             
+            if not isinstance(data["trip_id"], str) or len(data["trip_id"]) == 0:
+                raise ValidationError("Trip ID must be a non-empty string")
+
             if not isinstance(data["days"], int) or data["days"] <= 0 or data["days"] > 7:
                 raise ValidationError("Days must be a positive integer, between 1 and 7")
-            
-            if not isinstance(data["budget"], (int, float)) or data["budget"] <= 0:
-                raise ValidationError("Budget must be a positive number")
-            
-            if not isinstance(data["slots"], int) or data["slots"] <= 0:
-                raise ValidationError("Slots must be a positive integer")
             
             if not isinstance(data["location_attributes"], list) or len(data["location_attributes"]) == 0 or not all(isinstance(attr, str) for attr in data["location_attributes"]):
                 raise ValidationError("Location attributes must be a list of strings and cannot be empty")
@@ -40,10 +38,9 @@ class TourController:
                 raise ValidationError("Medical conditions must be a list of strings and cannot be empty")
             
             user_references = UserReferencesRequest(
+
                 address=data.get("address"),
                 days=data.get("days"),
-                budget=data.get("budget"),
-                slots=data.get("slots"),
                 location_attributes=data.get("location_attributes"),
                 food_attributes=data.get("food_attributes"),
                 special_requirements=data.get("special_requirements"),

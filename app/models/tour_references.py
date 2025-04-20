@@ -1,11 +1,8 @@
 from pydantic import BaseModel
-from .user_references_request import UserReferencesRequest
 
 class TourReferences(BaseModel):
     address: str
     days: int
-    budget: float
-    slots: int
     location_attributes: list[str]
     food_attributes: list[str]
     special_requirements: list[str]
@@ -18,8 +15,6 @@ class TourReferences(BaseModel):
         return {
             "address": self.address,
             "days": self.days,
-            "budget": self.budget,
-            "slots": self.slots,
             "location_attributes": self.location_attributes,
             "food_attributes": self.food_attributes,
             "special_requirements": self.special_requirements,

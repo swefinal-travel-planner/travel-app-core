@@ -11,6 +11,7 @@ class TourService:
         self.__openai_service = openai_service
 
     def create_tour(self, user_references: UserReferencesRequest):
+        #convert user references to tour references in label
         tour_references = self.convert_user_references_to_tour_references(user_references)
         return tour_references
         
