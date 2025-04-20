@@ -46,7 +46,6 @@ pipeline {
                     // Run the newly built container with environment variables
                     sh '''
                         docker run -d \
-                            --restart unless-stopped \
                             --name travel-core-container \
                             -p ${PORT}:${PORT} \
                             -e HOST="$HOST" \
