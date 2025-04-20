@@ -3,9 +3,10 @@ from elasticsearch import Elasticsearch
 
 class ElasticsearchClient:
     def __init__(self, host='localhost', port=9200, username='elastic', password=None):
-        ctx = ssl.create_default_context()
+        ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
         ctx.load_verify_locations('./setup/ca.crt')
-        ctx.verify_flags &= ~ssl.VERIFY_X509_STRICT
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_REQUIRED
         print("host: ", host)
         print("port: ", port)
         print("username: ", username)
