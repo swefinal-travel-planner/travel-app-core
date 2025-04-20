@@ -6,7 +6,10 @@ class ElasticsearchClient:
         ctx = ssl.create_default_context()
         ctx.load_verify_locations('./setup/ca.crt')
         ctx.verify_flags &= ~ssl.VERIFY_X509_STRICT
-
+        print("host: ", host)
+        print("port: ", port)
+        print("username: ", username)
+        print("password: ", password)
         try:
             self.__es = Elasticsearch([{'host': host, 'port': port, 'scheme': 'https'}],
                                     http_auth=(username, password),
