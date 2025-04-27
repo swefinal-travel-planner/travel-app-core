@@ -24,6 +24,5 @@ class Place(BaseModel):
             "vi_properties": self.vi_properties,
         }
 
-        
 class Place_list(BaseModel):
     places: list[Place]

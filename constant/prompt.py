@@ -1,5 +1,5 @@
-convert_location_to_place_prompt = ("Bạn là một chuyên gia phân tích địa điểm"
-"Nhiệm vụ của bạn là chuyển thông tin sang dạng output đã được cung cấp"
+convert_location_to_place_prompt = ("Bạn là một chuyên gia phân tích địa điểm, "
+"Nhiệm vụ của bạn là chuyển thông tin sang dạng output đã được cung cấp, "
 "Không được tự tạo dữ liệu sai thực tế! "
 "Bạn sẽ được cung cấp một danh sách các địa điểm du lịch. chuyển nó về dạng response_format đã cung cấp. "
 "Những biến có tiền tố vi, en cần dịch sang ngôn ngữ đúng yêu cầu. "

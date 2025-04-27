@@ -36,9 +36,7 @@ class PlaceService:
         return self.__distance_matrix_service.calculate_distance_matrix(origins, destinations)
     
     def insert_places(self, data):
-        print(1)
         list_data = self.parse_mockdata_and_remove_esixts(data)
-        print(2)
         if isinstance(list_data, Exception):
             raise ValidationError(f"Error parsing data: {list_data}")
         status = self.process_locations_with_threads(list_data)
