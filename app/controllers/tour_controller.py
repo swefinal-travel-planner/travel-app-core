@@ -16,7 +16,7 @@ class TourController:
                 raise ValidationError("No data provided")
             
             
-            if not all(key in data for key in ["trip_id", "address", "days", "location_attributes", "food_attributes", "special_requirements", "medical_conditions"]):
+            if not all(key in data for key in ["trip_id", "city", "days", "location_attributes", "food_attributes", "special_requirements", "medical_conditions"]):
                 raise ValidationError("Missing required fields")
             
             if not isinstance(data["trip_id"], str) or len(data["trip_id"]) == 0:
@@ -39,7 +39,7 @@ class TourController:
             
             user_references = UserReferencesRequest(
 
-                address=data.get("address"),
+                city=data.get("city"),
                 days=data.get("days"),
                 location_attributes=data.get("location_attributes"),
                 food_attributes=data.get("food_attributes"),

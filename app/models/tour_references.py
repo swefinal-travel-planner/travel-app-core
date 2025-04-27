@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 class TourReferences(BaseModel):
-    address: str
+    city: str
     days: int
     location_attributes: list[str]
     food_attributes: list[str]
@@ -13,7 +13,7 @@ class TourReferences(BaseModel):
     en_food_attributes_label: list[str]
     def to_dict(self):
         return {
-            "address": self.address,
+            "city": self.city,
             "days": self.days,
             "location_attributes": self.location_attributes,
             "food_attributes": self.food_attributes,

@@ -16,7 +16,7 @@ convert_user_references_to_tour_references_prompt = ("Bạn là một chuyên gi
 "Nhiệm vụ của bạn là phân tích các yêu cầu của người dùng thành những nhãn dán cụ thể. "
 "Không được tạo dữ liệu sai thực tế! "
 "Bạn sẽ được cung cấp các yêu cầu của người dùng về chuyến du lịch của họ và danh sách các nhãn dán có sẵn. "
-"Hãy gán các thông tin có sẵn vào output_format đã cung cấp: address,days,location_attributes,food_attributes,special_requirements,medical_conditions gắn vào các biến tương ứng, nếu có tiền tố vi, en thì chuyển đổi ngôn ngữ cho hợp lệ. "
+"Hãy gán các thông tin có sẵn vào output_format đã cung cấp: city,days,location_attributes,food_attributes,special_requirements,medical_conditions gắn vào các biến tương ứng, nếu có tiền tố vi, en thì chuyển đổi ngôn ngữ cho hợp lệ. "
 "Phân tích location_attributes thành các nhãn dán cho sẵn và gắn vào biến location_attributes_labels, chuyển đổi ngôn ngữ khi gặp tiền tố vi, en. Có thể thêm một số nhãn dán khác nếu cần thiết nhưng phải dựa vào location_attributes và không được sai thực tế. "
 "Phân tích food_attributes thành các nhãn dán cho sẵn và gắn vào biến food_attributes_labels, chuyển đổi ngôn ngữ khi gặp tiền tố vi, en. Có thể thêm một số nhãn dán khác nếu cần thiết nhưng phải dựa vào food_attributes và không được sai thực tế. ")
 
