@@ -11,11 +11,11 @@ class PlaceRepository:
         self.__index_name = 'places'
         self.__mapping = place_mapping
 
-        if not self.check_index(self.__index_name):
-            self.create_index(self.__index_name, self.__mapping)
-            print(f"Created index '{self.__index_name}'")
-        else:
-            print(f"Index '{self.__index_name}' already exists")
+        # if not self.check_index(self.__index_name):
+        #     self.create_index(self.__index_name, self.__mapping)
+        #     print(f"Created index '{self.__index_name}'")
+        # else:
+        #     print(f"Index '{self.__index_name}' already exists")
 
     def check_index(self, index_name):
         return self.__es.indices.exists(index=index_name)
