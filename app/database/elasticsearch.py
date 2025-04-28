@@ -11,6 +11,10 @@ class ElasticsearchClient:
             
             if self.__es.ping():
                 print("Connected to Elasticsearch successfully.")
+            else:
+                print("Could not connect to Elasticsearch.")
+                print(self.__es.info())
+                raise Exception("Could not connect to Elasticsearch")
         except Exception as e:
             print(f"Error connecting to Elasticsearch: {e}")
             raise Exception(f"Could not connect to Elasticsearch: {e}")
