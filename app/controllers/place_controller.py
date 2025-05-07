@@ -14,13 +14,6 @@ class PlaceController:
         return str(data)
     
     def get_distance_matrix(self):
-        """
-        Get distance matrix between origin and destination places
-        ---
-        responses:
-          200:
-            description: Distance matrix data
-        """
         origin_places = [[10.797162181179663, 106.6733851910843]]
         destination_places = [[10.848381955148074, 106.61414722985516], [10.801725010158977, 106.60679246680516]]
         
@@ -32,17 +25,6 @@ class PlaceController:
         return jsonify(data)
     
     def insert_places(self):
-        """
-        Insert places from uploaded JSON files
-        ---
-        responses:
-          200:
-            description: Places inserted successfully
-          400:
-            description: Validation error
-          500:
-            description: Unexpected error
-        """
         try:
             if "files" not in request.files:
                 raise ValidationError("No files part")
