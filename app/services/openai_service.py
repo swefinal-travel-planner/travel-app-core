@@ -21,10 +21,8 @@ class OpenAIService:
             )
 
             if response.choices[0].message.refusal:
-                print("Refusal: ", response.choices[0].message.refusal)
                 raise AppException(f"Refusal: {response.choices[0].message.refusal}")
             else:
-                print("Response: ", response)
                 return response.choices[0].message.parsed
         except Exception as e:
             # Log the error or handle it appropriately

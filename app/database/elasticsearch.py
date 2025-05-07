@@ -1,9 +1,10 @@
 import ssl
 from elasticsearch import Elasticsearch
+from injector import inject
 
 class ElasticsearchClient:
+    @inject
     def __init__(self, host, port, username, password):
-        print(f"Connecting to Elasticsearch at {host}:{port} with user {username} and password {password}")
         try:
             self.__es = Elasticsearch([{'host': host, 'port': port, 'scheme': 'http'}],
                                     basic_auth=(username, password),
