@@ -2,7 +2,7 @@ place_mapping = {
     "mappings": {
         "properties": {
             "id": {
-                "type": "text",
+                "type": "keyword",
             },
             "en_name": {
                 "type": "text",

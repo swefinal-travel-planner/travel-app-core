@@ -2,6 +2,7 @@ from injector import inject
 from app.database.elasticsearch import ElasticsearchClient
 from index_mapping.place_mapping import place_mapping
 from app.models.place import Place
+from app.models.language import Language
 from app.exceptions.custom_exceptions import ValidationError, NotFoundError, AppException
 
 class PlaceRepository:
@@ -84,3 +85,75 @@ class PlaceRepository:
         if not self.__es.ping():
             raise AppException("Elasticsearch is not healthy")
         return self.__es.info()
+    
+    def search_places_by_vector(self, vector_embedding, size):
+        if not self.check_index(self.__index_name):
+            raise NotFoundError(f"Index '{self.__index_name}' does not exist")
+        query = {
+            "size": size,
+            "knn": {  # Move 'knn' to the top level
+                "field": "place_vector",  # Ensure the field name is correct
+                "query_vector": vector_embedding,
+                "k": size,
+                "num_candidates": 1200,  # Number of candidates to consider
+            },
+            "_source": [  # Use '_source' to specify fields to retrieve
+                "id", "en_name", "vi_name", "long", "lat", 
+                "en_type", "vi_type", "en_properties", "vi_properties"
+            ]
+        }
+        try:
+            response = self.__es.search(index=self.__index_name, body=query)
+            hits = response["hits"]["hits"]
+            return hits if hits else None
+        except Exception as e:
+            raise AppException(f"Failed to perform vector search: {str(e)}")
+        
+    def search_places_after(self, limit: int, search_after_id: str, location: str, language: Language, filter: str = None):
+        if not self.check_index(self.__index_name):
+            raise NotFoundError(f"Index '{self.__index_name}' does not exist")
+        
+        type_field = f"{language.to_string()}_type"
+        properties_field = f"{language.to_string()}_properties"
+        print(f"Searching for places with location: {location}, filter: {filter}, language: {type_field}, limit: {limit}, search_after_id: {search_after_id}")
+        query = {
+            "size": limit,
+            "query": {
+                "bool": {
+                    "must": [
+                        {
+                            "match_phrase": {
+                                properties_field: location
+                            }
+                        }
+                    ],
+                    "filter": []
+                }
+            },
+            "sort": [
+                {"id": "asc"} 
+            ],
+            "_source": [
+                "id", "en_name", "vi_name", "long", "lat",
+                "en_type", "vi_type", "en_properties", "vi_properties"
+            ]
+        }
+
+        # Add filter condition only if it is provided
+        if filter is not None:
+            query["query"]["bool"]["filter"].append({
+                "match_phrase": {
+                    type_field: filter
+                }
+            })
+
+        if search_after_id is not None:
+            query["search_after"] = [search_after_id]
+
+        try:
+            response = self.__es.search(index=self.__index_name, body=query)
+            hits = response["hits"]["hits"]
+            # Correctly extract the "_source" field from each hit
+            return hits if hits else None
+        except Exception as e:
+            raise AppException(f"Failed to perform search after: {str(e)}")

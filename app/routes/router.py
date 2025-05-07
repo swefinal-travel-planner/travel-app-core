@@ -17,7 +17,7 @@ api.route("/health-elastic", methods=["POST"])(place_controller.check_health_ela
 
 # api for Place controllers
 
-api.route("/places", methods=["GET"])(place_controller.get_places)
+api.route("/places", methods=["GET"])(place_controller.search_places_after)
 api.route("/distance_matrix", methods=["GET"])(place_controller.get_distance_matrix)
 api.route("/places/insert_data", methods=["POST"])(place_controller.insert_places)
 api.route("/ask_openai", methods=["GET"])(place_controller.ask_openai)

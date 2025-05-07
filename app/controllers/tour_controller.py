@@ -16,12 +16,10 @@ class TourController:
                 raise ValidationError("No data provided")
             
             
-            if not all(key in data for key in ["trip_id", "city", "days", "location_attributes", "food_attributes", "special_requirements", "medical_conditions"]):
-                raise ValidationError("Missing required fields")
+            missing_fields = [key for key in ["city", "days", "location_attributes", "food_attributes", "special_requirements", "medical_conditions"] if key not in data]
+            if missing_fields:
+                raise ValidationError(f"Missing required fields: {', '.join(missing_fields)}")
             
-            if not isinstance(data["trip_id"], str) or len(data["trip_id"]) == 0:
-                raise ValidationError("Trip ID must be a non-empty string")
-
             if not isinstance(data["days"], int) or data["days"] <= 0 or data["days"] > 7:
                 raise ValidationError("Days must be a positive integer, between 1 and 7")
             
@@ -47,8 +45,8 @@ class TourController:
                 medical_conditions=data.get("medical_conditions")
             )
             
-            tour = self.tour_service.create_tour(user_references)
-            return jsonify({"status": 200, "data": tour.to_dict()}), 200
+            tours = self.tour_service.create_tour(user_references)
+            return jsonify({"status": 200, "data": tours}), 200  # Return raw list of dictionaries
         except AppException as e:
             return jsonify({"status": e.status_code, "message": e.message}), e.status_code
         except Exception as e:
