@@ -1,21 +1,21 @@
 import os
-import py_vncorenlp
+# import py_vncorenlp
 from injector import inject
 from sentence_transformers import CrossEncoder
 
-def get_vncorenlp_model(save_dir):
-    py_vncorenlp.download_model(save_dir=save_dir)
-    return py_vncorenlp.VnCoreNLP(annotators=["wseg"], save_dir=save_dir)
+# def get_vncorenlp_model(save_dir):
+#     py_vncorenlp.download_model(save_dir=save_dir)
+#     return py_vncorenlp.VnCoreNLP(annotators=["wseg"], save_dir=save_dir)
 
-def get_cross_encoder_model(model_name, local_path, max_length = 256):
-    try:
-        return CrossEncoder(local_path, max_length=max_length)
-    except:
-        print("Model not found locally, downloading...")
-        model = CrossEncoder(model_name, max_length=max_length)
-        model.save(local_path)
-        print("Model downloaded and saved locally.")
-        return model.model
+# def get_cross_encoder_model(model_name, local_path, max_length = 256):
+#     try:
+#         return CrossEncoder(local_path, max_length=max_length)
+#     except:
+#         print("Model not found locally, downloading...")
+#         model = CrossEncoder(model_name, max_length=max_length)
+#         model.save(local_path)
+#         print("Model downloaded and saved locally.")
+#         return model.model
 
 class RerankerService:
     @inject
