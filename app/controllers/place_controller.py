@@ -78,6 +78,8 @@ class PlaceController:
         """
         Get a list of places with search_after pagination
         ---
+        tags:
+          - Place
         parameters:
           - name: limit
             in: query
@@ -103,10 +105,40 @@ class PlaceController:
         responses:
           200:
             description: A list of places
+            type: object
+            schema:
+              properties:
+                status:
+                  type: integer
+                  description: The status code of the response
+                data:
+                  type: array
+                  items:
+                    type: object
+                    description: The list of places
+
           400:
             description: Validation error
+            type: object
+            schema:
+              properties:
+                status:
+                  type: integer
+                  description: The status code of the response
+                message:
+                  type: string
+                  description: The error message
           500:
             description: Unexpected error
+            type: object
+            schema:
+              properties:
+                status:
+                  type: integer
+                  description: The status code of the response
+                message:
+                  type: string
+                  description: The error message
         """
         try:
             # Validate required parameters

@@ -16,9 +16,19 @@ convert_user_references_to_tour_references_prompt = ("Bạn là một chuyên gi
 "Nhiệm vụ của bạn là phân tích các yêu cầu của người dùng thành những nhãn dán cụ thể. "
 "Không được tạo dữ liệu sai thực tế! "
 "Bạn sẽ được cung cấp các yêu cầu của người dùng về chuyến du lịch của họ và danh sách các nhãn dán có sẵn. "
-"Hãy gán các thông tin có sẵn vào output_format đã cung cấp: city,days,location_attributes,food_attributes,special_requirements,medical_conditions gắn vào các biến tương ứng, nếu có tiền tố vi, en thì chuyển đổi ngôn ngữ cho hợp lệ. "
+"Hãy gán các thông tin có sẵn vào output_format đã cung cấp: city,days,locationsPerDay,location_attributes,food_attributes,special_requirements,medical_conditions,locationPreference gắn vào các biến tương ứng, nếu có tiền tố vi, en thì chuyển đổi ngôn ngữ cho hợp lệ. "
 "Phân tích location_attributes thành các nhãn dán cho sẵn và gắn vào biến location_attributes_labels, chuyển đổi ngôn ngữ khi gặp tiền tố vi, en. Có thể thêm một số nhãn dán khác nếu cần thiết nhưng phải dựa vào location_attributes và không được sai thực tế. "
-"Phân tích food_attributes thành các nhãn dán cho sẵn và gắn vào biến food_attributes_labels, chuyển đổi ngôn ngữ khi gặp tiền tố vi, en. Có thể thêm một số nhãn dán khác nếu cần thiết nhưng phải dựa vào food_attributes và không được sai thực tế. ")
+"Phân tích food_attributes thành các nhãn dán cho sẵn và gắn vào biến food_attributes_labels, chuyển đổi ngôn ngữ khi gặp tiền tố vi, en. Có thể thêm một số nhãn dán khác nếu cần thiết nhưng phải dựa vào food_attributes và không được sai thực tế, thêm nhãn dán 'địa điểm ăn uống' hoặc 'food location' vào food_attributes_labels và phải đúng ngôn ngữ. ")
+
+rerank_places_prompt = ("Bạn là một chuyên gia phân tích địa điểm du lịch và ăn uống, "
+"Nhiệm vụ của bạn là phân tích các địa điểm du lịch và vui chơi, ăn uống và chấm điểm, đánh giá độ tương thích giữa các địa điểm với các yêu cầu của người dùng. " \
+"Bạn sẽ được cung cấp các yêu cầu của người dùng về đặc điểm của các địa điểm du lịch, vui chơi và ăn uống mà họ muốn có trong chuyến du lịch. "
+"Hãy phân tích các yêu cầu này và so sánh với danh sách địa điểm được cung cấp. Dùng các yêu cầu, label về địa điểm du lịch để đánh giá các địa điểm du lịch, vui chơi. Dùng các yêu cầu, label về địa điểm ăn uống để đánh giá các địa điểm ăn uống. "
+"Với response_format đã cung cấp, id hãy lấy từ thông tin của địa điểm, ứng với mỗi địa điểm sẽ là một phần tử trong response_format. Phải chấm điểm toàn bộ các địa điểm trong danh sách được cung cấp và không bỏ qua địa điểm nào. "
+"score hãy lấy từ thông tin danh sách địa điểm, tăng hoặc giảm score dựa trên mức độ phù hợp với yêu cầu người dùng theo logic: "
+"- Các địa điểm càng thỏa mãn với các yêu cầu của người dùng thì score cộng thêm càng cao, các địa điểm thỏa mãn special_requirements thì được cộng thêm điểm. "
+"- Các địa điểm càng ít thỏa mãn với các yêu cầu của người dùng thì score cộng thêm càng thấp, các địa điểm không thỏa thì trừ điểm, nếu vi phạm tới yêu cầu medical_conditions thì để score = 0. "
+)
 
 pre_prompt = ("Bạn là một chuyên gia về du lịch và nhiệm vụ của bạn là sắp xếp lịch trình du lịch cho người dùng. CHỈ ĐƯỢC DÙNG dữ liệu fine-tune, chọn ra danh sách các địa điểm phù hợp dựa trên các yêu cầu từ người dùng. Phản hồi của bạn Phải là dạng mảng các object có dạng như ví dụ sau: [{id: 4, long: 10.643, lat:108.384, price: 100000, priority: 0.67},{id: 8, long: 10.673, lat:108.324, price: 90000, priority: 0.90},...]"
 "id, long, lat, price BẮT BUỘC DÙNG DỮ LIỆU ĐÃ FINE-TUNE ,priority là điểm đánh giá độ tương thích giữa yêu cầu người dùng và địa điểm bạn chọn (từ 0 đến 1)"

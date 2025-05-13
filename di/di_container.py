@@ -6,6 +6,7 @@ from app.repositories.place_repository import PlaceRepository
 from app.services.place_service import PlaceService
 from app.services.tour_service import TourService
 from app.services.embedding_service import EmbeddingService
+from app.services.reranker_service import RerankerService
 from app.services.distance_matrix_service import DistanceMatrixService
 from app.services.openai_service import OpenAIService
 from config.config import Config
@@ -39,14 +40,28 @@ class MainModule(Module):
     
     @singleton
     @provider
-    def provide_tour_service(self, openai_service: OpenAIService) -> TourService:
-        return TourService(openai_service)
+    def provide_tour_service(self,
+                            place_repository: PlaceRepository,
+                            embedding_service: EmbeddingService,
+                            openai_service: OpenAIService,
+                            distance_matrix_service: DistanceMatrixService
+                            ) -> TourService:
+        return TourService(
+                            place_repository,
+                            embedding_service,
+                            openai_service,
+                            distance_matrix_service)
     
     @singleton
     @provider
     def provide_embedding_service(self) -> EmbeddingService:
         return EmbeddingService(Config.EMBEDDING_MODEL_NAME)
     
+    # @singleton
+    # @provider
+    # def provide_rerank_service(self) -> RerankerService:
+    #     return RerankerService(Config.RERANK_MODEL_NAME)
+        
     @singleton
     @provider
     def provide_distance_matrix_service(self) -> DistanceMatrixService:

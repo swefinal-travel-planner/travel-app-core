@@ -104,10 +104,9 @@ class PlaceService:
                     raise AppException(f"Error during processing: {future.exception()}")
 
     def get_place_by_id(self):
-        existing_doc = self.__place_repository.get_place_by_id(801950766)
-        print(existing_doc)
-        # if not existing_doc:
-        #     raise NotFoundError(f"No document found with ID '801950766'")
+        existing_doc = self.__place_repository.get_place_by_id("5112ba637322ad5a4059b607735380942540f00102f9010bcd744b00000000")
+        if not existing_doc:
+            raise NotFoundError(f"No document found with ID '5112ba637322ad5a4059b607735380942540f00102f9010bcd744b00000000'")
         return existing_doc
         
     def delete_place(self):

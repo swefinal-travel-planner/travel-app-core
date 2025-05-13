@@ -2,3 +2,7 @@
 venv/
 **/__pycache__/
 *.pyc
+model_ai/vietnamese_embedding/*
+model_ai/pho_ranker/*
+model_ai/py_vncorenlp/*
+!.gitkeep
