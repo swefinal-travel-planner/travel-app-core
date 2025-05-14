@@ -1,19 +1,20 @@
-# Use the official Python image as the base image
+# Sử dụng hình ảnh Python chính thức làm cơ sở
 FROM python:3.11-slim
 
-# Set the working directory in the container
+# Thiết lập thư mục làm việc trong container
 WORKDIR /app
 
-# Define build arguments
-
-# Copy the requirements file into the container
+# Sao chép file requirements.txt vào container
 COPY requirements.txt .
 
-# Install the dependencies
+# Cài đặt các phụ thuộc
 RUN pip install --no-cache-dir --default-timeout=100 --retries=10 -r requirements.txt
 
-# Copy the rest of the application code into the container
+# Sao chép toàn bộ mã nguồn vào container
 COPY . .
 
-# Specify the command to run the application
+# Tải và lưu mô hình embedding trong quá trình build
+RUN python install_embedding_model.py
+
+# Chỉ định lệnh mặc định để chạy ứng dụng
 CMD ["python", "run.py"]
