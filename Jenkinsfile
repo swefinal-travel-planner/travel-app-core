@@ -15,6 +15,9 @@ pipeline {
         ELASTIC_PASSWORD = credentials('CORE_ELASTIC_PASSWORD')
         ES_HOST = credentials('CORE_ES_HOST')
         ES_PORT = credentials('CORE_ES_PORT')
+
+        // Secret key
+        SECRET_KEY = credentials('CORE_SECRET_KEY')
     }
 
     stages {
@@ -59,6 +62,7 @@ pipeline {
                             -e ELASTIC_PASSWORD="$ELASTIC_PASSWORD" \
                             -e ES_HOST="$ES_HOST" \
                             -e ES_PORT="$ES_PORT" \
+                            -e SECRET_KEY="$SECRET_KEY" \
                             travel-core
                     '''
                 }

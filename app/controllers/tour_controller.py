@@ -17,6 +17,10 @@ class TourController:
         tags:
         - products
         parameters:
+        - name: Authorization
+          in: header
+          required: true
+          type: string
         - name: body
           in: body
           required: true

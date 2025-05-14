@@ -3,6 +3,7 @@ from injector import Injector
 from app.controllers.place_controller import PlaceController
 from app.controllers.tour_controller import TourController
 from di.di_container import configure
+from utils.jwt_auth import jwt_required
 
 api = Blueprint("api", __name__)
 
@@ -17,7 +18,7 @@ api.route("/health-elastic", methods=["POST"])(place_controller.check_health_ela
 
 # api for Place controllers
 
-api.route("/places", methods=["GET"])(place_controller.search_places_after)
+api.route("/places", methods=["GET"])(jwt_required(place_controller.search_places_after))
 api.route("/distance_matrix", methods=["GET"])(place_controller.get_distance_matrix)
 api.route("/places/insert_data", methods=["POST"])(place_controller.insert_places)
 api.route("/ask_openai", methods=["GET"])(place_controller.ask_openai)
@@ -25,7 +26,7 @@ api.route("/places/test_get_document", methods=["GET"])(place_controller.get_pla
 api.route("/places/test_delete_document", methods=["DELETE"])(place_controller.delete_place)
 
 #api for Tour controllers
-api.route("/tours/create_tour", methods=["POST"])(tour_controller.create_tour)
+api.route("/tours/create_tour", methods=["POST"])(jwt_required(tour_controller.create_tour))
 # api.route("/places/<int:place_id>", methods=["GET"])(place_controller.get_place)
 # api.route("/places/<int:place_id>", methods=["PUT"])(place_controller.update_place)
 # api.route("/places/<int:place_id>", methods=["DELETE"])(place_controller.delete_place)

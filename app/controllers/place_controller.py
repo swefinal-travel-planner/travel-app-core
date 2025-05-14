@@ -81,6 +81,10 @@ class PlaceController:
         tags:
           - Place
         parameters:
+          - name: Authorization
+            in: header
+            type: string
+            required: true
           - name: limit
             in: query
             type: integer

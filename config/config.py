@@ -14,3 +14,4 @@ class Config:
     ELASTIC_PASSWORD = os.getenv('ELASTIC_PASSWORD')
     EMBEDDING_MODEL_NAME = os.getenv('EMBEDDING_MODEL_NAME')
     MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY')
+    SECRET_KEY = os.getenv('SECRET_KEY')
