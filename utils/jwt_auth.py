@@ -16,7 +16,7 @@ def jwt_required(f):
             print(data)
             if "role" not in data:
                 return jsonify({"status":401,"message": "Missing field in payload!", }), 401
-            if data["role"] != "FE" and data["role"] != "BE":
+            if data["role"] != "FE" and data["role"] != "BE" and data["role"] != "ADMIN":
                 return jsonify({"status":401,"message": "Invalid role!"}), 401
         except ValueError as e:
             return jsonify({"status":401,"message": str(e)}), 401

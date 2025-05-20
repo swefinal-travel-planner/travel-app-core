@@ -162,7 +162,5 @@ class TourController:
             
             tours = self.tour_service.create_tour(user_references)
             return jsonify({"status": 200, "data": tours}), 200  # Return raw list of dictionaries
-        except AppException as e:
-            return jsonify({"status": e.status_code, "message": e.message}), e.status_code
         except Exception as e:
             return jsonify({"status": 500, "message": f"Unexpected error: {str(e)}"}), 500

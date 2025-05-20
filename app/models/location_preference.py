@@ -19,4 +19,4 @@ class LocationPreference(Enum):
         elif value == "balanced":
             return LocationPreference.BALANCED
         else:
-            raise ValueError(f"Invalid location preference: {value}")
+            return None
