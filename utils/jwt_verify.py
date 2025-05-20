@@ -24,6 +24,6 @@ def verify_token(token):
     except jwt.InvalidTokenError:
         raise ValueError("Invalid token")
     
-# with open("token.txt", "w") as f:
-#     token = generate_token({"role": "FE"}, 36000)
-#     f.write(token)
+with open("token.txt", "w") as f:
+    token = generate_token({"role": "FE"}, 36000)
+    f.write(token)

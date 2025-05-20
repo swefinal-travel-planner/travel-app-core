@@ -15,6 +15,7 @@ from app.services.distance_matrix_service import DistanceMatrixService
 import constant.prompt as prompts
 from constant.label import LABEL
 import asyncio
+import math
 
 class TourService:
     @inject
@@ -60,7 +61,21 @@ class TourService:
             #food_rerank = self.rerank_places(food_places, str(tour_references.en_food_attributes_label) + "," + str(tour_references.vi_food_attributes_label))
 
             #rerank places by llm
-            rerank_list = self.rerank_places_by_llm(tourist_destination_list_parse + food_location_list_parse, tour_references)
+            # rerank_list = self.rerank_places_by_llm(tourist_destination_list_parse + food_location_list_parse, tour_references)
+            all_places = tourist_destination_list_parse + food_location_list_parse
+            batch_size = 20  # Tune this based on LLM limits and latency
+            batches = [all_places[i:i + batch_size] for i in range(0, len(all_places), batch_size)]
+
+            async def rerank_all_batches():
+                tasks = [
+                    self.rerank_places_by_llm_async(batch, tour_references)
+                    for batch in batches
+                ]
+                results = await asyncio.gather(*tasks)
+                # Flatten the list of lists
+                return [place for batch in results for place in batch]
+
+            rerank_list = asyncio.run(rerank_all_batches())
             print("rerank by llm complete")
 
             #split places into tourist destination, breakfast, lunch, dinner
@@ -159,7 +174,6 @@ class TourService:
         return places
     
     def rerank_places(self, places: list[PlaceWithScore], target_labels: str) -> list[PlaceWithScore]:
-
         rerank_places = self.__reranker_service.rerank(target_labels, [place.to_dict() for place in places])
         print(rerank_places)
         return rerank_places
@@ -178,7 +192,23 @@ class TourService:
         except Exception as e:
             print(f"Error reranking places by LLM: {e}")
             raise e
-    
+        
+    async def rerank_places_by_llm_async(self, places: list[PlaceWithScore], tour_ref: TourReferences):
+        try:
+            prompt = prompts.rerank_places_prompt
+            data = " Đây là thông tin về yêu cầu của người dùng: " + str(tour_ref.attriutes_with_special_and_medical_conditions()) + '\n'
+            label = "Đây là danh sách các địa điểm: " + ''.join(str(place.to_dict_with_score()) for place in places)
+            
+            list_score = await self.__openai_service.ask_question_async(prompt + data + label, PlaceWithScoreCollapseList)
+            for place in places:
+                for score in list_score.places:
+                    if place.id == score.id:
+                        place.score = score.score
+            return places
+        except Exception as e:
+            print(f"Error reranking places by LLM: {e}")
+            raise e
+        
     def generate_trip_items(self, breakfast_list: list[PlaceWithLocation], 
                             lunch_dinner_list: list[PlaceWithLocation], 
                             tourist_destination_list: list[PlaceWithLocation], 
@@ -296,6 +326,10 @@ class TourService:
 
     async def process_tour_data(self, breakfast_list, tourist_destination_list, lunch_dinner_list):
         # Ensure this function is asynchronous to await the calculate_all_pairs method
-        await self.__distance_matrix_service.calculate_all_pairs(breakfast_list, tourist_destination_list)
-        await self.__distance_matrix_service.calculate_all_pairs(tourist_destination_list, tourist_destination_list)
-        await self.__distance_matrix_service.calculate_all_pairs(lunch_dinner_list, tourist_destination_list)
+        tasks = [
+            self.__distance_matrix_service.calculate_all_pairs(breakfast_list, tourist_destination_list),
+            self.__distance_matrix_service.calculate_all_pairs(tourist_destination_list, tourist_destination_list),
+            self.__distance_matrix_service.calculate_all_pairs(lunch_dinner_list, tourist_destination_list)
+        ]
+
+        await asyncio.gather(*tasks)

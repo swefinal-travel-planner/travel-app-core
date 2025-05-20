@@ -136,7 +136,7 @@ class DistanceMatrixService:
                 [f"{s.long},{s.lat}" for s in pending_src],
                 [f"{d.long},{d.lat}" for d in pending_dest]
             )
-            await asyncio.sleep(3)
+            # await asyncio.sleep(3)
         except ValueError as e:
             print(f"Error calling call_matrix: {e}")
             raise 
