@@ -167,3 +167,81 @@ class PlaceController:
             return jsonify({"status": e.status_code, "message": e.message}), e.status_code
         except Exception as e:
             return jsonify({"status": 500, "message": f"Unexpected error: {str(e)}"}), 500
+        
+    def get_places_in_patch_by_ids(self):
+        """
+        Get a list of places by IDs in a patch
+        ---
+        tags:
+          - Place
+        parameters:
+          - name: Authorization
+            in: header
+            type: string
+            required: true
+          - name: place_ids
+            in: query
+            type: string
+            required: true
+            description: A string of place IDs separated by ';'
+            example: "id1;id2;id3"
+        responses:
+          200:
+            description: A list of places
+            type: object
+            schema:
+              properties:
+                status:
+                  type: integer
+                  description: The status code of the response
+                data:
+                  type: object
+                  properties:
+                    places:
+                      type: array
+                      items:
+                        type: object
+                        description: The list of places
+                    not_found_ids:
+                      type: array
+                      items:
+                        type: string
+                        description: List of IDs that were not found in the database  
+
+          400:
+            description: Validation error
+            type: object
+            schema:
+              properties:
+                status:
+                  type: integer
+                  description: The status code of the response
+                message:
+                  type: string
+                  description: The error message
+          500:
+            description: Unexpected error
+            type: object
+            schema:
+              properties:
+                status:
+                  type: integer
+                  description: The status code of the response
+                message:
+                  type: string
+                  description: The error message
+        """
+        try:
+            place_ids = request.args.get("place_ids")
+            if not place_ids:
+                raise ValidationError("Missing required parameter 'place_ids'")
+
+            response = self.__place_service.search_places_in_patch_by_ids(place_ids)
+            return jsonify({"status": 200, "data": response}), 200
+        
+        except ValidationError as e:
+            return jsonify({"status": 400, "message": e.message}), 400
+        except AppException as e:
+            return jsonify({"status": e.status_code, "message": e.message}), e.status_code
+        except Exception as e:
+            return jsonify({"status": 500, "message": f"Unexpected error: {str(e)}"}), 500

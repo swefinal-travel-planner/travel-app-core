@@ -19,7 +19,7 @@ def health_check():
     Health check endpoint.
     ---
     tags:
-      - health
+      - Health
     responses:
       200:
         description: Service is up and running
@@ -49,9 +49,11 @@ api.route("/places/insert_data", methods=["POST"])(place_controller.insert_place
 api.route("/ask_openai", methods=["GET"])(place_controller.ask_openai)
 api.route("/places/test_get_document", methods=["GET"])(place_controller.get_places_by_id)
 api.route("/places/test_delete_document", methods=["DELETE"])(place_controller.delete_place)
+api.route("/places/get_places_in_patch", methods=["GET"])(place_controller.get_places_in_patch_by_ids)
 
 #api for Tour controllers
 api.route("/tours/create_tour", methods=["POST"])(jwt_required(tour_controller.create_tour))
+api.route("/tours/mapping_label", methods=["POST"])(tour_controller.generate_label_cache)
 
 @api.route("/auth/generate_token", methods=["POST"])
 def generate_token_controller():
@@ -59,7 +61,7 @@ def generate_token_controller():
     Generate a JWT token for authentication in 5 minutes.
     ---
     tags:
-      - auths
+      - Auth
     parameters:
       - in: body
         name: body
@@ -108,8 +110,8 @@ def generate_token_controller():
     secret_key = data["secret_key"]
     if secret_key != Config.SECRET_KEY:
         return {"status": 401, "message": "Unauthorized"}, 401
-    
-    token = generate_token({"role": "ADMIN"}, 300)  # Token valid for 5 minutes
+
+    token = generate_token({"role": "ADMIN"}, 600)  # Token valid for 10 minutes
     return {"token": token}, 200
 # api.route("/places/<int:place_id>", methods=["GET"])(place_controller.get_place)
 # api.route("/places/<int:place_id>", methods=["PUT"])(place_controller.update_place)

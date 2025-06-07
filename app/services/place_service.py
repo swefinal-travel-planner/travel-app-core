@@ -8,12 +8,14 @@ from injector import inject
 import constant.prompt as prompts
 from constant.label import LABEL
 from app.models.place import Place_list, Place
+from app.models.place_with_score import PlaceWithScore
 import threading
 from itertools import islice
 import time
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.exceptions.custom_exceptions import AppException,ValidationError, NotFoundError
+from utils.extract_id import extract_ids_from_string
 
 class PlaceService:
     @inject
@@ -103,16 +105,16 @@ class PlaceService:
                 if future.exception():
                     raise AppException(f"Error during processing: {future.exception()}")
 
-    def get_place_by_id(self):
-        existing_doc = self.__place_repository.get_place_by_id("5112ba637322ad5a4059b607735380942540f00102f9010bcd744b00000000")
+    def get_place_by_id(self, place_id: str):
+        existing_doc = self.__place_repository.get_place_by_id(place_id)
         if not existing_doc:
-            raise NotFoundError(f"No document found with ID '5112ba637322ad5a4059b607735380942540f00102f9010bcd744b00000000'")
+            raise NotFoundError(f"No document found with ID '{place_id}'")
         return existing_doc
-        
-    def delete_place(self):
-        status = self.__place_repository.delete_place(846924729)
+
+    def delete_place(self, place_id: str):
+        status = self.__place_repository.delete_place(place_id)
         if not status:
-            raise NotFoundError(f"Place with ID '846924729' not found")
+            raise NotFoundError(f"Place with ID '{place_id}' not found")
         return True
     
     def health_check_elastic(self):
@@ -125,3 +127,18 @@ class PlaceService:
         places = self.__place_repository.search_places_after(limit, search_after_id, location, language, filter)
         # Trả về mảng rỗng nếu không có địa điểm
         return places if places else []
+    
+    def search_places_in_patch_by_ids(self, place_ids: str):
+
+        place_ids = extract_ids_from_string(place_ids)
+        if len(place_ids) == 0:
+            raise ValidationError("No place IDs provided or invalid format")
+
+        places = self.__place_repository.get_places_in_patch_by_ids(place_ids)
+        # check if there are some id that not found in database
+        if len(places) < len(place_ids):
+            not_found_ids = set(place_ids) - {place.id for place in places}
+
+            return {"places": places, "not_found_ids": list(not_found_ids)}
+
+        return {"places": places}

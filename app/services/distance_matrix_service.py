@@ -1,38 +1,32 @@
 import json
 import aiohttp
+import asyncio
 from injector import inject
 from typing import Tuple
 from app.models.distance_entry import DistanceEntry
 from app.models.place_with_location import PlaceWithLocation
-import asyncio
+from aiolimiter import AsyncLimiter
 
 MAX_BATCH = 12
 CACHE_FILE = "./constant/distance_cache.json"
 
 def load_distance_cache():
-    distance_cache = []
+    distance_cache = {}
     try:
         with open(CACHE_FILE, "r") as f:
-            check_esxist = False
             for line in f:
                 if not line.strip():
                     continue
                 data = json.loads(line)
                 entry = DistanceEntry.from_dict(data)
-                for existing_entry in distance_cache:
-                    if (existing_entry.source_id == entry.source_id and existing_entry.destination_id == entry.destination_id) or \
-                       (existing_entry.source_id == entry.destination_id and existing_entry.destination_id == entry.source_id):
-                        check_esxist = True
-                        break
-                if check_esxist or entry.distance == 0:
-                    check_esxist = False
-                else:
-                    distance_cache.append(entry)
+                key = tuple(sorted([entry.source_id, entry.destination_id]))
+                if key not in distance_cache and entry.distance != 0:
+                    distance_cache[key] = entry
 
         # Save the cleaned cache back to the file
         try:
             with open(CACHE_FILE, "w") as f:
-                for entry in distance_cache:
+                for entry in distance_cache.values():
                     json.dump(entry.to_dict(), f)
                     f.write("\n")
             print(f"Successfully saved {len(distance_cache)} unique entries to cache.")
@@ -50,12 +44,13 @@ class DistanceMatrixService:
         self.__api_key = mapbox_api_key
         self.__base_url = "https://api.mapbox.com/directions-matrix/v1/mapbox"
         self.__distance_cache = load_distance_cache() or []  # Đảm bảo luôn là danh sách
+        self._limiter = AsyncLimiter(25, 60) # Giới hạn 25 yêu cầu mỗi phút
 
     def _build_url(self, profile: str, coords: list[Tuple[float, float]]) -> str:
 
         return f"{self.__base_url}/{profile}/" + ";".join([f"{long},{lat}" for long,lat in coords])
     
-    async def call_matrix(self, all_coords: list[Tuple[float, float]], source_ids: list[str], dest_ids: list[str], profile="driving"):
+    async def call_matrix(self, all_coords, source_ids, dest_ids, profile="driving"):
         id_to_index = {f"{long},{lat}": idx for idx, (long, lat) in enumerate(all_coords)}
         source_idx = [id_to_index[src_id] for src_id in source_ids]
         dest_idx = [id_to_index[id] for id in dest_ids]
@@ -68,20 +63,26 @@ class DistanceMatrixService:
             "annotations": "distance"
         }
 
-        async with aiohttp.ClientSession() as session:
-            try:
-                async with session.get(url, params=params) as resp:
-                    resp.raise_for_status()
-                    data = await resp.json()
-                    # Kiểm tra lỗi từ API
-                    if data.get("message") and data.get("message") == "InvalidInput":
-                        raise ValueError(f"API error: {data.get('message', 'InvalidInput')}")
-                    distances = data.get("distances")
-                    return distances
-            except aiohttp.ClientResponseError as e:
-                raise ValueError(f"HTTP error occurred: {e}")
-            except aiohttp.ClientError as e:
-                raise ValueError(f"Request error occurred: {e}")
+        async with self._limiter:
+            async with aiohttp.ClientSession() as session:
+                for attempt in range(3):  # thử lại tối đa 3 lần
+                    try:
+                        async with session.get(url, params=params) as resp:
+                            resp.raise_for_status()
+                            data = await resp.json()
+                            if data.get("message") and data.get("message") == "InvalidInput":
+                                raise ValueError(f"API error: {data.get('message', 'InvalidInput')}")
+                            distances = data.get("distances")
+                            return distances
+                    except aiohttp.ClientResponseError as e:
+                        if e.status == 429:
+                            print("Hit rate limit, retrying after delay...")
+                            await asyncio.sleep(10)  # chờ 10 giây rồi thử lại
+                            continue
+                        raise ValueError(f"HTTP error occurred: {e}")
+                    except aiohttp.ClientError as e:
+                        raise ValueError(f"Request error occurred: {e}")
+                raise ValueError("Too many requests: exceeded retry limit")
     
     async def calculate_all_pairs(self, source: list[PlaceWithLocation], destination: list[PlaceWithLocation]):
         # Tạo danh sách các cặp (src, dest) chưa có trong cache
@@ -136,7 +137,7 @@ class DistanceMatrixService:
                 [f"{s.long},{s.lat}" for s in pending_src],
                 [f"{d.long},{d.lat}" for d in pending_dest]
             )
-            # await asyncio.sleep(3)
+
         except ValueError as e:
             print(f"Error calling call_matrix: {e}")
             raise 
@@ -152,7 +153,9 @@ class DistanceMatrixService:
                     destination_id=dest_obj.id,
                     distance=dist
                 )
-                self.__distance_cache.append(entry)
+                key = tuple(sorted([entry.source_id, entry.destination_id]))
+                if key not in self.__distance_cache:
+                    self.__distance_cache[key] = entry
                 self.append_distance_to_file(entry)
 
     def append_distance_to_file(self, entry: DistanceEntry):
@@ -161,10 +164,6 @@ class DistanceMatrixService:
             f.write("\n")
 
     def find_distance(self, source_id: str, destination_id: str) -> float:
-        for entry in self.__distance_cache:
-            if entry.source_id == source_id and entry.destination_id == destination_id:
-                return entry.distance
-            if entry.source_id == destination_id and entry.destination_id == source_id:
-                return entry.distance
-        return None
-
+        key = tuple(sorted([source_id, destination_id]))
+        entry = self.__distance_cache.get(key)
+        return entry.distance if entry else None

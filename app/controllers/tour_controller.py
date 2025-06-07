@@ -15,7 +15,7 @@ class TourController:
         Create a tour based on user preferences.
         ---
         tags:
-        - products
+        - Tour
         parameters:
         - name: Authorization
           in: header
@@ -130,7 +130,7 @@ class TourController:
             if not isinstance(data["days"], int) or data["days"] <= 0 or data["days"] > 7:
                 raise ValidationError("Days must be a positive integer, between 1 and 7")
             
-            if not isinstance(data["locationsPerDay"], int) or data["locationsPerDay"] <= 5 or data["locationsPerDay"] > 9:
+            if not isinstance(data["locationsPerDay"], int) or data["locationsPerDay"] < 5 or data["locationsPerDay"] > 9:
                 raise ValidationError("Locations per day must be a positive integer, between 5 and 9")
             
             if not isinstance(data["location_attributes"], list) or len(data["location_attributes"]) == 0 or not all(isinstance(attr, str) for attr in data["location_attributes"]):
@@ -164,3 +164,19 @@ class TourController:
             return jsonify({"status": 200, "data": tours}), 200  # Return raw list of dictionaries
         except Exception as e:
             return jsonify({"status": 500, "message": f"Unexpected error: {str(e)}"}), 500
+
+    def generate_label_cache(self):
+      data = request.get_json()
+      user_references = UserReferencesRequest(
+        city=data.get("city"),
+        days=data.get("days"),
+        locationsPerDay=data.get("locationsPerDay"),
+        location_attributes=data.get("location_attributes"),
+        food_attributes=data.get("food_attributes"),
+        special_requirements=data.get("special_requirements"),
+        medical_conditions=data.get("medical_conditions"),
+        locationPreference=LocationPreference.from_string(data.get("locationPreference")).to_string()
+      )
+
+      self.tour_service.cache_labels(user_references)
+      return jsonify({"status": 200, "message": "Label cache generated successfully"}), 200

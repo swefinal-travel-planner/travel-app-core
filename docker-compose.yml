@@ -1,5 +1,6 @@
 services:
   kibana:
+    container_name: kibana
     image: docker.elastic.co/kibana/kibana:8.5.0
     ports:
       - 5601:5601
@@ -7,3 +8,16 @@ services:
       - ELASTICSEARCH_HOSTS=http://103.72.97.222:9200
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=123456789@
+      - ENTERPRISESEARCH_HOST=http://enterprise-search:3002
+
+  enterprise-search:
+    image: docker.elastic.co/enterprise-search/enterprise-search:8.5.0
+    ports:
+      - 3002:3002
+    environment:
+      - elasticsearch.host=http://103.72.97.222:9200
+      - elasticsearch.username=elastic
+      - elasticsearch.password=123456789@
+      - enterprise_search.external_url=http://localhost:3002
+      - allow_es_settings_modification=true
+      - secret_management.encryption_keys=[ae589039fc8dfb9abbdd2d739567145f6925d4c59f04b99db4a1eb878af99bda]

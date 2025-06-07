@@ -20,3 +20,9 @@ class UserReferencesRequest:
             "medical_conditions": self.medical_conditions,
             "locationPreference": self.locationPreference
         }
+    
+    def location_attributes_to_str(self):
+        return ', '.join(self.location_attributes)
+    
+    def food_attributes_to_str(self):
+        return ', '.join(self.food_attributes)

@@ -3,6 +3,7 @@ from app.controllers.place_controller import PlaceController
 from app.controllers.tour_controller import TourController
 from app.database.elasticsearch import ElasticsearchClient
 from app.repositories.place_repository import PlaceRepository
+from app.repositories.trip_repository import TripRepository
 from app.services.place_service import PlaceService
 from app.services.tour_service import TourService
 from app.services.embedding_service import EmbeddingService
@@ -25,6 +26,11 @@ class MainModule(Module):
     def provide_place_repository(self, db: ElasticsearchClient) -> PlaceRepository:
         return PlaceRepository(db)
     
+    @singleton
+    @provider
+    def provide_trip_repository(self, db: ElasticsearchClient) -> TripRepository:
+        return TripRepository(db)
+
     #Service
     @singleton
     @provider
@@ -42,12 +48,14 @@ class MainModule(Module):
     @provider
     def provide_tour_service(self,
                             place_repository: PlaceRepository,
+                            trip_repository: TripRepository,
                             embedding_service: EmbeddingService,
                             openai_service: OpenAIService,
                             distance_matrix_service: DistanceMatrixService
                             ) -> TourService:
         return TourService(
                             place_repository,
+                            trip_repository,
                             embedding_service,
                             openai_service,
                             distance_matrix_service)

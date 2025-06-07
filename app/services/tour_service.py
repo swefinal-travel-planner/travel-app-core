@@ -7,31 +7,40 @@ from app.models.place_with_location import PlaceWithLocation
 from app.models.trip_item import TripItem, TripItemWithPlace
 from app.models.time_in_day import TimeInDay
 from app.models.location_preference import LocationPreference
+from app.models.trip_item_research import TripItemResearch, TripItemResearchList
 from app.repositories.place_repository import PlaceRepository
+from app.repositories.trip_repository import TripRepository
 from app.services.openai_service import OpenAIService
 from app.services.embedding_service import EmbeddingService
 from app.services.reranker_service import RerankerService
 from app.services.distance_matrix_service import DistanceMatrixService
+from app.models.location_labels_extract import LocationLabelsExtract
+from app.models.food_labels_extract import FoodLabelsExtract
 import constant.prompt as prompts
 from constant.label import LABEL
 import asyncio
-import math
+from utils.normalize_label_array import extract_labels_from_string
 
 class TourService:
     @inject
     def __init__(self,
-                place_repository: PlaceRepository, 
+                place_repository: PlaceRepository,
+                trip_repository: TripRepository,
                 embedding_service: EmbeddingService,
                 openai_service: OpenAIService,
                 distance_matrix_service: DistanceMatrixService):
         self.__openai_service = openai_service
         self.__place_repository = place_repository
+        self.__trip_repository = trip_repository
         self.__embedding_service = embedding_service
         self.__distance_matrix_service = distance_matrix_service
 
     def create_tour(self, user_references: UserReferencesRequest):
         try:
+            TOTAL_LOCATIONS = user_references.days * (user_references.locationsPerDay - 3) * 4
+            TOTAL_FOOD_LOCATIONS = user_references.days * 3 * 4
             #convert user references to tour references in label
+            #check db to reduce convert time
             tour_references = self.convert_user_references_to_tour_references(user_references)
             print("convert complete")
 
@@ -41,24 +50,7 @@ class TourService:
             print("embedding complete")
 
             #search for places in the database
-            locations_places_list = self.__place_repository.search_places_by_vector(location_attributes_label_embedding, tour_references.days * (tour_references.locationsPerDay - 3) * 3)
-            food_places_list = self.__place_repository.search_places_by_vector(food_attributes_label_embedding, tour_references.days * 3 * 3)
-            print("search complete")
-
-            #parse places from es hits and remove duplicates
-            tourist_destination_list_parse = self.parse_places_from_es_hits(locations_places_list)
-            food_location_list_parse = self.parse_places_from_es_hits(food_places_list)
-
-            # Remove places from food_location_listaces that exist in locations_places_list (by id)
-            food_place_ids = [hit.id for hit in food_location_list_parse]
-            tourist_destination_list_parse = [
-                place for place in tourist_destination_list_parse if place.id not in food_place_ids
-            ]
-            print("parse complete")
-
-            #rerank places by
-            #locations_rerank = self.rerank_places(locations_places, str(tour_references.en_location_attributes_label) + "," + str(tour_references.vi_location_attributes_label))
-            #food_rerank = self.rerank_places(food_places, str(tour_references.en_food_attributes_label) + "," + str(tour_references.vi_food_attributes_label))
+            tourist_destination_list_parse, food_location_list_parse = self.search_places(TOTAL_LOCATIONS, TOTAL_FOOD_LOCATIONS, tour_references, location_attributes_label_embedding, food_attributes_label_embedding)
 
             #rerank places by llm
             # rerank_list = self.rerank_places_by_llm(tourist_destination_list_parse + food_location_list_parse, tour_references)
@@ -82,6 +74,10 @@ class TourService:
             tourist_destination_list = []
             breakfast_list = []
             lunch_dinner_list = []
+            #add to store list
+            location_store_list = TripItemResearchList()
+            breakfast_store_list = TripItemResearchList()
+            lunch_dinner_store_list = TripItemResearchList()
             for place in rerank_list:
                 if place.score > 0:
                     if "food location" in place.en_type:
@@ -92,6 +88,7 @@ class TourService:
                                 lat=place.lat,
                                 long=place.long,
                             ))
+                            breakfast_store_list.add(TripItemResearch(place_id=place.id, score=place.score, is_selected=False))
                         else:
                             lunch_dinner_list.append(PlaceWithLocation(
                                 id=place.id,
@@ -99,6 +96,7 @@ class TourService:
                                 lat=place.lat,
                                 long=place.long,
                             ))
+                            lunch_dinner_store_list.add(TripItemResearch(place_id=place.id, score=place.score, is_selected=False))
                     else:
                         tourist_destination_list.append(PlaceWithLocation(
                                 id=place.id,
@@ -106,6 +104,7 @@ class TourService:
                                 lat=place.lat,
                                 long=place.long,
                             ))
+                        location_store_list.add(TripItemResearch(place_id=place.id, score=place.score, is_selected=False))
             print("split complete")
 
             #sort places by score
@@ -136,42 +135,105 @@ class TourService:
                             tripItem=trip_item,
                         ))
                         break
-            #store trip items to database
-            store_id = "abc"
+            #store trip to database
+            pre_store_trip(trip_items, location_store_list, breakfast_store_list, lunch_dinner_store_list)
+            store_id = self.__trip_repository.insert_trip(tour_references, breakfast_store_list, lunch_dinner_store_list, location_store_list)
 
             return {"reference_id": store_id, "trip_items" :[trip_item.to_dict() for trip_item in finalTripItems]}
         except Exception as e:
             print(f"Error creating tour: {e}")
             raise e
+
+    def search_places(self, TOTAL_LOCATIONS, TOTAL_FOOD_LOCATIONS, tour_references, location_attributes_label_embedding, food_attributes_label_embedding):
+        loop_count = 0
+        is_enough_locations = False
+        is_enough_food_locations = False
+        tourist_destination_list_parse = []
+        food_location_list_parse = []
+        while not (is_enough_locations and is_enough_food_locations):
+            if not is_enough_locations:
+                locations_places_list = self.__place_repository.search_places_by_vector(location_attributes_label_embedding, TOTAL_LOCATIONS + loop_count)
+            if not is_enough_food_locations:
+                food_places_list = self.__place_repository.search_places_by_vector(food_attributes_label_embedding, TOTAL_FOOD_LOCATIONS + loop_count)
+            print("search complete")
+
+                #parse places from es hits and remove duplicates
+            tourist_destination_list_parse = parse_places_from_es_hits(locations_places_list)
+            food_location_list_parse = parse_places_from_es_hits(food_places_list)
+            print("parse complete")
+
+                # Remove places from food_location_listaces that exist in locations_places_list (by id)
+            food_place_ids = [hit.id for hit in food_location_list_parse]
+            tourist_destination_list_parse = [
+                    place for place in tourist_destination_list_parse if place.id not in food_place_ids
+                ]
+            print("remove food places from tourist destination complete")
+                #check if there are enough locations and food places
+            is_enough_locations = len(tourist_destination_list_parse) >= tour_references.days * (tour_references.locationsPerDay - 3)
+            is_enough_food_locations = len(food_location_list_parse) >= tour_references.days * 3
+            if len([place for place in food_location_list_parse if "breakfast" in place.en_type]) < tour_references.days:
+                is_enough_food_locations = False
+
+            if not (is_enough_locations and is_enough_food_locations):
+                loop_count += 1
+                if not is_enough_locations:
+                    print(f"Not enough tourist destinations found. Increasing search limit to {TOTAL_LOCATIONS + loop_count}.")
+                if not is_enough_food_locations:
+                    print(f"Not enough food places found. Increasing search limit to {TOTAL_FOOD_LOCATIONS + loop_count}.")
+                if loop_count > 10:
+                    raise ValueError("Not enough locations or food places found. Please adjust your preferences.")
+        return tourist_destination_list_parse,food_location_list_parse
         
     def convert_user_references_to_tour_references(self, user_references: UserReferencesRequest) -> TourReferences:
-        try:
-            prompt = prompts.convert_user_references_to_tour_references_prompt
-            data = "Đây là danh sách yêu cầu của người dùng: " + ''.join(str(user_references.to_dict())) + '\n'
-            label = "Đây là danh sách các nhãn dán: " + LABEL
-            return self.__openai_service.ask_question(prompt + data + label, TourReferences)
-        except Exception as e:
-            print(f"Error converting user references to tour references: {e}")
-            raise e
-    
-    def parse_places_from_es_hits(self, hits: list[dict]) -> list[PlaceWithScore]:
-        places = []
-        for hit in hits:
-            source = hit["_source"]
-            place = PlaceWithScore(
-                id=source["id"],
-                en_name=source["en_name"],
-                vi_name=source["vi_name"],
-                lat=source["lat"],
-                long=source["long"],
-                en_type=source["en_type"],
-                vi_type=source["vi_type"],
-                en_properties=source["en_properties"],
-                vi_properties=source["vi_properties"],
-                score=hit.get("_score")
-            )
-            places.append(place)
-        return places
+        #check location labels and food labels in cache
+        tour_data = TourReferences(city=user_references.city,
+                                   days=user_references.days,
+                                   locationsPerDay=user_references.locationsPerDay,
+                                   location_attributes=user_references.location_attributes,
+                                   food_attributes=user_references.food_attributes,
+                                   en_location_attributes_label=["location"],
+                                   vi_location_attributes_label=["địa điểm"],
+                                   en_food_attributes_label=["food"],
+                                   vi_food_attributes_label=["món ăn"],
+                                   locationPreference=user_references.locationPreference,
+                                   special_requirements=user_references.special_requirements,
+                                   medical_conditions=user_references.medical_conditions)
+        data = self.cache_labels(user_references)
+
+        if data["vi_location_attributes_labels"] == []:
+            try:
+                prompt = prompts.convert_user_location_references_to_labels_prompt
+                location_data_str = "Đây là danh sách yêu cầu của người dùng về các địa điểm du lịch: " + ' '.join(str(user_references.location_attributes_to_str())) + '\n'
+                label = "Đây là danh sách các nhãn dán: " + LABEL
+                location_label = self.__openai_service.ask_question(prompt + location_data_str + label, LocationLabelsExtract)
+                if location_label:
+                    tour_data.vi_location_attributes_label = location_label.vi_location_attributes_label
+                    tour_data.en_location_attributes_label = location_label.en_location_attributes_label
+            except Exception as e:
+                print(f"Error converting user references to location labels: {e}")
+                raise e
+        else:
+            tour_data.vi_location_attributes_label = data["vi_location_attributes_labels"]
+            tour_data.en_location_attributes_label = data["en_location_attributes_labels"]
+            
+        if data["vi_food_attributes_labels"] == []:
+            try:
+                prompt = prompts.convert_user_food_references_to_labels_prompt
+                food_data_str = "Đây là danh sách yêu cầu của người dùng về các món ăn: " + ' '.join(str(user_references.food_attributes_to_str())) + '\n'
+                label = "Đây là danh sách các nhãn dán: " + LABEL
+                food_label = self.__openai_service.ask_question(prompt + food_data_str + label, FoodLabelsExtract)
+                if food_label:
+                    tour_data.vi_food_attributes_label = food_label.vi_food_attributes_label
+                    tour_data.en_food_attributes_label = food_label.en_food_attributes_label
+            except Exception as e:
+                print(f"Error converting user references to food labels: {e}")
+                raise e
+        else:
+            tour_data.vi_food_attributes_label = data["vi_food_attributes_labels"]
+            tour_data.en_food_attributes_label = data["en_food_attributes_labels"]
+
+        return tour_data
+
     
     def rerank_places(self, places: list[PlaceWithScore], target_labels: str) -> list[PlaceWithScore]:
         rerank_places = self.__reranker_service.rerank(target_labels, [place.to_dict() for place in places])
@@ -333,3 +395,60 @@ class TourService:
         ]
 
         await asyncio.gather(*tasks)
+
+    def cache_labels(self, user_references: UserReferencesRequest):
+        vi_location_attributes = []
+        en_location_attributes = []
+        vi_food_attributes = []
+        en_food_attributes = []
+        #search trip labels stored in database to cache location attributes labels
+        location_cache = self.__trip_repository.search_trip_labels(
+            user_references.location_attributes,[]) or None
+
+        if location_cache:
+            print("Location cache found")
+            vi_location_attributes = extract_labels_from_string(location_cache["hits"]["hits"][0]["_source"]["trip_properties"]["vi_location_attributes_labels"]) or []
+            en_location_attributes = extract_labels_from_string(location_cache["hits"]["hits"][0]["_source"]["trip_properties"]["en_location_attributes_labels"]) or []
+
+        food_cache = self.__trip_repository.search_trip_labels(
+            [],user_references.food_attributes) or None
+
+        if food_cache:
+            print("Food cache found")
+            vi_food_attributes = extract_labels_from_string(food_cache["hits"]["hits"][0]["_source"]["trip_properties"]["vi_food_attributes_labels"]) or []
+            en_food_attributes = extract_labels_from_string(food_cache["hits"]["hits"][0]["_source"]["trip_properties"]["en_food_attributes_labels"]) or []
+
+        return {
+            "vi_location_attributes_labels": vi_location_attributes,
+            "en_location_attributes_labels": en_location_attributes,
+            "vi_food_attributes_labels": vi_food_attributes,
+            "en_food_attributes_labels": en_food_attributes
+        }
+
+def parse_places_from_es_hits(hits: list[dict]) -> list[PlaceWithScore]:
+    places = []
+    for hit in hits:
+        source = hit["_source"]
+        place = PlaceWithScore(
+            id=source["id"],
+            en_name=source["en_name"], 
+            vi_name=source["vi_name"],
+            lat=source["lat"],
+            long=source["long"],
+            en_type=source["en_type"],
+            vi_type=source["vi_type"],
+            en_properties=source["en_properties"],
+            vi_properties=source["vi_properties"],
+            score=hit.get("_score")
+        )
+        places.append(place)
+    return places
+
+def pre_store_trip(trip_items: list, location_store_list: TripItemResearchList, breakfast_store_list: TripItemResearchList, lunch_dinner_store_list: TripItemResearchList) -> str:
+    for item in trip_items:
+        if location_store_list.set_is_selected(item.place_id):
+            continue
+        if breakfast_store_list.set_is_selected(item.place_id):
+            continue
+        if lunch_dinner_store_list.set_is_selected(item.place_id):
+            continue

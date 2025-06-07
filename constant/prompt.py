@@ -12,13 +12,23 @@ convert_location_to_place_prompt = ("Bạn là một chuyên gia phân tích đ�
 "ngoài ra phải đánh giá địa điểm ăn uống đó phù hợp cho buổi nào và gắn thêm nhãn dán phù hợp: 'bữa sáng' cho vi_type và 'breakfast' cho en_type, ăn trưa và ăn tối để chung là 'bữa trưa - tối' cho vi_type và 'lunch-dinner' cho en_type, "
 "Nếu đó là các quán ăn vặt thì thêm nhãn dán là 'ăn vặt' vào vi_type và 'snack' vào en_type, ")
 
-convert_user_references_to_tour_references_prompt = ("Bạn là một chuyên gia về du lịch, chuyên phân tích các yêu cầu của người dùng và phân tích nhãn dán hợp lý"
-"Nhiệm vụ của bạn là phân tích các yêu cầu của người dùng thành những nhãn dán cụ thể. "
-"Không được tạo dữ liệu sai thực tế! "
-"Bạn sẽ được cung cấp các yêu cầu của người dùng về chuyến du lịch của họ và danh sách các nhãn dán có sẵn. "
-"Hãy gán các thông tin có sẵn vào output_format đã cung cấp: city,days,locationsPerDay,location_attributes,food_attributes,special_requirements,medical_conditions,locationPreference gắn vào các biến tương ứng, nếu có tiền tố vi, en thì chuyển đổi ngôn ngữ cho hợp lệ. "
-"Phân tích location_attributes thành các nhãn dán cho sẵn và gắn vào biến location_attributes_labels, chuyển đổi ngôn ngữ khi gặp tiền tố vi, en. Có thể thêm một số nhãn dán khác nếu cần thiết nhưng phải dựa vào location_attributes và không được sai thực tế. "
-"Phân tích food_attributes thành các nhãn dán cho sẵn và gắn vào biến food_attributes_labels, chuyển đổi ngôn ngữ khi gặp tiền tố vi, en. Có thể thêm một số nhãn dán khác nếu cần thiết nhưng phải dựa vào food_attributes và không được sai thực tế, thêm nhãn dán 'địa điểm ăn uống' hoặc 'food location' vào food_attributes_labels và phải đúng ngôn ngữ. ")
+convert_user_location_references_to_labels_prompt = (
+    "Bạn là một chuyên gia về du lịch, chuyên phân tích các yêu cầu của người dùng về địa điểm du lịch. "
+    "Nhiệm vụ của bạn là phân tích location_attributes của người dùng thành mảng các nhãn dán cụ thể dựa vào danh sách label đã cung cấp. "
+    "Không được tạo dữ liệu sai thực tế! "
+    "Chỉ sử dụng các nhãn dán có trong mảng label đã cung cấp để phân tích location_attributes thành mảng các label theo định dạng output. "
+    "Ngoài các label đã cung cấp, có thể gắn thêm các label bên ngoài mà bạn cho là hợp lý, nhưng phải phù hợp với dữ liệu đã có. "
+    "Nếu có tiền tố vi, en thì chuyển đổi ngôn ngữ cho hợp lệ. "
+)
+
+convert_user_food_references_to_labels_prompt = (
+    "Bạn là một chuyên gia về ẩm thực, chuyên phân tích các yêu cầu của người dùng về địa điểm ăn uống. "
+    "Nhiệm vụ của bạn là phân tích food_attributes của người dùng thành mảng các nhãn dán cụ thể dựa vào danh sách label đã cung cấp. "
+    "Không được tạo dữ liệu sai thực tế! "
+    "Chỉ sử dụng các nhãn dán có trong mảng label đã cung cấp để phân tích food_attributes thành mảng các label theo định dạng output. "
+    "Ngoài các label đã cung cấp, có thể gắn thêm các label bên ngoài mà bạn cho là hợp lý, nhưng phải phù hợp với dữ liệu đã có. "
+    "Nếu có tiền tố vi, en thì chuyển đổi ngôn ngữ cho hợp lệ. "
+)
 
 rerank_places_prompt = ("Bạn là một chuyên gia phân tích địa điểm du lịch và ăn uống, "
 "Nhiệm vụ của bạn là phân tích các địa điểm du lịch và vui chơi, ăn uống và chấm điểm, đánh giá độ tương thích giữa các địa điểm với các yêu cầu của người dùng. " \
