@@ -43,8 +43,8 @@ class DistanceMatrixService:
     def __init__(self, mapbox_api_key):
         self.__api_key = mapbox_api_key
         self.__base_url = "https://api.mapbox.com/directions-matrix/v1/mapbox"
-        self.__distance_cache = load_distance_cache() or []  # Đảm bảo luôn là danh sách
-        self._limiter = AsyncLimiter(25, 60) # Giới hạn 25 yêu cầu mỗi phút
+        self.__distance_cache = load_distance_cache() or {}  # Đảm bảo luôn là danh sách
+        self._limiter = AsyncLimiter(55, 60) # Giới hạn 55 yêu cầu mỗi phút
 
     def _build_url(self, profile: str, coords: list[Tuple[float, float]]) -> str:
 

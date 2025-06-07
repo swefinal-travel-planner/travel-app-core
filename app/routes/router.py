@@ -58,7 +58,7 @@ api.route("/tours/mapping_label", methods=["POST"])(tour_controller.generate_lab
 @api.route("/auth/generate_token", methods=["POST"])
 def generate_token_controller():
     """
-    Generate a JWT token for authentication in 5 minutes.
+    Generate a JWT token for authentication in 10 minutes.
     ---
     tags:
       - Auth

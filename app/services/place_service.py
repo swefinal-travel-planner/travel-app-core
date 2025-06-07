@@ -137,8 +137,12 @@ class PlaceService:
         places = self.__place_repository.get_places_in_patch_by_ids(place_ids)
         # check if there are some id that not found in database
         if len(places) < len(place_ids):
-            not_found_ids = set(place_ids) - {place.id for place in places}
+            found_ids = [place["_source"]["id"] for place in places]
+            not_found_ids = []
+            for place_id in place_ids:
+                if place_id not in found_ids:
+                    not_found_ids.append(place_id)
 
-            return {"places": places, "not_found_ids": list(not_found_ids)}
+            return {"places": places, "not_found_ids": not_found_ids}
 
         return {"places": places}
