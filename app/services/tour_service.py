@@ -139,7 +139,7 @@ class TourService:
             pre_store_trip(trip_items, location_store_list, breakfast_store_list, lunch_dinner_store_list)
             store_id = self.__trip_repository.insert_trip(tour_references, breakfast_store_list, lunch_dinner_store_list, location_store_list)
 
-            return {"reference_id": store_id, "trip_items" :[trip_item.to_dict() for trip_item in finalTripItems]}
+            return {"reference_id": store_id, "trip_items" :[trip_item.to_dict() for trip_item in trip_items]}
         except Exception as e:
             print(f"Error creating tour: {e}")
             raise e
@@ -234,7 +234,6 @@ class TourService:
 
         return tour_data
 
-    
     def rerank_places(self, places: list[PlaceWithScore], target_labels: str) -> list[PlaceWithScore]:
         rerank_places = self.__reranker_service.rerank(target_labels, [place.to_dict() for place in places])
         print(rerank_places)
