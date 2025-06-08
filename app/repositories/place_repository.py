@@ -132,7 +132,7 @@ class PlaceRepository:
                 return None
             hits = response["hits"]["hits"]
             # Correctly extract the "_source" field from each hit
-            return hits
+            return [hit["_source"] for hit in hits]
         except Exception as e:
             raise AppException(f"Failed to perform search after: {str(e)}")
 
