@@ -7,8 +7,8 @@ from app.models.location import Location
 from injector import inject
 import constant.prompt as prompts
 from constant.label import LABEL
-from app.models.place import Place_list, Place
-from app.models.place_with_score import PlaceWithScore
+from app.models.place import Place_list
+from app.models.place_response import PlaceResponse
 import threading
 from itertools import islice
 import time
@@ -126,23 +126,52 @@ class PlaceService:
                 raise NotFoundError(f"Place after id: '{search_after_id}' not found")
         places = self.__place_repository.search_places_after(limit, search_after_id, location, language, filter)
         # Trả về mảng rỗng nếu không có địa điểm
-        return places if places else []
-    
-    def search_places_in_patch_by_ids(self, place_ids: str):
+        if not places:
+            return []
+        # Chuyển đổi kết quả thành danh sách PlaceResponse
+        return [PlaceResponse(
+            id=place["id"],
+            name=place[f"{language.to_string()}_name"],
+            long=place["long"],
+            lat=place["lat"],
+            properties=place[f"{language.to_string()}_properties"],
+            type=place[f"{language.to_string()}_type"]
+        ).to_dict() for place in places]
+
+    def search_places_in_patch_by_ids(self, language, place_ids: str):
 
         place_ids = extract_ids_from_string(place_ids)
         if len(place_ids) == 0:
             raise ValidationError("No place IDs provided or invalid format")
 
-        places = self.__place_repository.get_places_in_patch_by_ids(place_ids)
+        places = self.__place_repository.get_places_in_patch_by_ids(language, place_ids)
         # check if there are some id that not found in database
         if len(places) < len(place_ids):
-            found_ids = [place["_source"]["id"] for place in places]
+            found_ids = [place["id"] for place in places]
             not_found_ids = []
             for place_id in place_ids:
                 if place_id not in found_ids:
                     not_found_ids.append(place_id)
 
-            return {"places": places, "not_found_ids": not_found_ids}
+            # change to PlaceResponse
+            found_places = [
+                PlaceResponse(
+                    id=place["id"],
+                    name=place[f"{language.to_string()}_name"],
+                    long=place["long"],
+                    lat=place["lat"],
+                    properties=place[f"{language.to_string()}_properties"],
+                    type=place[f"{language.to_string()}_type"]
+                ).to_dict() for place in places
+            ]
+            return {"places": found_places, "not_found_ids": not_found_ids}
 
-        return {"places": places}
+        # Chuyển đổi kết quả thành danh sách PlaceResponse
+        return {"places": [PlaceResponse(
+            id=place["id"],
+            name=place[f"{language.to_string()}_name"],
+            long=place["long"],
+            lat=place["lat"],
+            properties=place[f"{language.to_string()}_properties"],
+            type=place[f"{language.to_string()}_type"]
+        ).to_dict() for place in places], "not_found_ids": []}

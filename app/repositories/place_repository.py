@@ -91,7 +91,7 @@ class PlaceRepository:
     def search_places_after(self, limit: int, search_after_id: str, location: str, language: Language, filter: str = None):
         type_field = f"{language.to_string()}_type"
         properties_field = f"{language.to_string()}_properties"
-        print(f"Searching for places with location: {location}, filter: {filter}, language: {type_field}, limit: {limit}, search_after_id: {search_after_id}")
+        print(f"Searching for places with location: {location}, filter: {filter}, language: {language}, limit: {limit}, search_after_id: {search_after_id}")
         query = {
             "size": limit,
             "query": {
@@ -110,10 +110,14 @@ class PlaceRepository:
                 {"id": "asc"} 
             ],
             "_source": [
-                "id", "en_name", "vi_name", "long", "lat",
-                "en_type", "vi_type", "en_properties", "vi_properties"
+                "id", "long", "lat"
             ]
         }
+        # check language and add type field to query
+        if language == Language.EN:
+            query["_source"].extend(["en_name", "en_type", "en_properties"])
+        else:
+            query["_source"].extend(["vi_name", "vi_type", "vi_properties"])
 
         # Add filter condition only if it is provided
         if filter is not None:
@@ -136,7 +140,7 @@ class PlaceRepository:
         except Exception as e:
             raise AppException(f"Failed to perform search after: {str(e)}")
 
-    def get_places_in_patch_by_ids(self, place_ids: list[str]):
+    def get_places_in_patch_by_ids(self, language: Language, place_ids: list[str]):
         if not place_ids:
             return []
 
@@ -147,12 +151,17 @@ class PlaceRepository:
                 }
             },
             "_source": [
-                "id", "en_name", "vi_name", "long", "lat",
-                "en_type", "vi_type", "en_properties", "vi_properties"
+                "id", "long", "lat"
             ]
         }
+        # check language to query
+        if language == Language.EN:
+            query["_source"].extend(["en_name", "en_type", "en_properties"])
+        else:
+            query["_source"].extend(["vi_name", "vi_type", "vi_properties"])
+
         response = self.__es.search_by_query(index_name=self.__index_name, body=query)
         if response is None:
             return []
         hits = response["hits"]["hits"]
-        return hits
+        return [hit["_source"] for hit in hits]

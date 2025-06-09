@@ -155,7 +155,12 @@ class PlaceController:
             limit = int(request.args.get("limit"))
             search_after_id = request.args.get("search_after_id") if request.args.get("search_after_id") else None
             location = request.args.get("location")
-            language = Language(request.args.get("language"))
+            language_str = Language(request.args.get("language"))
+            # Validate language enum
+            try:
+                language = Language(language_str)
+            except ValueError:
+                raise ValidationError(f"Invalid language value: '{language_str}'. Must be one of: {[l.value for l in Language]}")
             filter = request.args.get("filter") if request.args.get("filter") else None
 
             # Call the service layer
@@ -178,6 +183,11 @@ class PlaceController:
           - name: Authorization
             in: header
             type: string
+            required: true
+          - name: language
+            in: query
+            type: string
+            enum: [en, vi]
             required: true
           - name: place_ids
             in: query
@@ -232,13 +242,24 @@ class PlaceController:
                   description: The error message
         """
         try:
-            place_ids = request.args.get("place_ids")
-            if not place_ids:
-                raise ValidationError("Missing required parameter 'place_ids'")
+            # Validate required parameters
+            required_params = ["language", "place_ids"]
+            missing_params = [param for param in required_params if param not in request.args or not request.args.get(param)]
+            if missing_params:
+                raise ValidationError(f"Missing required parameter(s): {', '.join(missing_params)}")
 
-            response = self.__place_service.search_places_in_patch_by_ids(place_ids)
+            language_str = request.args.get("language")
+            place_ids = request.args.get("place_ids")
+
+            # Validate language enum
+            try:
+                language = Language(language_str)
+            except ValueError:
+                raise ValidationError(f"Invalid language value: '{language_str}'. Must be one of: {[l.value for l in Language]}")
+
+            response = self.__place_service.search_places_in_patch_by_ids(language, place_ids)
             return jsonify({"status": 200, "data": response}), 200
-        
+
         except ValidationError as e:
             return jsonify({"status": 400, "message": e.message}), 400
         except AppException as e:
