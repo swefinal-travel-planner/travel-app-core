@@ -102,6 +102,10 @@ class PlaceController:
             in: query
             type: string
             required: false
+          - name: search_keyword
+            in: query
+            type: string
+            required: false
           - name: search_after_id
             in: query
             type: string
@@ -155,16 +159,17 @@ class PlaceController:
             limit = int(request.args.get("limit"))
             search_after_id = request.args.get("search_after_id") if request.args.get("search_after_id") else None
             location = request.args.get("location")
-            language_str = Language(request.args.get("language"))
+            language_str = request.args.get("language")
             # Validate language enum
             try:
                 language = Language(language_str)
             except ValueError:
                 raise ValidationError(f"Invalid language value: '{language_str}'. Must be one of: {[l.value for l in Language]}")
             filter = request.args.get("filter") if request.args.get("filter") else None
+            search_keyword = request.args.get("search_keyword") if request.args.get("search_keyword") else None
 
             # Call the service layer
-            response = self.__place_service.search_places_after(limit, search_after_id, location, language, filter)
+            response = self.__place_service.search_places_after(limit, search_after_id, location, language, filter, search_keyword)
             return jsonify({"status": 200, "data": response}), 200
         except ValidationError as e:
             return jsonify({"status": 400, "message": e.message}), 400

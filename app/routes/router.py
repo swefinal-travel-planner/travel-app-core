@@ -6,6 +6,7 @@ from di.di_container import configure
 from utils.jwt_auth import jwt_required
 from utils.jwt_verify import generate_token
 from config.config import Config
+from constant.label import en_labels, vi_labels
 
 api = Blueprint("api", __name__)
 
@@ -113,6 +114,43 @@ def generate_token_controller():
 
     token = generate_token({"role": "ADMIN"}, 600)  # Token valid for 10 minutes
     return {"token": token}, 200
+
+@api.route("/labels", methods=["GET"])
+def get_labels():
+    """
+    Get all labels.
+    ---
+    tags:
+      - Label
+    parameters:
+      - name: language
+        in: query
+        type: string
+        enum: [en, vi]
+        required: true
+    responses:
+      200:
+        description: A list of labels
+        schema:
+          type: object
+          properties:
+            status:
+              type: integer
+              description: The status code of the response
+            data:
+              type: array
+              items:
+                type: object
+                description: The list of labels
+    """
+    if "language" not in request.args:
+        return {"status": 400, "message": "Missing language parameter"}, 400
+    language_str = request.args.get("language")
+    if language_str not in ["en", "vi"]:
+        return {"status": 400, "message": f"Invalid language parameter: {language_str}, must be one of: ['en', 'vi']"}, 400
+
+    labels = en_labels if language_str == "en" else vi_labels
+    return {"data": labels}, 200
 # api.route("/places/<int:place_id>", methods=["GET"])(place_controller.get_place)
 # api.route("/places/<int:place_id>", methods=["PUT"])(place_controller.update_place)
 # api.route("/places/<int:place_id>", methods=["DELETE"])(place_controller.delete_place)

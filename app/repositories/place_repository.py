@@ -88,10 +88,11 @@ class PlaceRepository:
         except Exception as e:
             raise AppException(f"Failed to perform vector search: {str(e)}")
         
-    def search_places_after(self, limit: int, search_after_id: str, location: str, language: Language, filter: str = None):
+    def search_places_after(self, limit: int, search_after_id: str, location: str, language: Language, filter: str = None, search_keyword: str = None):
         type_field = f"{language.to_string()}_type"
         properties_field = f"{language.to_string()}_properties"
-        print(f"Searching for places with location: {location}, filter: {filter}, language: {language}, limit: {limit}, search_after_id: {search_after_id}")
+        name_field = f"{language.to_string()}_name"
+        print(f"Searching for places with location: {location}, filter: {filter}, language: {language}, limit: {limit}, search_after_id: {search_after_id}, search_keyword: {search_keyword}")
         query = {
             "size": limit,
             "query": {
@@ -136,7 +137,21 @@ class PlaceRepository:
                 return None
             hits = response["hits"]["hits"]
             # Correctly extract the "_source" field from each hit
-            return [hit["_source"] for hit in hits]
+            places = [hit["_source"] for hit in hits]
+            if search_keyword:
+                search_words = search_keyword.lower().split()
+                def match_keyword(place):
+                    name_value = place.get(name_field, "")
+                    name = str(name_value).lower()
+                    address_value = place.get(properties_field, "")
+                    # if isinstance(address_value, list):
+                    #     address = " ".join(address_value).lower()
+                    # else:
+                    #     address = str(address_value).lower()
+                    # in name or in address
+                    return all(word in name for word in search_words)
+                places = [place for place in places if match_keyword(place)]
+            return places
         except Exception as e:
             raise AppException(f"Failed to perform search after: {str(e)}")
 

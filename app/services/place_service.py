@@ -119,12 +119,12 @@ class PlaceService:
     
     def health_check_elastic(self):
         return self.__place_repository.health_check_elastic()
-    
-    def search_places_after(self, limit, search_after_id, location, language, filter):
+
+    def search_places_after(self, limit, search_after_id, location, language, filter, search_keyword):
         if search_after_id:
             if self.__place_repository.get_place_by_id(search_after_id) is None:
                 raise NotFoundError(f"Place after id: '{search_after_id}' not found")
-        places = self.__place_repository.search_places_after(limit, search_after_id, location, language, filter)
+        places = self.__place_repository.search_places_after(limit, search_after_id, location, language, filter, search_keyword)
         # Trả về mảng rỗng nếu không có địa điểm
         if not places:
             return []
