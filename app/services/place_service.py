@@ -129,13 +129,17 @@ class PlaceService:
         if not places:
             return []
         # Chuyển đổi kết quả thành danh sách PlaceResponse
+        #TODO
+        #---------------------------- --------------------------------------------------
         return [PlaceResponse(
             id=place["id"],
             name=place[f"{language.to_string()}_name"],
+            address="abc",  # Assuming address is not provided in the data
             long=place["long"],
             lat=place["lat"],
             properties=place[f"{language.to_string()}_properties"],
-            type=place[f"{language.to_string()}_type"]
+            type=place[f"{language.to_string()}_type"],
+            images=["1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq"]
         ).to_dict() for place in places]
 
     def search_places_in_patch_by_ids(self, language, place_ids: str):
@@ -158,10 +162,12 @@ class PlaceService:
                 PlaceResponse(
                     id=place["id"],
                     name=place[f"{language.to_string()}_name"],
+                    address="abc",  # Assuming address is not provided in the data
                     long=place["long"],
                     lat=place["lat"],
                     properties=place[f"{language.to_string()}_properties"],
-                    type=place[f"{language.to_string()}_type"]
+                    type=place[f"{language.to_string()}_type"],
+                    images=["1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq"]
                 ).to_dict() for place in places
             ]
             return {"places": found_places, "not_found_ids": not_found_ids}
@@ -170,8 +176,10 @@ class PlaceService:
         return {"places": [PlaceResponse(
             id=place["id"],
             name=place[f"{language.to_string()}_name"],
+            address="abc",  # Assuming address is not provided in the data
             long=place["long"],
             lat=place["lat"],
             properties=place[f"{language.to_string()}_properties"],
-            type=place[f"{language.to_string()}_type"]
+            type=place[f"{language.to_string()}_type"],
+            images=["1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq"]
         ).to_dict() for place in places], "not_found_ids": []}
