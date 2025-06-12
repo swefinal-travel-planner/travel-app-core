@@ -180,3 +180,28 @@ class PlaceRepository:
             return []
         hits = response["hits"]["hits"]
         return [hit["_source"] for hit in hits]
+
+    def get_random_places(self, language: Language, limit: int):
+        query = {
+            "size": limit,
+            "query": {
+                "function_score": {
+                    "query": {"match_all": {}},
+                    "random_score": {}
+                }
+            },
+            "_source": [
+                "id", "long", "lat"
+            ]
+        }
+        # check language to query
+        if language == Language.EN:
+            query["_source"].extend(["en_name", "en_type", "en_properties"])
+        else:
+            query["_source"].extend(["vi_name", "vi_type", "vi_properties"])
+
+        response = self.__es.search_by_query(index_name=self.__index_name, body=query)
+        if response is None:
+            return []
+        hits = response["hits"]["hits"]
+        return [hit["_source"] for hit in hits]

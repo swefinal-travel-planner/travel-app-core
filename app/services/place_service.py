@@ -183,3 +183,19 @@ class PlaceService:
             type=place[f"{language.to_string()}_type"],
             images=["1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq"]
         ).to_dict() for place in places], "not_found_ids": []}
+    
+    def get_places_randomly(self, language, limit):
+        places = self.__place_repository.get_random_places(language, limit)
+        if not places:
+            return []
+        # Chuyển đổi kết quả thành danh sách PlaceResponse
+        return [PlaceResponse(
+            id=place["id"],
+            name=place[f"{language.to_string()}_name"],
+            address="abc",  # Assuming address is not provided in the data
+            long=place["long"],
+            lat=place["lat"],
+            properties=place[f"{language.to_string()}_properties"],
+            type=place[f"{language.to_string()}_type"],
+            images=["1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq"]
+        ).to_dict() for place in places]

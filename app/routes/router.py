@@ -51,6 +51,7 @@ api.route("/ask_openai", methods=["GET"])(place_controller.ask_openai)
 api.route("/places/test_get_document", methods=["GET"])(place_controller.get_places_by_id)
 api.route("/places/test_delete_document", methods=["DELETE"])(place_controller.delete_place)
 api.route("/places/get_places_in_patch", methods=["GET"])(place_controller.get_places_in_patch_by_ids)
+api.route("/places/get_random_places", methods=["GET"])(place_controller.get_random_places)
 
 #api for Tour controllers
 api.route("/tours/create_tour", methods=["POST"])(jwt_required(tour_controller.create_tour))
