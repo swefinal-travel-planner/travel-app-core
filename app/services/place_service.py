@@ -105,11 +105,23 @@ class PlaceService:
                 if future.exception():
                     raise AppException(f"Error during processing: {future.exception()}")
 
-    def get_place_by_id(self, place_id: str):
-        existing_doc = self.__place_repository.get_place_by_id(place_id)
-        if not existing_doc:
+    def get_place_by_id(self, place_id: str, language):
+        place = self.__place_repository.get_place_by_id(place_id)
+        if not place:
             raise NotFoundError(f"No document found with ID '{place_id}'")
-        return existing_doc
+        # Chuyển đổi sang PlaceResponse
+        return PlaceResponse(
+            id=place["id"],
+            name=place.get(f"{language.to_string()}_name", ""),
+            address="abc",  # Hoặc lấy từ place nếu có
+            long=place.get("long"),
+            lat=place.get("lat"),
+            properties=place.get(f"{language.to_string()}_properties", {}),
+            type=place.get(f"{language.to_string()}_type", ""),
+            images=[
+                "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"
+            ] * 3
+        ).to_dict()
 
     def delete_place(self, place_id: str):
         status = self.__place_repository.delete_place(place_id)

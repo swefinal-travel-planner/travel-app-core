@@ -53,12 +53,80 @@ class PlaceController:
       response = self.__place_service.ask_question("hello")
       return jsonify(response.model_dump()), 200
   
-  def get_places_by_id(self):
+  def get_place_by_id(self, place_id):
+      """
+      Get a place by its ID
+      ---
+      tags:
+        - Place
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          required: true
+        - name: place_id
+          in: path
+          type: string
+          required: true
+        - name: language
+          in: query
+          type: string
+          enum: [en, vi]
+          required: true
+      responses:
+        200:
+          description: Place found
+          type: object
+          schema:
+            properties:
+              status:
+                type: integer
+              data:
+                type: object
+        400:
+          description: Validation error
+          type: object
+          schema:
+            properties:
+              status:
+                type: integer
+              message:
+                type: string
+        404:
+          description: Not found
+          type: object
+          schema:
+            properties:
+              status:
+                type: integer
+              message:
+                type: string
+        500:
+          description: Unexpected error
+          type: object
+          schema:
+            properties:
+              status:
+                type: integer
+              message:
+                type: string
+      """
       try:
-          response = self.__place_service.get_place_by_id()
-          return jsonify({"status": 200, "data": str(response)})
+          language_str = request.args.get("language")
+          if not language_str:
+              raise ValidationError("Missing required parameter: language")
+          try:
+              language = Language(language_str)
+          except ValueError:
+              raise ValidationError(f"Invalid language value: '{language_str}'. Must be one of: {[l.value for l in Language]}")
+          place = self.__place_service.get_place_by_id(str(place_id), language)
+          return jsonify({"status": 200, "data": place}), 200
+      except ValidationError as e:
+          return jsonify({"status": 400, "message": e.message}), 400
       except AppException as e:
           return jsonify({"status": e.status_code, "message": e.message}), e.status_code
+      except Exception as e:
+          return jsonify({"status": 500, "message": f"Unexpected error: {str(e)}"}), 500
 
   def delete_place(self):
       try:
