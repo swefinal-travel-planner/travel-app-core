@@ -144,11 +144,16 @@ class TourController:
             
             if not isinstance(data["medical_conditions"], list) or len(data["medical_conditions"]) == 0 or not all(isinstance(cond, str) for cond in data["medical_conditions"]):
                 raise ValidationError("Medical conditions must be a list of strings and cannot be empty")
-            
+            if not isinstance(data.get("locationPreference"), str):
+                raise ValidationError("Location preference must be a string")
             try:
                 locationPreference = LocationPreference.from_string(data.get("locationPreference"))
+                if locationPreference is None:
+                    raise ValueError
             except ValueError:
-                raise ValidationError("Invalid location preference. Location preference must be one of 'proximity', 'relevance', or 'balanced'.")
+                raise ValidationError(
+                    f"Invalid location preference. Location preference must be one of: {', '.join([l.to_string() for l in LocationPreference])}"
+                )
 
             user_references = UserReferencesRequest(
 
@@ -159,13 +164,18 @@ class TourController:
                 food_attributes=data.get("food_attributes"),
                 special_requirements=data.get("special_requirements"),
                 medical_conditions=data.get("medical_conditions"),
-                locationPreference=LocationPreference.from_string(data.get("locationPreference")).to_string()
+                locationPreference=locationPreference.to_string()
             )
             
             tours = self.tour_service.create_tour(user_references)
             return jsonify({"status": 200, "data": tours}), 200  # Return raw list of dictionaries
         except Exception as e:
-            return jsonify({"status": 500, "message": f"Unexpected error: {str(e)}"}), 500
+            if isinstance(e, ValidationError):
+                return jsonify({"status": 400, "message": str(e)}), 400
+            elif isinstance(e, AppException):
+                return jsonify({"status": e.status_code, "message": str(e)}), e.status_code
+            else:
+                return jsonify({"status": 500, "message": "An unexpected error occurred"}), 500
 
     def generate_label_cache(self):
       data = request.get_json()
