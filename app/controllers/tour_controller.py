@@ -145,8 +145,10 @@ class TourController:
             if not isinstance(data["medical_conditions"], list) or len(data["medical_conditions"]) == 0 or not all(isinstance(cond, str) for cond in data["medical_conditions"]):
                 raise ValidationError("Medical conditions must be a list of strings and cannot be empty")
             
-            if not isinstance(data["locationPreference"], str) or not LocationPreference.from_string(data["locationPreference"]):
-                raise ValidationError("Location preference must be one of 'proximity', 'relevance', or 'balanced'")
+            try:
+                locationPreference = LocationPreference.from_string(data.get("locationPreference"))
+            except ValueError:
+                raise ValidationError("Invalid location preference. Location preference must be one of 'proximity', 'relevance', or 'balanced'.")
 
             user_references = UserReferencesRequest(
 
