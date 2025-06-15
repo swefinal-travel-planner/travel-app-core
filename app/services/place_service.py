@@ -139,7 +139,7 @@ class PlaceService:
             lat=place["lat"],
             properties=place[f"{language.to_string()}_properties"],
             type=place[f"{language.to_string()}_type"],
-            images=["1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq"]
+            images=["https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"]
         ).to_dict() for place in places]
 
     def search_places_in_patch_by_ids(self, language, place_ids: str):
@@ -167,7 +167,7 @@ class PlaceService:
                     lat=place["lat"],
                     properties=place[f"{language.to_string()}_properties"],
                     type=place[f"{language.to_string()}_type"],
-                    images=["1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq"]
+                    images=["https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"]
                 ).to_dict() for place in places
             ]
             return {"places": found_places, "not_found_ids": not_found_ids}
@@ -181,7 +181,7 @@ class PlaceService:
             lat=place["lat"],
             properties=place[f"{language.to_string()}_properties"],
             type=place[f"{language.to_string()}_type"],
-            images=["1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq"]
+            images=["https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"]
         ).to_dict() for place in places], "not_found_ids": []}
     
     def get_places_randomly(self, language, limit):
@@ -197,5 +197,5 @@ class PlaceService:
             lat=place["lat"],
             properties=place[f"{language.to_string()}_properties"],
             type=place[f"{language.to_string()}_type"],
-            images=["1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq", "1vsS3c_2bTBy3FDII3zyC047A-M6cDxnq"]
+            images=["https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"]
         ).to_dict() for place in places]
