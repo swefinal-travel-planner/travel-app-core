@@ -4,6 +4,7 @@ from flask import jsonify, request
 from app.exceptions.custom_exceptions import AppException, ValidationError
 from app.models.user_references_request import UserReferencesRequest
 from app.models.location_preference import LocationPreference
+from constant.supported_city import supported_cities
 
 class TourController:
     @inject
@@ -127,6 +128,9 @@ class TourController:
             if missing_fields:
                 raise ValidationError(f"Missing required fields: {', '.join(missing_fields)}")
             
+            if data["city"] not in supported_cities:
+                raise ValidationError(f"City '{data['city']}' is not supported. Supported cities: {', '.join(supported_cities)}")
+            
             if not isinstance(data["days"], int) or data["days"] <= 0 or data["days"] > 7:
                 raise ValidationError("Days must be a positive integer, between 1 and 7")
             
@@ -144,6 +148,7 @@ class TourController:
             
             if not isinstance(data["medical_conditions"], list) or len(data["medical_conditions"]) == 0 or not all(isinstance(cond, str) for cond in data["medical_conditions"]):
                 raise ValidationError("Medical conditions must be a list of strings and cannot be empty")
+            
             if not isinstance(data.get("locationPreference"), str):
                 raise ValidationError("Location preference must be a string")
             try:
