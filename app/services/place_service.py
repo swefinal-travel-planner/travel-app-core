@@ -113,14 +113,12 @@ class PlaceService:
         return PlaceResponse(
             id=place["id"],
             name=place.get(f"{language.to_string()}_name", ""),
-            address="abc",  # Hoặc lấy từ place nếu có
+            address=place.get(f"{language.to_string()}_address", ""),
             long=place.get("long"),
             lat=place.get("lat"),
             properties=place.get(f"{language.to_string()}_properties", {}),
             type=place.get(f"{language.to_string()}_type", ""),
-            images=[
-                "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"
-            ] * 3
+            images=place.get("images")
         ).to_dict()
 
     def delete_place(self, place_id: str):
@@ -141,17 +139,16 @@ class PlaceService:
         if not places:
             return []
         # Chuyển đổi kết quả thành danh sách PlaceResponse
-        #TODO
         #---------------------------- --------------------------------------------------
         return [PlaceResponse(
             id=place["id"],
             name=place[f"{language.to_string()}_name"],
-            address="abc",  # Assuming address is not provided in the data
+            address=place[f"{language.to_string()}_address"],
             long=place["long"],
             lat=place["lat"],
             properties=place[f"{language.to_string()}_properties"],
             type=place[f"{language.to_string()}_type"],
-            images=["https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"]
+            images=place["images"]
         ).to_dict() for place in places]
 
     def search_places_in_patch_by_ids(self, language, place_ids: str):
@@ -174,12 +171,12 @@ class PlaceService:
                 PlaceResponse(
                     id=place["id"],
                     name=place[f"{language.to_string()}_name"],
-                    address="abc",  # Assuming address is not provided in the data
+                    address=place[f"{language.to_string()}_address"],
                     long=place["long"],
                     lat=place["lat"],
                     properties=place[f"{language.to_string()}_properties"],
                     type=place[f"{language.to_string()}_type"],
-                    images=["https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"]
+                    images=place["images"]
                 ).to_dict() for place in places
             ]
             return {"places": found_places, "not_found_ids": not_found_ids}
@@ -188,12 +185,12 @@ class PlaceService:
         return {"places": [PlaceResponse(
             id=place["id"],
             name=place[f"{language.to_string()}_name"],
-            address="abc",  # Assuming address is not provided in the data
+            address=place[f"{language.to_string()}_address"],  # Assuming address is not provided in the data
             long=place["long"],
             lat=place["lat"],
             properties=place[f"{language.to_string()}_properties"],
             type=place[f"{language.to_string()}_type"],
-            images=["https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"]
+            images=place["images"]
         ).to_dict() for place in places], "not_found_ids": []}
     
     def get_places_randomly(self, language, limit):
@@ -204,10 +201,10 @@ class PlaceService:
         return [PlaceResponse(
             id=place["id"],
             name=place[f"{language.to_string()}_name"],
-            address="abc",  # Assuming address is not provided in the data
+            address=place[f"{language.to_string()}_address"],  # Assuming address is not provided in the data
             long=place["long"],
             lat=place["lat"],
             properties=place[f"{language.to_string()}_properties"],
             type=place[f"{language.to_string()}_type"],
-            images=["https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no", "https://lh3.googleusercontent.com/p/AF1QipN8fyeYa9OC3ioHdNt58I7er7EkMsmb46s15q6y=s580-k-no"]
+            images=place["images"]
         ).to_dict() for place in places]

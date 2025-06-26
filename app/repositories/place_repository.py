@@ -23,12 +23,15 @@ class PlaceRepository:
             "id": place.id,
             "en_name": place.en_name,
             "vi_name": place.vi_name,
+            "en_address": place.en_address,
+            "vi_address": place.vi_address,
             "long": place.long,
             "lat": place.lat,
             "en_type": place.en_type,
             "vi_type": place.vi_type,
             "en_properties": place.en_properties,
             "vi_properties": place.vi_properties,
+            "images": place.images,
             "place_vector": vector_embedding
         }
         if self.get_place_by_id(place.id):
@@ -75,8 +78,8 @@ class PlaceRepository:
                 "num_candidates": 1200,  # Number of candidates to consider
             },
             "_source": [  # Use '_source' to specify fields to retrieve
-                "id", "en_name", "vi_name", "long", "lat", 
-                "en_type", "vi_type", "en_properties", "vi_properties"
+                "id", "en_name", "vi_name", "en_address", "vi_address", "long", "lat", 
+                "en_type", "vi_type", "en_properties", "vi_properties", "images"
             ]
         }
         try:
@@ -111,14 +114,14 @@ class PlaceRepository:
                 {"id": "asc"} 
             ],
             "_source": [
-                "id", "long", "lat"
+                "id", "long", "lat", "images"
             ]
         }
         # check language and add type field to query
         if language == Language.EN:
-            query["_source"].extend(["en_name", "en_type", "en_properties"])
+            query["_source"].extend(["en_name", "en_address", "en_type", "en_properties"])
         else:
-            query["_source"].extend(["vi_name", "vi_type", "vi_properties"])
+            query["_source"].extend(["vi_name", "vi_address", "vi_type", "vi_properties"])
 
         # Add filter condition only if it is provided
         if filter is not None:
@@ -144,11 +147,6 @@ class PlaceRepository:
                     name_value = place.get(name_field, "")
                     name = str(name_value).lower()
                     address_value = place.get(properties_field, "")
-                    # if isinstance(address_value, list):
-                    #     address = " ".join(address_value).lower()
-                    # else:
-                    #     address = str(address_value).lower()
-                    # in name or in address
                     return all(word in name for word in search_words)
                 places = [place for place in places if match_keyword(place)]
             return places
@@ -166,14 +164,14 @@ class PlaceRepository:
                 }
             },
             "_source": [
-                "id", "long", "lat"
+                "id", "long", "lat", "images"
             ]
         }
         # check language to query
         if language == Language.EN:
-            query["_source"].extend(["en_name", "en_type", "en_properties"])
+            query["_source"].extend(["en_name", "en_address", "en_type", "en_properties"])
         else:
-            query["_source"].extend(["vi_name", "vi_type", "vi_properties"])
+            query["_source"].extend(["vi_name", "vi_address", "vi_type", "vi_properties"])
 
         response = self.__es.search_by_query(index_name=self.__index_name, body=query)
         if response is None:
@@ -191,14 +189,14 @@ class PlaceRepository:
                 }
             },
             "_source": [
-                "id", "long", "lat"
+                "id", "long", "lat", "images"
             ]
         }
         # check language to query
         if language == Language.EN:
-            query["_source"].extend(["en_name", "en_type", "en_properties"])
+            query["_source"].extend(["en_name", "en_address", "en_type", "en_properties"])
         else:
-            query["_source"].extend(["vi_name", "vi_type", "vi_properties"])
+            query["_source"].extend(["vi_name", "vi_address", "vi_type", "vi_properties"])
 
         response = self.__es.search_by_query(index_name=self.__index_name, body=query)
         if response is None:

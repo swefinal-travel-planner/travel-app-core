@@ -2,13 +2,19 @@ place_mapping = {
     "mappings": {
         "properties": {
             "id": {
-                "type": "keyword",
+                "type": "keyword"
             },
             "en_name": {
-                "type": "text",
+                "type": "text"
             },
             "vi_name": {
-                "type": "text",
+                "type": "text"
+            },
+            "en_address": {
+                "type": "text"
+            },
+            "vi_address": {
+                "type": "text"
             },
             "long": {
                 "type": "float"
@@ -17,16 +23,19 @@ place_mapping = {
                 "type": "float"
             },
             "en_type": {
-                "type": "text",
+                "type": "text"
             },
             "vi_type": {
-                "type": "text",
+                "type": "text"
             },
             "en_properties": {
-                "type": "text",
+                "type": "text"
             },
             "vi_properties": {
-                "type": "text",
+                "type": "text"
+            },
+            "images": {
+                "type": "text"
             },
             "place_vector": {
                 "type": "dense_vector",

@@ -53,7 +53,6 @@ class TourService:
             tourist_destination_list_parse, food_location_list_parse = self.search_places(TOTAL_LOCATIONS, TOTAL_FOOD_LOCATIONS, tour_references, location_attributes_label_embedding, food_attributes_label_embedding)
 
             #rerank places by llm
-            # rerank_list = self.rerank_places_by_llm(tourist_destination_list_parse + food_location_list_parse, tour_references)
             all_places = tourist_destination_list_parse + food_location_list_parse
             batch_size = 20  # Tune this based on LLM limits and latency
             batches = [all_places[i:i + batch_size] for i in range(0, len(all_places), batch_size)]
@@ -156,8 +155,7 @@ class TourService:
             if not is_enough_food_locations:
                 food_places_list = self.__place_repository.search_places_by_vector(food_attributes_label_embedding, TOTAL_FOOD_LOCATIONS + loop_count)
             print("search complete")
-
-                #parse places from es hits and remove duplicates
+            #parse places from es hits and remove duplicates
             tourist_destination_list_parse = parse_places_from_es_hits(locations_places_list)
             food_location_list_parse = parse_places_from_es_hits(food_places_list)
             print("parse complete")
@@ -233,26 +231,6 @@ class TourService:
             tour_data.en_food_attributes_label = data["en_food_attributes_labels"]
 
         return tour_data
-
-    def rerank_places(self, places: list[PlaceWithScore], target_labels: str) -> list[PlaceWithScore]:
-        rerank_places = self.__reranker_service.rerank(target_labels, [place.to_dict() for place in places])
-        print(rerank_places)
-        return rerank_places
-
-    def rerank_places_by_llm(self, places: list[PlaceWithScore], tour_ref: TourReferences):
-        try:
-            prompt = prompts.rerank_places_prompt
-            data = " Đây là thông tin về yêu cầu của người dùng: " + str(tour_ref.attriutes_with_special_and_medical_conditions()) + '\n'
-            label = "Đây là danh sách các địa điểm: " + ''.join(str(place.to_dict_with_score()) for place in places)
-            list_score = self.__openai_service.ask_question(prompt + data + label, PlaceWithScoreCollapseList)
-            for place in places:
-                for score in list_score.places:
-                    if place.id == score.id:
-                        place.score = score.score
-            return places
-        except Exception as e:
-            print(f"Error reranking places by LLM: {e}")
-            raise e
         
     async def rerank_places_by_llm_async(self, places: list[PlaceWithScore], tour_ref: TourReferences):
         try:
@@ -427,17 +405,21 @@ class TourService:
 def parse_places_from_es_hits(hits: list[dict]) -> list[PlaceWithScore]:
     places = []
     for hit in hits:
+        print(hit)
         source = hit["_source"]
         place = PlaceWithScore(
             id=source["id"],
             en_name=source["en_name"], 
             vi_name=source["vi_name"],
+            en_address=source["en_address"],
+            vi_address=source["vi_address"],
             lat=source["lat"],
             long=source["long"],
             en_type=source["en_type"],
             vi_type=source["vi_type"],
             en_properties=source["en_properties"],
             vi_properties=source["vi_properties"],
+            images=source["images"],
             score=hit.get("_score")
         )
         places.append(place)
