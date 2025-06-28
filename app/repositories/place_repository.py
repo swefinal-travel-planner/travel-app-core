@@ -93,6 +93,7 @@ class PlaceRepository:
         
     def search_places_after(self, limit: int, search_after_id: str, location: str, language: Language, filter: str = None, search_keyword: str = None):
         type_field = f"{language.to_string()}_type"
+        address_field = f"{language.to_string()}_address"
         properties_field = f"{language.to_string()}_properties"
         name_field = f"{language.to_string()}_name"
         print(f"Searching for places with location: {location}, filter: {filter}, language: {language}, limit: {limit}, search_after_id: {search_after_id}, search_keyword: {search_keyword}")
@@ -102,8 +103,19 @@ class PlaceRepository:
                 "bool": {
                     "must": [
                         {
-                            "match_phrase": {
-                                properties_field: location
+                            "bool": {
+                                "should": [
+                                    {
+                                        "match_phrase": {
+                                            address_field: location
+                                        }
+                                    },
+                                    {
+                                        "match_phrase": {
+                                            properties_field: location
+                                        }
+                                    }
+                                ]
                             }
                         }
                     ],
@@ -146,7 +158,6 @@ class PlaceRepository:
                 def match_keyword(place):
                     name_value = place.get(name_field, "")
                     name = str(name_value).lower()
-                    address_value = place.get(properties_field, "")
                     return all(word in name for word in search_words)
                 places = [place for place in places if match_keyword(place)]
             return places
