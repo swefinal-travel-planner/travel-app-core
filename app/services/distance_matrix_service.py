@@ -4,8 +4,12 @@ import asyncio
 from injector import inject
 from typing import Tuple
 from app.models.distance_entry import DistanceEntry
+from app.models.language import Language
 from app.models.place_with_location import PlaceWithLocation
+from app.services.place_service import PlaceService
 from aiolimiter import AsyncLimiter
+import threading
+import time
 
 MAX_BATCH = 12
 CACHE_FILE = "./constant/distance_cache.json"
@@ -40,11 +44,21 @@ def load_distance_cache():
 
 class DistanceMatrixService:
     @inject
-    def __init__(self, mapbox_api_key):
+    def __init__(self, mapbox_api_key, place_service: PlaceService):
         self.__api_key = mapbox_api_key
         self.__base_url = "https://api.mapbox.com/directions-matrix/v1/mapbox"
         self.__distance_cache = load_distance_cache() or {}  # Đảm bảo luôn là danh sách
-        self._limiter = AsyncLimiter(55, 60) # Giới hạn 55 yêu cầu mỗi phút
+        self.__place_service = place_service
+        schedule_reload_cache(self, 60*60)  # Tự động reload cache mỗi 1 giờ
+
+    @property
+    def limiter(self):
+        loop = asyncio.get_event_loop()
+        if not hasattr(self, "_limiters"):
+            self._limiters = {}
+        if loop not in self._limiters:
+            self._limiters[loop] = AsyncLimiter(55, 60)
+        return self._limiters[loop]
 
     def _build_url(self, profile: str, coords: list[Tuple[float, float]]) -> str:
 
@@ -63,7 +77,7 @@ class DistanceMatrixService:
             "annotations": "distance"
         }
 
-        async with self._limiter:
+        async with self.limiter:
             async with aiohttp.ClientSession() as session:
                 for attempt in range(3):  # thử lại tối đa 3 lần
                     try:
@@ -156,7 +170,7 @@ class DistanceMatrixService:
                 key = tuple(sorted([entry.source_id, entry.destination_id]))
                 if key not in self.__distance_cache:
                     self.__distance_cache[key] = entry
-                self.append_distance_to_file(entry)
+                    self.append_distance_to_file(entry)
 
     def append_distance_to_file(self, entry: DistanceEntry):
         with open(CACHE_FILE, "a") as f:
@@ -167,3 +181,80 @@ class DistanceMatrixService:
         key = tuple(sorted([source_id, destination_id]))
         entry = self.__distance_cache.get(key)
         return entry.distance if entry else None
+    
+    def get_distance_time(self, list_place_id: list[str]):
+        results = []
+        missing_pairs = []
+        for i in range(len(list_place_id) - 1):
+            src_id = list_place_id[i]
+            dest_id = list_place_id[i + 1]
+            dist = self.find_distance(src_id, dest_id)
+            if dist is not None:
+                distance_km = round(dist / 1000, 2)  # làm tròn 2 chữ số
+                time_min = round((distance_km / 20) * 60, 1)  # làm tròn 1 chữ số
+                results.append({
+                    "source_id": src_id,
+                    "destination_id": dest_id,
+                    "distance": distance_km,
+                    "time": time_min
+                })
+            else:
+                missing_pairs.append((src_id, dest_id))
+                results.append({
+                    "source_id": src_id,
+                    "destination_id": dest_id,
+                    "distance": 0,
+                    "time": 0
+                })
+
+        if missing_pairs:
+            id_to_place = {}
+            for pid in set([pid for pair in missing_pairs for pid in pair]):
+                place = self.__place_service.get_place_by_id(pid, Language.EN)
+
+                id_to_place[pid] = PlaceWithLocation(
+                    id=place["id"],
+                    long=place["location"]["long"],
+                    lat=place["location"]["lat"],
+                    score=0
+                )
+
+            src_places = [id_to_place[src] for src, _ in missing_pairs]
+            dest_places = [id_to_place[dest] for _, dest in missing_pairs]
+            src_places = list({p.id: p for p in src_places}.values())
+            dest_places = list({p.id: p for p in dest_places}.values())
+
+            try:
+                loop = asyncio.get_running_loop()
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+            if loop.is_running():
+                coro = self.calculate_all_pairs(src_places, dest_places)
+                asyncio.ensure_future(coro)
+            else:
+                loop.run_until_complete(self.calculate_all_pairs(src_places, dest_places))
+
+            # Update results with newly calculated distances
+            for item in results:
+                if item["distance"] == 0:
+                    dist = self.find_distance(item["source_id"], item["destination_id"])
+                    if dist is not None:
+                        distance_km = round(dist / 1000, 2)
+                        time_min = round((distance_km / 30) * 60, 1)
+                        item["distance"] = distance_km
+                        item["time"] = time_min
+
+        return results
+
+def schedule_reload_cache(service_instance,interval_seconds: int = 600):
+    def reload_loop():
+        while True:
+            try:
+                service_instance._DistanceMatrixService__distance_cache = load_distance_cache()
+                print("Distance cache reloaded.")
+            except Exception as e:
+                print(f"Error reloading distance cache: {e}")
+            time.sleep(interval_seconds)
+    thread = threading.Thread(target=reload_loop, daemon=True)
+    thread.start()

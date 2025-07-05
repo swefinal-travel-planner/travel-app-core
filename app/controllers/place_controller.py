@@ -13,17 +13,6 @@ class PlaceController:
       data = self.__place_service.embed_text('Hello World')
       return str(data)
   
-  def get_distance_matrix(self):
-      origin_places = [[10.797162181179663, 106.6733851910843]]
-      destination_places = [[10.848381955148074, 106.61414722985516], [10.801725010158977, 106.60679246680516]]
-      
-      # Convert arrays to "longitude,latitude" strings
-      origins = [f"{lng},{lat}" for lat, lng in origin_places]
-      destinations = [f"{lng},{lat}" for lat, lng in destination_places]
-      
-      data = self.__place_service.get_distance_matrix(origins, destinations)
-      return jsonify(data)
-  
   def insert_places(self):
       try:
           if "files" not in request.files:

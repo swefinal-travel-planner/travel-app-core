@@ -1,7 +1,6 @@
 from flask import json
 from app.repositories.place_repository import PlaceRepository
 from app.services.embedding_service import EmbeddingService
-from app.services.distance_matrix_service import DistanceMatrixService
 from app.services.openai_service import OpenAIService
 from app.models.location import Location
 from injector import inject
@@ -22,20 +21,13 @@ class PlaceService:
     def __init__(self,
                   place_repository: PlaceRepository,
                   embedding_service: EmbeddingService,
-                  distance_matrix_service: DistanceMatrixService,
                   openai_service: OpenAIService):
         self.__place_repository = place_repository
         self.__embedding_service = embedding_service
-        self.__distance_matrix_service = distance_matrix_service
         self.__openai_service = openai_service
 
     def embed_text(self, text):
         return self.__embedding_service.embed_text(text)
-    
-    def get_distance_matrix(self, origin_places, destination_places):
-        origins = [f"{lng},{lat}" for lat, lng in origin_places]
-        destinations = [f"{lng},{lat}" for lat, lng in destination_places]
-        return self.__distance_matrix_service.calculate_distance_matrix(origins, destinations)
     
     def insert_places(self, data):
         list_data = self.parse_mockdata_and_remove_esixts(data)
@@ -67,8 +59,8 @@ class PlaceService:
         
     def convert_raw_location_to_place_by_llm(self, locations) -> Place_list:
         prompt = prompts.convert_location_to_place_prompt
-        data = "Đây là danh sách địa điểm: " + ''.join(str(location.to_str()) for location in locations) + '\n'
-        label = "Đây là danh sách label " + LABEL
+        data = "Here is a list of places: " + ''.join(str(location.to_str()) for location in locations) + '\n'
+        label = "Here is the list of labels: " + LABEL
         return self.__openai_service.ask_question(prompt + data + label, Place_list)
 
     def process_locations_with_threads(self, locations):

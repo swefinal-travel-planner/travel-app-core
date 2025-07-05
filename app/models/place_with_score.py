@@ -37,10 +37,7 @@ class PlaceWithScore:
         return {
             "id": self.id,
             "en_name": self.en_name,
-            "vi_name": self.vi_name,
             "en_type": self.en_type,
-            "vi_type": self.vi_type,
             "en_properties": self.en_properties,
-            "vi_properties": self.vi_properties,
             "score": self.score
         }

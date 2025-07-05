@@ -165,10 +165,11 @@ class TourService:
             tourist_destination_list_parse = [
                     place for place in tourist_destination_list_parse if place.id not in food_place_ids
                 ]
+            
             print("remove food places from tourist destination complete")
                 #check if there are enough locations and food places
-            is_enough_locations = len(tourist_destination_list_parse) >= tour_references.days * (tour_references.locationsPerDay - 3)
-            is_enough_food_locations = len(food_location_list_parse) >= tour_references.days * 3
+            is_enough_locations = len(tourist_destination_list_parse) >= tour_references.days * (tour_references.locationsPerDay - 3) + loop_count
+            is_enough_food_locations = len(food_location_list_parse) >= tour_references.days * 3 + loop_count
             if len([place for place in food_location_list_parse if "breakfast" in place.en_type]) < tour_references.days:
                 is_enough_food_locations = False
 
@@ -201,8 +202,8 @@ class TourService:
         if data["vi_location_attributes_labels"] == []:
             try:
                 prompt = prompts.convert_user_location_references_to_labels_prompt
-                location_data_str = "Đây là danh sách yêu cầu của người dùng về các địa điểm du lịch: " + ' '.join(str(user_references.location_attributes_to_str())) + '\n'
-                label = "Đây là danh sách các nhãn dán: " + LABEL
+                location_data_str = "Here is the user's request list for tourist destinations: " + ' '.join(str(user_references.location_attributes_to_str())) + '\n'
+                label = "Here is the list of labels: " + LABEL
                 location_label = self.__openai_service.ask_question(prompt + location_data_str + label, LocationLabelsExtract)
                 if location_label:
                     tour_data.vi_location_attributes_label = location_label.vi_location_attributes_label
@@ -217,8 +218,8 @@ class TourService:
         if data["vi_food_attributes_labels"] == []:
             try:
                 prompt = prompts.convert_user_food_references_to_labels_prompt
-                food_data_str = "Đây là danh sách yêu cầu của người dùng về các món ăn: " + ' '.join(str(user_references.food_attributes_to_str())) + '\n'
-                label = "Đây là danh sách các nhãn dán: " + LABEL
+                food_data_str = "Here is the user's request list for food: " + ' '.join(str(user_references.food_attributes_to_str())) + '\n'
+                label = "Here is the list of labels: " + LABEL
                 food_label = self.__openai_service.ask_question(prompt + food_data_str + label, FoodLabelsExtract)
                 if food_label:
                     tour_data.vi_food_attributes_label = food_label.vi_food_attributes_label
@@ -235,9 +236,8 @@ class TourService:
     async def rerank_places_by_llm_async(self, places: list[PlaceWithScore], tour_ref: TourReferences):
         try:
             prompt = prompts.rerank_places_prompt
-            data = " Đây là thông tin về yêu cầu của người dùng: " + str(tour_ref.attriutes_with_special_and_medical_conditions()) + '\n'
-            label = "Đây là danh sách các địa điểm: " + ''.join(str(place.to_dict_with_score()) for place in places)
-            
+            data = "Here is the user's request information: " + str(tour_ref.attriutes_with_special_and_medical_conditions()) + '\n'
+            label = "Here is the list of places: " + ''.join(str(place.to_dict_with_score()) for place in places)
             list_score = await self.__openai_service.ask_question_async(prompt + data + label, PlaceWithScoreCollapseList)
             for place in places:
                 for score in list_score.places:
@@ -354,23 +354,21 @@ class TourService:
 
         total_score += sum(place.score for place in trip)
         for i in range(len(trip) - 1):
-            distance = self.__distance_matrix_service.find_distance(trip[i].id, trip[i + 1].id)
-            if distance is None:
+            data_distance = self.__distance_matrix_service.get_distance_time([trip[i].id, trip[i + 1].id])
+            if data_distance is None:
                 raise ValueError("Distance not found for trip calculation: "+ str(trip[i].id) + " to " + str(trip[i + 1].id))
-            total_distance += distance
+            total_distance += data_distance[0]["distance"]* 1000  # Convert km to meters
 
         total_score = total_score - locationPreference * total_distance
         
         return total_score
 
     async def process_tour_data(self, breakfast_list, tourist_destination_list, lunch_dinner_list):
-        # Ensure this function is asynchronous to await the calculate_all_pairs method
         tasks = [
             self.__distance_matrix_service.calculate_all_pairs(breakfast_list, tourist_destination_list),
             self.__distance_matrix_service.calculate_all_pairs(tourist_destination_list, tourist_destination_list),
             self.__distance_matrix_service.calculate_all_pairs(lunch_dinner_list, tourist_destination_list)
         ]
-
         await asyncio.gather(*tasks)
 
     def cache_labels(self, user_references: UserReferencesRequest):
@@ -405,7 +403,6 @@ class TourService:
 def parse_places_from_es_hits(hits: list[dict]) -> list[PlaceWithScore]:
     places = []
     for hit in hits:
-        print(hit)
         source = hit["_source"]
         place = PlaceWithScore(
             id=source["id"],

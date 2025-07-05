@@ -180,7 +180,7 @@ class TourController:
             elif isinstance(e, AppException):
                 return jsonify({"status": e.status_code, "message": str(e)}), e.status_code
             else:
-                return jsonify({"status": 500, "message": "An unexpected error occurred"}), 500
+                return jsonify({"status": 500, "message": str(e)}), 500
 
     def generate_label_cache(self):
       data = request.get_json()

@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from injector import Injector
 from app.controllers.place_controller import PlaceController
 from app.controllers.tour_controller import TourController
+from app.controllers.distance_time_controller import DistanceTimeController
 from di.di_container import configure
 from utils.jwt_auth import jwt_required
 from utils.jwt_verify import generate_token
@@ -13,6 +14,7 @@ api = Blueprint("api", __name__)
 injector = Injector(configure)
 place_controller = injector.get(PlaceController)
 tour_controller = injector.get(TourController)
+distance_time_controller = injector.get(DistanceTimeController)
 
 @api.route("/health", methods=["GET"])
 def health_check():
@@ -45,7 +47,6 @@ api.route("/health-elastic", methods=["POST"])(place_controller.check_health_ela
 # api for Place controllers
 
 api.route("/places", methods=["GET"])(jwt_required(place_controller.search_places_after))
-api.route("/distance_matrix", methods=["GET"])(place_controller.get_distance_matrix)
 api.route("/places/insert_data", methods=["POST"])(place_controller.insert_places)
 api.route("/ask_openai", methods=["GET"])(place_controller.ask_openai)
 api.route("/places/<string:place_id>", methods=["GET"])(place_controller.get_place_by_id)
@@ -152,6 +153,8 @@ def get_labels():
 
     labels = en_labels if language_str == "en" else vi_labels
     return {"data": labels}, 200
+
+api.route("/distance_time/calc", methods=["POST"])(jwt_required(distance_time_controller.get_distance_time))
 # api.route("/places/<int:place_id>", methods=["GET"])(place_controller.get_place)
 # api.route("/places/<int:place_id>", methods=["PUT"])(place_controller.update_place)
 # api.route("/places/<int:place_id>", methods=["DELETE"])(place_controller.delete_place)
