@@ -3,6 +3,7 @@ from app.repositories.place_repository import PlaceRepository
 from app.services.embedding_service import EmbeddingService
 from app.services.openai_service import OpenAIService
 from app.models.location import Location
+from app.models.language import Language
 from injector import inject
 import constant.prompt as prompts
 from constant.label import LABEL
@@ -15,6 +16,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.exceptions.custom_exceptions import AppException,ValidationError, NotFoundError
 from utils.extract_id import extract_ids_from_string
+import constant.label as label_tools
 
 class PlaceService:
     @inject
@@ -126,7 +128,14 @@ class PlaceService:
         if search_after_id:
             if self.__place_repository.get_place_by_id(search_after_id) is None:
                 raise NotFoundError(f"Place after id: '{search_after_id}' not found")
-        places = self.__place_repository.search_places_after(limit, search_after_id, location, language, filter, search_keyword)
+        extract_filter = []
+        if filter is not None:
+            extracter = [x.strip() for x in filter.split(",")]
+            if language == Language.EN:
+                extract_filter = [label_tools.normalize_label_en(x) for x in extracter]
+            elif language == Language.VI:
+                extract_filter = [label_tools.normalize_label_vi(x) for x in extracter]
+        places = self.__place_repository.search_places_after(limit, search_after_id, location, language, extract_filter, search_keyword)
         # Trả về mảng rỗng nếu không có địa điểm
         if not places:
             return []

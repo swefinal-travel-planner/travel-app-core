@@ -68,7 +68,7 @@ vi_labels = {
         "nông trại", "bánh kẹo", "sô cô la", "đồ uống", "cà phê & trà",
         "nhà hàng", "quán cà phê", "quán bar", "quán rượu", "vườn bia", "taproom",
         "đồ ăn đường phố", "khu ẩm thực", "ẩm thực địa phương", "ẩm thực cao cấp", "buffet",
-        "lẩu", "BBQ", "nhà hàng hải sản", "chay", "thuần chay", "đồ ăn nhanh",
+        "lẩu", "bbq", "nhà hàng hải sản", "chay", "thuần chay", "đồ ăn nhanh",
         "xe đồ ăn", "quán trà", "tiệm tráng miệng", "quán mì", "quán sushi",
         "nướng Hàn Quốc", "ramen", "bia thủ công"
     ],
@@ -96,7 +96,7 @@ vi_labels = {
         "phòng trưng bày", "trải nghiệm văn hóa"
     ],
     "Lịch Sử & Di Tích": [
-        "lịch sử", "di sản UNESCO", "cảnh đẹp", "điểm thu hút",
+        "lịch sử", "di sản unesco", "cảnh đẹp", "điểm thu hút",
         "nơi thờ tự", "tu viện", "tòa thị chính", "hải đăng",
         "cối xay gió", "tháp", "chiến trường", "pháo đài", "lâu đài", "di tích",
         "khu khảo cổ", "cổng thành", "cầu", "tượng đài"
@@ -111,3 +111,25 @@ vi_labels = {
         "chợ đêm"
     ]
 }
+
+def format_label(label):
+    # Chuyển snake_case hoặc dot.case sang dạng có dấu cách và viết hoa chữ cái đầu mỗi từ
+    return ' '.join([w.capitalize() for w in label.replace('.', ' ').replace('_', ' ').split()])
+
+def format_label_vi(label):
+    # Viết hoa chữ cái đầu mỗi từ, giữ nguyên dấu tiếng Việt
+    return ' '.join([w.capitalize() for w in label.split()])
+
+def get_en_labels():
+    return {key: [format_label(label) for label in labels] for key, labels in en_labels.items()}
+
+def get_vi_labels():
+    return {key: [format_label_vi(label) for label in labels] for key, labels in vi_labels.items()}
+
+def normalize_label_vi(label):
+    # Chuyển "Du Lịch" thành "du lịch"
+    return label.strip().lower()
+
+def normalize_label_en(label):
+    # Chuyển "Discount Store" thành "discount_store"
+    return label.strip().lower().replace(' ', '_')

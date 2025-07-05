@@ -136,10 +136,14 @@ class PlaceRepository:
             query["_source"].extend(["vi_name", "vi_address", "vi_type", "vi_properties"])
 
         # Add filter condition only if it is provided
-        if filter is not None:
+        if len(filter) > 0:
+            should_clauses = [
+                {"match_phrase": {type_field: value}} for value in filter
+            ]
             query["query"]["bool"]["filter"].append({
-                "match_phrase": {
-                    type_field: filter
+                "bool": {
+                    "should": should_clauses,
+                    "minimum_should_match": len(filter)  # Ensure at least one filter matches
                 }
             })
 

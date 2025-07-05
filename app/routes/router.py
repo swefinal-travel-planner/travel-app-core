@@ -7,7 +7,7 @@ from di.di_container import configure
 from utils.jwt_auth import jwt_required
 from utils.jwt_verify import generate_token
 from config.config import Config
-from constant.label import en_labels, vi_labels
+import constant.label as label_tools
 
 api = Blueprint("api", __name__)
 
@@ -151,7 +151,11 @@ def get_labels():
     if language_str not in ["en", "vi"]:
         return {"status": 400, "message": f"Invalid language parameter: {language_str}, must be one of: ['en', 'vi']"}, 400
 
-    labels = en_labels if language_str == "en" else vi_labels
+    labels = {}
+    if language_str == "en":
+        labels = label_tools.get_en_labels()
+    elif language_str == "vi":
+        labels = label_tools.get_vi_labels()
     return {"data": labels}, 200
 
 api.route("/distance_time/calc", methods=["POST"])(jwt_required(distance_time_controller.get_distance_time))
