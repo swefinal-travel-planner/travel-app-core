@@ -68,17 +68,36 @@ class PlaceRepository:
         hits = response["hits"]["hits"]
         return hits[0]["_source"]
     
-    def search_places_by_vector(self, vector_embedding, size):
+    def search_places_by_vector(self, vector_embedding, size, city: str, neighbor_district: list[str]):
+        should_clauses = []
+        for district in neighbor_district:
+            # should_clauses.append({"match_phrase": {"en_address": district}})
+            should_clauses.append({"match_phrase": {"en_properties": district}})
         query = {
             "size": size,
-            "knn": {  # Move 'knn' to the top level
-                "field": "place_vector",  # Ensure the field name is correct
+            "knn": {
+                "field": "place_vector",
                 "query_vector": vector_embedding,
                 "k": size,
-                "num_candidates": 1200,  # Number of candidates to consider
+                "num_candidates": 1200,
             },
-            "_source": [  # Use '_source' to specify fields to retrieve
-                "id", "en_name", "vi_name", "en_address", "vi_address", "long", "lat", 
+            "query": {
+                "bool": {
+                    "must": [
+                        {"term": {"en_address": city}}
+                    ],
+                    "filter":[
+                        {
+                            "bool": {
+                                "should": should_clauses,
+                                "minimum_should_match": 1  # Ensure at least one district matches
+                            }
+                        }
+                    ]
+                }
+            },
+            "_source": [
+                "id", "en_name", "vi_name", "en_address", "vi_address", "long", "lat",
                 "en_type", "vi_type", "en_properties", "vi_properties", "images"
             ]
         }

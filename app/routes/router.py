@@ -57,6 +57,7 @@ api.route("/places/get_random_places", methods=["GET"])(place_controller.get_ran
 #api for Tour controllers
 api.route("/tours/create_tour", methods=["POST"])(jwt_required(tour_controller.create_tour))
 api.route("/tours/mapping_label", methods=["POST"])(tour_controller.generate_label_cache)
+api.route("/tours/create_tour_demo", methods=["POST"])(tour_controller.demo)
 
 @api.route("/auth/generate_token", methods=["POST"])
 def generate_token_controller():

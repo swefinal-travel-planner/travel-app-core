@@ -4,7 +4,7 @@ from flask import jsonify, request
 from app.exceptions.custom_exceptions import AppException, ValidationError
 from app.models.user_references_request import UserReferencesRequest
 from app.models.location_preference import LocationPreference
-from constant.supported_city import supported_cities
+from constant.supported_district_city import supported_cities, get_neighbor_districts, get_supported_districts
 
 class TourController:
     @inject
@@ -128,8 +128,17 @@ class TourController:
             if missing_fields:
                 raise ValidationError(f"Missing required fields: {', '.join(missing_fields)}")
             
-            if data["city"] not in supported_cities:
-                raise ValidationError(f"City '{data['city']}' is not supported. Supported cities: {', '.join(supported_cities)}")
+            try:
+                district, city = data["city"].split(",")
+            except ValueError:
+                raise ValidationError("City must be in the format 'district, city'")
+            
+            if city not in supported_cities:
+                raise ValidationError(f"City '{city}' is not supported. Supported cities: {', '.join(supported_cities)}")
+            
+            neighbor_district = get_neighbor_districts(district)
+            if not neighbor_district:
+                raise ValidationError(f"District '{district}' is not supported. Supported districts: {', '.join(get_supported_districts())}")
             
             if not isinstance(data["days"], int) or data["days"] <= 0 or data["days"] > 7:
                 raise ValidationError("Days must be a positive integer, between 1 and 7")
@@ -162,7 +171,7 @@ class TourController:
 
             user_references = UserReferencesRequest(
 
-                city=data.get("city"),
+                city=f"{district},{city}",
                 days=data.get("days"),
                 locationsPerDay=data.get("locationsPerDay"),
                 location_attributes=data.get("location_attributes"),
@@ -172,7 +181,7 @@ class TourController:
                 locationPreference=locationPreference.to_string()
             )
             
-            tours = self.tour_service.create_tour(user_references)
+            tours = self.tour_service.create_tour(user_references, neighbor_district)
             return jsonify({"status": 200, "data": tours}), 200  # Return raw list of dictionaries
         except Exception as e:
             if isinstance(e, ValidationError):
@@ -197,3 +206,76 @@ class TourController:
 
       self.tour_service.cache_labels(user_references)
       return jsonify({"status": 200, "message": "Label cache generated successfully"}), 200
+    
+    def demo(self):
+      try:
+            data = request.get_json()
+            if not data:
+                raise ValidationError("No data provided")
+            
+            missing_fields = [key for key in ["city", "days", "locationsPerDay", "location_attributes", "food_attributes", "special_requirements", "medical_conditions", "locationPreference"] if key not in data]
+            if missing_fields:
+                raise ValidationError(f"Missing required fields: {', '.join(missing_fields)}")
+            
+            try:
+                district, city = data["city"].split(",")
+            except ValueError:
+                raise ValidationError("City must be in the format 'district, city'")
+            
+            if city not in supported_cities:
+                raise ValidationError(f"City '{city}' is not supported. Supported cities: {', '.join(supported_cities)}")
+            
+            neighbor_district = get_neighbor_districts(district)
+            if not neighbor_district:
+                raise ValidationError(f"District '{district}' is not supported. Supported districts: {', '.join(get_supported_districts())}")
+            
+            if not isinstance(data["days"], int) or data["days"] <= 0 or data["days"] > 7:
+                raise ValidationError("Days must be a positive integer, between 1 and 7")
+            
+            if not isinstance(data["locationsPerDay"], int) or data["locationsPerDay"] < 5 or data["locationsPerDay"] > 9:
+                raise ValidationError("Locations per day must be a positive integer, between 5 and 9")
+            
+            if not isinstance(data["location_attributes"], list) or len(data["location_attributes"]) == 0 or not all(isinstance(attr, str) for attr in data["location_attributes"]):
+                raise ValidationError("Location attributes must be a list of strings and cannot be empty")
+            
+            if not isinstance(data["food_attributes"], list) or len(data["food_attributes"]) == 0 or not all(isinstance(attr, str) for attr in data["food_attributes"]):
+                raise ValidationError("Food attributes must be a list of strings and cannot be empty")
+            
+            if not isinstance(data["special_requirements"], list) or len(data["special_requirements"]) == 0 or not all(isinstance(req, str) for req in data["special_requirements"]):
+                raise ValidationError("Special requirements must be a list of strings and cannot be empty")
+            
+            if not isinstance(data["medical_conditions"], list) or len(data["medical_conditions"]) == 0 or not all(isinstance(cond, str) for cond in data["medical_conditions"]):
+                raise ValidationError("Medical conditions must be a list of strings and cannot be empty")
+            
+            if not isinstance(data.get("locationPreference"), str):
+                raise ValidationError("Location preference must be a string")
+            try:
+                locationPreference = LocationPreference.from_string(data.get("locationPreference"))
+                if locationPreference is None:
+                    raise ValueError
+            except ValueError:
+                raise ValidationError(
+                    f"Invalid location preference. Location preference must be one of: {', '.join([l.to_string() for l in LocationPreference])}"
+                )
+
+            user_references = UserReferencesRequest(
+
+                city=f"{district},{city}",
+                days=data.get("days"),
+                locationsPerDay=data.get("locationsPerDay"),
+                location_attributes=data.get("location_attributes"),
+                food_attributes=data.get("food_attributes"),
+                special_requirements=data.get("special_requirements"),
+                medical_conditions=data.get("medical_conditions"),
+                locationPreference=locationPreference.to_string()
+            )
+            
+            data = self.tour_service.create_tour_demo(user_references, neighbor_district)
+            return jsonify({"status": 200, "data": data}), 200  # Return raw list of dictionaries
+      except Exception as e:
+            if isinstance(e, ValidationError):
+                return jsonify({"status": 400, "message": str(e)}), 400
+            elif isinstance(e, AppException):
+                return jsonify({"status": e.status_code, "message": str(e)}), e.status_code
+            else:
+                return jsonify({"status": 500, "message": str(e)}), 500

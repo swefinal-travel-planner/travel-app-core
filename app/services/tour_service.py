@@ -35,7 +35,7 @@ class TourService:
         self.__embedding_service = embedding_service
         self.__distance_matrix_service = distance_matrix_service
 
-    def create_tour(self, user_references: UserReferencesRequest):
+    def create_tour_demo(self, user_references: UserReferencesRequest, neighbor_district: list[str]):
         try:
             TOTAL_LOCATIONS = user_references.days * (user_references.locationsPerDay - 3) * 4
             TOTAL_FOOD_LOCATIONS = user_references.days * 3 * 4
@@ -50,7 +50,29 @@ class TourService:
             print("embedding complete")
 
             #search for places in the database
-            tourist_destination_list_parse, food_location_list_parse = self.search_places(TOTAL_LOCATIONS, TOTAL_FOOD_LOCATIONS, tour_references, location_attributes_label_embedding, food_attributes_label_embedding)
+            tourist_destination_list_parse, food_location_list_parse = self.search_places(TOTAL_LOCATIONS, TOTAL_FOOD_LOCATIONS, tour_references, location_attributes_label_embedding, food_attributes_label_embedding, neighbor_district)
+
+            return [tourist_destination_list_parse + food_location_list_parse]
+        except Exception as e:
+            print(f"Error creating tour: {e}")
+            raise e
+
+    def create_tour(self, user_references: UserReferencesRequest, neighbor_district: list[str]):
+        try:
+            TOTAL_LOCATIONS = user_references.days * (user_references.locationsPerDay - 3) * 4
+            TOTAL_FOOD_LOCATIONS = user_references.days * 3 * 4
+            #convert user references to tour references in label
+            #check db to reduce convert time
+            tour_references = self.convert_user_references_to_tour_references(user_references)
+            print("convert complete")
+
+            #embedding location_attribute_label and food_attribute_label to vector
+            location_attributes_label_embedding = self.__embedding_service.embed_text(str(tour_references.en_location_attributes_label) + "," + str(tour_references.vi_location_attributes_label))
+            food_attributes_label_embedding = self.__embedding_service.embed_text(str(tour_references.en_food_attributes_label) + "," + str(tour_references.vi_food_attributes_label))
+            print("embedding complete")
+
+            #search for places in the database
+            tourist_destination_list_parse, food_location_list_parse = self.search_places(TOTAL_LOCATIONS, TOTAL_FOOD_LOCATIONS, tour_references, location_attributes_label_embedding, food_attributes_label_embedding, neighbor_district)
 
             #rerank places by llm
             all_places = tourist_destination_list_parse + food_location_list_parse
@@ -143,7 +165,12 @@ class TourService:
             print(f"Error creating tour: {e}")
             raise e
 
-    def search_places(self, TOTAL_LOCATIONS, TOTAL_FOOD_LOCATIONS, tour_references, location_attributes_label_embedding, food_attributes_label_embedding):
+    def search_places(self, TOTAL_LOCATIONS, TOTAL_FOOD_LOCATIONS, tour_references, location_attributes_label_embedding, food_attributes_label_embedding, neighbor_district):
+        city = tour_references.city.split(",")[1].strip()
+        #group district and neighbor district
+        district_pool = [tour_references.city.split(",")[0].strip()] + neighbor_district
+        print(district_pool)
+        #search places by vector
         loop_count = 0
         is_enough_locations = False
         is_enough_food_locations = False
@@ -151,9 +178,9 @@ class TourService:
         food_location_list_parse = []
         while not (is_enough_locations and is_enough_food_locations):
             if not is_enough_locations:
-                locations_places_list = self.__place_repository.search_places_by_vector(location_attributes_label_embedding, TOTAL_LOCATIONS + loop_count)
+                locations_places_list = self.__place_repository.search_places_by_vector(location_attributes_label_embedding, TOTAL_LOCATIONS + loop_count, city, district_pool)
             if not is_enough_food_locations:
-                food_places_list = self.__place_repository.search_places_by_vector(food_attributes_label_embedding, TOTAL_FOOD_LOCATIONS + loop_count)
+                food_places_list = self.__place_repository.search_places_by_vector(food_attributes_label_embedding, TOTAL_FOOD_LOCATIONS + loop_count, city, district_pool)
             print("search complete")
             #parse places from es hits and remove duplicates
             tourist_destination_list_parse = parse_places_from_es_hits(locations_places_list)
