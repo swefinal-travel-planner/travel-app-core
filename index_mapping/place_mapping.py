@@ -42,6 +42,9 @@ place_mapping = {
                 "dims": 1024,
                 "index": True,
                 "similarity": "l2_norm"
+            },
+            "district": {
+                "type": "keyword"
             }
         }
     }

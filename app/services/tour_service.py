@@ -169,7 +169,6 @@ class TourService:
         city = tour_references.city.split(",")[1].strip()
         #group district and neighbor district
         district_pool = [tour_references.city.split(",")[0].strip()] + neighbor_district
-        print(district_pool)
         #search places by vector
         loop_count = 0
         is_enough_locations = False

@@ -16,6 +16,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from app.exceptions.custom_exceptions import AppException,ValidationError, NotFoundError
 from utils.extract_id import extract_ids_from_string
+from utils.get_location import get_address_by_location, get_district_by_address
 import constant.label as label_tools
 
 class PlaceService:
@@ -194,8 +195,12 @@ class PlaceService:
             images=place["images"]
         ).to_dict() for place in places], "not_found_ids": []}
     
-    def get_places_randomly(self, language, limit):
-        places = self.__place_repository.get_random_places(language, limit)
+    def get_places_randomly(self, language, limit, long=None, lat=None):
+        # Kiểm tra xem long và lat có được cung cấp không
+        address = get_address_by_location(long, lat) if long and lat else None
+        district = get_district_by_address(address) if address else None
+
+        places = self.__place_repository.get_random_places(language, limit, district=district)
         if not places:
             return []
         # Chuyển đổi kết quả thành danh sách PlaceResponse

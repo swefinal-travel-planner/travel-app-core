@@ -397,14 +397,15 @@ class PlaceController:
 
             language_str = request.args.get("language")
             limit = int(request.args.get("limit"))
-
+            long = request.args.get("long")
+            lat = request.args.get("lat")
             # Validate language enum
             try:
                 language = Language(language_str)
             except ValueError:
                 raise ValidationError(f"Invalid language value: '{language_str}'. Must be one of: {[l.value for l in Language]}")
 
-            response = self.__place_service.get_places_randomly(language, limit)
+            response = self.__place_service.get_places_randomly(language, limit, long, lat)
             return jsonify({"status": 200, "data": response}), 200
 
         except ValidationError as e:

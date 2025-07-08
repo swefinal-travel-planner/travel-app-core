@@ -69,36 +69,24 @@ class PlaceRepository:
         return hits[0]["_source"]
     
     def search_places_by_vector(self, vector_embedding, size, city: str, neighbor_district: list[str]):
-        should_clauses = []
-        for district in neighbor_district:
-            # should_clauses.append({"match_phrase": {"en_address": district}})
-            should_clauses.append({"match_phrase": {"en_properties": district}})
         query = {
-            "size": size,
+            "size": size * 2,
             "knn": {
                 "field": "place_vector",
                 "query_vector": vector_embedding,
-                "k": size,
-                "num_candidates": 1200,
+                "k": size * 2,
+                "num_candidates": 2400,
             },
             "query": {
                 "bool": {
                     "must": [
                         {"term": {"en_address": city}}
-                    ],
-                    "filter":[
-                        {
-                            "bool": {
-                                "should": should_clauses,
-                                "minimum_should_match": 1  # Ensure at least one district matches
-                            }
-                        }
                     ]
                 }
             },
             "_source": [
                 "id", "en_name", "vi_name", "en_address", "vi_address", "long", "lat",
-                "en_type", "vi_type", "en_properties", "vi_properties", "images"
+                "en_type", "vi_type", "en_properties", "vi_properties", "images", "district"
             ]
         }
         try:
@@ -106,7 +94,13 @@ class PlaceRepository:
             if response is None:
                 return None
             hits = response["hits"]["hits"]
-            return hits
+            # remove places that are not in the neighbor district
+            filtered_hits = [
+                hit for hit in hits
+                if hit["_source"].get("district") in neighbor_district
+            ]
+            print("expect size:" + str(size) + ", current size: " + str(len(filtered_hits)))
+            return filtered_hits
         except Exception as e:
             raise AppException(f"Failed to perform vector search: {str(e)}")
         
@@ -213,7 +207,7 @@ class PlaceRepository:
         hits = response["hits"]["hits"]
         return [hit["_source"] for hit in hits]
 
-    def get_random_places(self, language: Language, limit: int):
+    def get_random_places(self, language: Language, limit: int, district: str = None):
         query = {
             "size": limit,
             "query": {
@@ -223,7 +217,7 @@ class PlaceRepository:
                 }
             },
             "_source": [
-                "id", "long", "lat", "images"
+                "id", "long", "lat", "images", "district"
             ]
         }
         # check language to query
@@ -231,6 +225,15 @@ class PlaceRepository:
             query["_source"].extend(["en_name", "en_address", "en_type", "en_properties"])
         else:
             query["_source"].extend(["vi_name", "vi_address", "vi_type", "vi_properties"])
+        
+        if district is not None:
+            query["query"]["function_score"]["query"] = {
+                "bool": {
+                    "filter": [
+                        {"term": {"district": district}}
+                    ]
+                }
+            }
 
         response = self.__es.search_by_query(index_name=self.__index_name, body=query)
         if response is None:

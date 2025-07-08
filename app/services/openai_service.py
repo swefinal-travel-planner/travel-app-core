@@ -16,7 +16,7 @@ class OpenAIService:
         try:
             response = self.__client.beta.chat.completions.parse(
                 model=self.__model,
-                messages=[{"role": "developer", "content": "Bạn là một trợ lý về du lịch, luôn trả lời trung thực và chính xác nhất có thể."},
+                messages=[{"role": "developer", "content": "You are a travel assistant, always answering as truthfully and accurately as possible."},
                     {"role": "user", "content": prompt}],
                 response_format=response_format,
             )
@@ -34,7 +34,7 @@ class OpenAIService:
         try:
             response = await self.__async_client.beta.chat.completions.parse(
                 model=self.__model,
-                messages=[{"role": "developer", "content": "Bạn là một trợ lý về du lịch, luôn trả lời trung thực và chính xác nhất có thể."},
+                messages=[{"role": "developer", "content": "You are a travel assistant, always answering as truthfully and accurately as possible."},
                     {"role": "user", "content": prompt}],
                 response_format=response_format,
             )
