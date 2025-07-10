@@ -83,17 +83,24 @@ class DistanceTimeController:
         try:
             data = request.get_json()
             if not data or 'place_ids' not in data:
+                print(f"Error in get_distance_time: {data}")
                 return {"status": 400, "message": "Invalid input data"}, 400
             place_ids = data['place_ids']
             if not isinstance(place_ids, list) or len(place_ids) < 2:
+                print(f"Error in get_distance_time: {place_ids}")
                 return {"status": 400, "message": "At least two place IDs are required"}, 400
             if not all(isinstance(pid, str) for pid in place_ids):
+                print(f"Error in get_distance_time: {place_ids}")
                 return {"status": 400, "message": "All place IDs must be strings"}, 400
             distances = self.distance_matrix_service.get_distance_time(place_ids)
             return {"status": 200, "data": distances}, 200
         except Exception as e:
             if isinstance(e, ValueError):
+                print(f"ValueError in get_distance_time: {e}")
                 return {"status": 400, "message": str(e)}, 400
             elif isinstance(e, NotFoundError):
+                print(f"NotFoundError in get_distance_time: {e}")
                 return {"status": 404, "message": e.message}, 404
+            
+            print(f"Unexpected error in get_distance_time: {e}")
             return {"status": 500, "message": str(e)}, 500

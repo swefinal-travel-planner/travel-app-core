@@ -1,5 +1,5 @@
 supported_cities = [
-    "Ho Chi Minh",
+    "Ho Chi Minh City",
 ]
 
 supported_districts = ["District 1",

@@ -111,10 +111,13 @@ class PlaceController:
           place = self.__place_service.get_place_by_id(str(place_id), language)
           return jsonify({"status": 200, "data": place}), 200
       except ValidationError as e:
+          print(f"Validation error in get_place_by_id: {e}")
           return jsonify({"status": 400, "message": e.message}), 400
       except AppException as e:
+          print(f"AppException in get_place_by_id: {e}")
           return jsonify({"status": e.status_code, "message": e.message}), e.status_code
       except Exception as e:
+          print(f"Unexpected error in get_place_by_id: {e}")
           return jsonify({"status": 500, "message": f"Unexpected error: {str(e)}"}), 500
 
   def delete_place(self):
@@ -229,10 +232,13 @@ class PlaceController:
           response = self.__place_service.search_places_after(limit, search_after_id, location, language, filter, search_keyword)
           return jsonify({"status": 200, "data": response}), 200
       except ValidationError as e:
+          print(f"Validation error in search_places_after: {e}")
           return jsonify({"status": 400, "message": e.message}), 400
       except AppException as e:
+          print(f"AppException in search_places_after: {e}")
           return jsonify({"status": e.status_code, "message": e.message}), e.status_code
       except Exception as e:
+          print(f"Unexpected error in search_places_after: {e}")
           return jsonify({"status": 500, "message": f"Unexpected error: {str(e)}"}), 500
       
   def get_places_in_patch_by_ids(self):
@@ -409,8 +415,11 @@ class PlaceController:
             return jsonify({"status": 200, "data": response}), 200
 
         except ValidationError as e:
+            print(f"Error in get_random_places: {e}")
             return jsonify({"status": 400, "message": e.message}), 400
         except AppException as e:
+            print(f"AppException in get_random_places: {e}")
             return jsonify({"status": e.status_code, "message": e.message}), e.status_code
         except Exception as e:
+            print(f"Unexpected error in get_random_places: {e}")
             return jsonify({"status": 500, "message": f"Unexpected error: {str(e)}"}), 500

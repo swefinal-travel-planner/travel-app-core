@@ -184,6 +184,7 @@ class TourController:
             tours = self.tour_service.create_tour(user_references, neighbor_district)
             return jsonify({"status": 200, "data": tours}), 200  # Return raw list of dictionaries
         except Exception as e:
+            print(f"Error in create_tour: {e}")
             if isinstance(e, ValidationError):
                 return jsonify({"status": 400, "message": str(e)}), 400
             elif isinstance(e, AppException):
@@ -273,6 +274,7 @@ class TourController:
             data = self.tour_service.create_tour_demo(user_references, neighbor_district)
             return jsonify({"status": 200, "data": data}), 200  # Return raw list of dictionaries
       except Exception as e:
+            print(e)
             if isinstance(e, ValidationError):
                 return jsonify({"status": 400, "message": str(e)}), 400
             elif isinstance(e, AppException):
