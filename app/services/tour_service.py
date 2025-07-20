@@ -177,9 +177,15 @@ class TourService:
         food_location_list_parse = []
         while not (is_enough_locations and is_enough_food_locations):
             if not is_enough_locations:
-                locations_places_list = self.__place_repository.search_places_by_vector(location_attributes_label_embedding, TOTAL_LOCATIONS + loop_count, city, district_pool)
+                if loop_count > 9:
+                    locations_places_list = self.__place_repository.search_places_by_vector(location_attributes_label_embedding, TOTAL_LOCATIONS + loop_count, city, None)
+                else:
+                    locations_places_list = self.__place_repository.search_places_by_vector(location_attributes_label_embedding, TOTAL_LOCATIONS + loop_count, city, district_pool)
             if not is_enough_food_locations:
-                food_places_list = self.__place_repository.search_places_by_vector(food_attributes_label_embedding, TOTAL_FOOD_LOCATIONS + loop_count, city, district_pool)
+                if loop_count > 9:
+                    food_places_list = self.__place_repository.search_places_by_vector(food_attributes_label_embedding, TOTAL_FOOD_LOCATIONS + loop_count, city, None)
+                else:
+                    food_places_list = self.__place_repository.search_places_by_vector(food_attributes_label_embedding, TOTAL_FOOD_LOCATIONS + loop_count, city, district_pool)
             print("search complete")
             #parse places from es hits and remove duplicates
             tourist_destination_list_parse = parse_places_from_es_hits(locations_places_list)

@@ -95,6 +95,8 @@ class PlaceRepository:
                 return None
             hits = response["hits"]["hits"]
             # remove places that are not in the neighbor district
+            if not neighbor_district:
+                return hits[:size]  # Return the first 'size' hits if no district filter is applied
             filtered_hits = [
                 hit for hit in hits
                 if hit["_source"].get("district") in neighbor_district
